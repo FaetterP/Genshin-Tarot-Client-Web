@@ -1,10 +1,15 @@
-import React from 'react';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { ConnectionField } from "./Components/MainPage/ConnectionField";
+import Game from "./Components/Game/Game";
 
 function App() {
   return (
-    <div>
-      123
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<ConnectionField />} />
+        <Route path="/game" element={<Game />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
