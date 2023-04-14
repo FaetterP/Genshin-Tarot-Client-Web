@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { setUrl } from "../../store/store";
+import { connectToWS } from "../../ws";
 
 export function ConnectionField() {
   const goToPage = useNavigate();
@@ -9,7 +9,7 @@ export function ConnectionField() {
       url: "localhost:8999",
     },
     onSubmit: (values) => {
-      setUrl(values.url);
+      connectToWS(values.url);
       goToPage("/game");
     },
   });

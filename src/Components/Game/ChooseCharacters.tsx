@@ -1,4 +1,5 @@
 import React from "react";
+import { send } from "../../ws";
 
 const characters: ReadonlyArray<string> = [
   "Aether",
@@ -40,13 +41,18 @@ const characters: ReadonlyArray<string> = [
   "ZhongLi",
 ];
 
-export function ChooseCharacters({ ws }: { ws: WebSocket }) {
+export function ChooseCharacters() {
   function choose(character: string) {
     const data = {
       action: "characters.addCharacter",
       character,
     };
-    ws.send(JSON.stringify(data));
+    send(data);
+  }
+
+  function startGame() {
+    const data = { action: "game.startGame" };
+    send(data);
   }
 
   return (
@@ -54,6 +60,7 @@ export function ChooseCharacters({ ws }: { ws: WebSocket }) {
       {characters.map((character) => (
         <div onClick={() => choose(character)}>{character}</div>
       ))}
+      <button onClick={() => startGame()}>Start</button>
     </div>
   );
 }
