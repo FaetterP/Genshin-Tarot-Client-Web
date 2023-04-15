@@ -1,4 +1,7 @@
+import { buildHandlers } from "./handlers";
+
 let ws: WebSocket | undefined = undefined;
+const handlers = buildHandlers();
 
 export function connectToWS(url: string) {
   ws = new WebSocket("ws://" + url);
@@ -19,9 +22,21 @@ export function connectToWS(url: string) {
     // goToPage("/");
   };
 
-  ws.onmessage = function (event) {
-    const obj = JSON.parse(event.data);
-    console.log(obj);
+  ws.onmessage = async function (event) {
+    try {
+      const payload = JSON.parse(event.data.toString());
+      console.log(payload);
+
+      if (payload.status) return;
+
+      const { action } = payload;
+      const handler = handlers[action];
+      if (!handler) throw new Error(`Unsupported action ${action}`);
+
+      const res = await handler(payload);
+    } catch (e) {
+      console.error(e);
+    }
   };
 }
 
