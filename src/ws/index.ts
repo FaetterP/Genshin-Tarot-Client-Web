@@ -1,3 +1,5 @@
+import { store } from "../redux";
+import { setPage } from "../redux/service";
 import { buildHandlers } from "./handlers";
 
 let ws: WebSocket | undefined = undefined;
@@ -14,12 +16,12 @@ export function connectToWS(url: string) {
     console.log(
       `Соединение закрыто. Код: ${event.code} причина: ${event.reason}.`
     );
-    // goToPage("/");
+    store.dispatch(setPage({ page: "menu" }));
   };
 
   ws.onerror = function (error) {
     console.log("Ошибка " + error);
-    // goToPage("/");
+    store.dispatch(setPage({ page: "menu" }));
   };
 
   ws.onmessage = async function (event) {
