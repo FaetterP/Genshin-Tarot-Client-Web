@@ -1,16 +1,17 @@
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
 import { connectToWS } from "../../ws";
+import { useDispatch } from "react-redux";
+import { setPage } from "../../redux/service";
 
 export function ConnectionField() {
-  const goToPage = useNavigate();
+  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       url: "localhost:8999",
     },
     onSubmit: (values) => {
       connectToWS(values.url);
-      goToPage("/game");
+      dispatch(setPage({ page: "characters" }));
     },
   });
 

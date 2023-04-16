@@ -1,6 +1,6 @@
 import { store } from "../../redux";
 import { addPlayerAction } from "../../redux/players";
-import { setMyPlayerId } from "../../redux/ws";
+import { setMyPlayerId } from "../../redux/service";
 
 async function connect(payload: { youPlayerId: string }) {
   const { youPlayerId } = payload;

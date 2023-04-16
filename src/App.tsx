@@ -1,20 +1,19 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { ConnectionField } from "./Components/MainPage/ConnectionField";
 import Game from "./Components/Game/Game";
-import { Provider } from "react-redux";
-import { store } from "./redux";
+import { ChooseCharacters } from "./Components/Game/ChooseCharacters";
+import { useSelector } from "react-redux";
+import { State } from "./redux";
 
 function App() {
-  return (
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<ConnectionField />} />
-          <Route path="/game" element={<Game />} />
-        </Routes>
-      </BrowserRouter>
-    </Provider>
-  );
+  const page = useSelector((state: State) => state.service.page);
+
+  const mapper = {
+    menu: <ConnectionField />,
+    characters: <ChooseCharacters />,
+    game: <Game />,
+  };
+
+  return <div>{mapper[page]}</div>;
 }
 
 export default App;

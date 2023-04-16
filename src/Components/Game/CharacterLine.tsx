@@ -21,7 +21,7 @@ export default function CharacterLine({ character }: { character: string }) {
 
   const me = useSelector((state: State) => {
     return state.players.players.find(
-      (player) => player.playerId === state.ws.myPlayerId
+      (player) => player.playerId === state.service.myPlayerId
     )!;
   });
   if (!me) return <></>;
