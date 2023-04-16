@@ -1,5 +1,6 @@
 import React from "react";
 import { send } from "../../ws";
+import CharacterLine from "./CharacterLine";
 
 const characters: ReadonlyArray<string> = [
   "Aether",
@@ -42,14 +43,6 @@ const characters: ReadonlyArray<string> = [
 ];
 
 export function ChooseCharacters() {
-  function choose(character: string) {
-    const data = {
-      action: "characters.addCharacter",
-      character,
-    };
-    send(data);
-  }
-
   function startGame() {
     const data = { action: "game.startGame" };
     send(data);
@@ -58,7 +51,7 @@ export function ChooseCharacters() {
   return (
     <div>
       {characters.map((character) => (
-        <div onClick={() => choose(character)}>{character}</div>
+        <CharacterLine character={character} />
       ))}
       <button onClick={() => startGame()}>Start</button>
     </div>

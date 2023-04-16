@@ -1,12 +1,11 @@
-import { send } from "..";
+import { store } from "../../redux";
+import { addPlayerAction } from "../../redux/players";
+import { setMyPlayerId } from "../../redux/ws";
 
-async function startGame(payload: any) {
-  const { taskId } = payload as { taskId: string };
-  const data = {
-    action: "task.completeTask",
-    taskId,
-  };
-  send(data);
+async function connect(payload: { youPlayerId: string }) {
+  const { youPlayerId } = payload;
+  store.dispatch(setMyPlayerId({ playerId: youPlayerId }));
+  store.dispatch(addPlayerAction({ playerId: youPlayerId }));
 }
 
-export default { handlers: { startGame } };
+export default { handlers: { connect } };

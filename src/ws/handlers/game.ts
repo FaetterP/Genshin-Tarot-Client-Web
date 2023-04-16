@@ -1,7 +1,7 @@
 import { send } from "..";
 
-async function startGame(payload: any) {
-  const { taskId } = payload as { taskId: string };
+async function startGame(payload: { taskId: string }) {
+  const { taskId } = payload;
   const data = {
     action: "task.completeTask",
     taskId,
