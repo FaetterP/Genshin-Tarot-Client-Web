@@ -1,8 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { PlayerPrimitive } from "./../../types/general";
 
-const initialState: { players: PlayerPrimitive[] } = {
+const initialState: {
+  me: PlayerPrimitive;
+  other: PlayerPrimitive[];
+  players: PlayerPrimitive[];
+} = {
   players: [],
+  me: {
+    playerId: "",
+    hp: 0,
+    wave: 0,
+    enemies: [],
+    effects: [],
+    characters: [],
+    shields: 0,
+    energy: 0,
+    actionPoints: { normal: 0, extra: 0, total: 0 },
+    hand: [],
+  },
+  other: [],
 };
 
 const charactersSlice = createSlice({
@@ -18,6 +35,10 @@ const charactersSlice = createSlice({
         enemies: [],
         effects: [],
         characters: [],
+        shields: 0,
+        energy: 0,
+        actionPoints: { normal: 0, extra: 0, total: 0 },
+        hand: [],
       });
     },
 
@@ -44,9 +65,21 @@ const charactersSlice = createSlice({
         (char) => char !== character
       );
     },
+
+    setPlayers(state, action: PayloadAction<{ players: PlayerPrimitive[] }>) {
+      const { players } = action.payload;
+      state.me = players[0];
+      state.other = players.filter(
+        (player) => player.playerId !== state.me.playerId
+      );
+    },
   },
 });
 
 export default charactersSlice.reducer;
-export const { addPlayerAction, addCharacterAction, removeCharacterAction } =
-  charactersSlice.actions;
+export const {
+  addPlayerAction,
+  addCharacterAction,
+  removeCharacterAction,
+  setPlayers,
+} = charactersSlice.actions;

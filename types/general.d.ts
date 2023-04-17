@@ -11,7 +11,15 @@ export type PlayerPrimitive = {
   playerId: string;
   characters: string[];
   hp: number;
+  shields: number;
+  energy: number;
+  actionPoints: {
+    normal: number;
+    extra: number;
+    total: number;
+  };
   wave: number;
   enemies: EnemyPrimitive[];
   effects: string[];
+  hand: string[];
 };
