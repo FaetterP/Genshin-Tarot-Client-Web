@@ -18,7 +18,7 @@ export default function Enemy(props: EnemyPrimitive) {
       <div className={styles.shield}>{props.shield}🛡</div>
       <div className={styles.description}>{description}</div>
       <div className={styles.status}>
-        <div className={props.elements[0]}>{props.elements[0]}</div>
+        <div className={styles[props.elements[0]]}>{props.elements[0]}</div>
       </div>
     </div>
   );
