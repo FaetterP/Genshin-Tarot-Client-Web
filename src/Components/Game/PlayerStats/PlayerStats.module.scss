@@ -1,0 +1,29 @@
+.myStats {
+  display: flex;
+  gap: 40px;
+
+  font-size: 40px;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+
+  .hp {
+    color: red;
+  }
+
+  .shields {
+    color: gray;
+  }
+
+  .energy {
+    color: white;
+    text-shadow: gray 0 0 3px;
+  }
+
+  .mora {
+    color: darkgoldenrod;
+  }
+
+  .actionPoints {
+    .desc {
+    }
+  }
+}

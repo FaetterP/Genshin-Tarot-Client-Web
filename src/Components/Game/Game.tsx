@@ -9,10 +9,10 @@ export default function Game() {
 
   return (
     <div>
-      <PlayerStats {...me} />
       {me.enemies.map((enemy) => (
         <Enemy {...enemy} key={enemy.id}/>
       ))}
+      <PlayerStats {...me} />
       {me.hand.map((card) => (
         <Card card={card}/>
       ))}
