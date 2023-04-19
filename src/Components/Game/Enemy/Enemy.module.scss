@@ -1,3 +1,83 @@
-.enemyBlock{
-    box-shadow: 0 0 5px 5px rgba(0,0,0,.2);
+.enemyBlock {
+  background-color: #f2f2f4;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+  height: 200px;
+  width: 200px;
+  position: relative;
+  padding-top: 70px;
+
+  .name {
+    font-weight: 800;
+    color: #f2f2f4;
+    background-color: #c3ab91;
+
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .description {
+    font-style: italic;
+  }
+
+  .hp {
+    color: red;
+    font-size: 40px;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .mora {
+    color: darkgoldenrod;
+    font-size: 40px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+  .attack {
+    color: brown;
+    font-size: 40px;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
+
+  .shield {
+    color: gray;
+    font-size: 40px;
+
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .status {
+    .Cryo {
+      color: aqua;
+    }
+
+    .Hydro {
+      color: cornflowerblue;
+    }
+
+    .Anemo {
+      color: aquamarine;
+    }
+
+    .Pyro {
+      color: crimson;
+    }
+
+    .Geo {
+      color: coral;
+    }
+
+    .Electro {
+      color: darkviolet;
+    }
+  }
 }
