@@ -51,7 +51,7 @@ export function ChooseCharacters() {
   return (
     <div>
       {characters.map((character) => (
-        <CharacterLine character={character} />
+        <CharacterLine character={character} key={character}/>
       ))}
       <button onClick={() => startGame()}>Start</button>
     </div>

@@ -1,7 +1,9 @@
-export default function Card({card}:{card:string}){
+import { CardPrimitive } from "../../../../types/general";
+
+export default function Card(props:CardPrimitive){
     return(
         <div>
-            {card}
+            {props.name}
         </div>
     )
 }
