@@ -1,0 +1,38 @@
+.cardBlock {
+  background-color: #151517;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+  color: white;
+
+  height: 200px;
+  width: 200px;
+  position: relative;
+  padding-top: 70px;
+  margin: 50px;
+
+  .name {
+    font-weight: 800;
+
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .upgradedName{
+    font-weight: 800;
+    background-color: #c3ab91;
+
+    text-align: center;
+    padding: 10px 0;
+  }
+
+  .description {
+    font-style: italic;
+  }
+
+  .cost {
+    font-size: 40px;
+
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}
