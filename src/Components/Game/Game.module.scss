@@ -1,0 +1,28 @@
+.game {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .enemies {
+    position: absolute;
+    top:0;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: row;
+    
+    justify-content: space-evenly;
+    position: absolute;
+    bottom: 0;
+  }
+
+  .stats {
+    position: absolute;
+margin: auto;
+    bottom: 300px;
+  }
+}

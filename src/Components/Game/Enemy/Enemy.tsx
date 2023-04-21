@@ -5,7 +5,6 @@ import { engNames } from "../../../storage/enemies/names";
 import styles from "./Enemy.module.scss";
 
 export default function Enemy(props: EnemyPrimitive) {
-  console.log(props)
   const name = engNames[props.name];
   const description = engDescriptions[props.name];
   const { mora, attack } = enemies[props.name];
