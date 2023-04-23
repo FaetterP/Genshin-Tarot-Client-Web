@@ -1,4 +1,4 @@
-export const endCards: Record<string, string> = {
+export const engCards: Record<string, string> = {
   ForeignRockblade: "Foreign Rockblade",
   ForeignRockbladePlus: "Foreign Rockblade+",
   StarfellSword: "Starfell Sword",
