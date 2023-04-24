@@ -1,10 +1,10 @@
 import { CardPrimitive } from "../../../../types/general";
-import { cards } from "../../../storage/Cards/cards";
+import { cards } from "../../../storage/cards_/cards";
 import {
   engDescriptions,
   rusDescriptions,
-} from "../../../storage/Cards/descriptions";
-import { engCards, rusCards } from "../../../storage/Cards/names";
+} from "../../../storage/cards_/descriptions";
+import { engCards, rusCards } from "../../../storage/cards_/names";
 import styles from "./Card.module.scss";
 
 export default function Card(props: CardPrimitive) {
