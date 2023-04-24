@@ -1,0 +1,46 @@
+.characterBlock {
+  width: 400px;
+  height: 200px;
+  padding: 20px;
+
+  background-color: #151515;
+
+  .name {
+    text-align: center;
+    color: gainsboro;
+    font-weight: 800;
+    font-size: 50px;
+  }
+
+  .burst {
+    width: 100%;
+    position: relative;
+    .burstName {
+      position: absolute;
+      left: 0;
+      color: #c3ab91;
+    }
+
+    .burstCost {
+      position: absolute;
+      right: 0;
+    }
+
+    .burstDescription {
+      margin-top: 30px;
+      color: white;
+    }
+  }
+}
+
+.characterBlock:hover {
+  outline: 3px solid white;
+}
+
+.characterBlock.selected {
+  outline: 3px solid gold;
+}
+
+.characterBlock.selected:hover {
+  outline: 3px solid blanchedalmond;
+}

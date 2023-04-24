@@ -1,6 +1,6 @@
-import React from "react";
-import { send } from "../../ws";
+import { send } from "../../../ws";
 import CharacterLine from "./CharacterLine";
+import styles from "./ChooseCharacters.module.scss";
 
 const characters: ReadonlyArray<string> = [
   "Aether",
@@ -49,10 +49,12 @@ export function ChooseCharacters() {
   }
 
   return (
-    <div>
-      {characters.map((character) => (
-        <CharacterLine character={character} key={character}/>
-      ))}
+    <div className={styles.background}>
+      <div className={styles.charactersList}>
+        {characters.map((character) => (
+          <CharacterLine character={character} key={character} />
+        ))}
+      </div>
       <button onClick={() => startGame()}>Start</button>
     </div>
   );

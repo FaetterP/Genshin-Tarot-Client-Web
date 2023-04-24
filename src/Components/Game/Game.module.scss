@@ -8,13 +8,13 @@
 
   .enemies {
     position: absolute;
-    top:0;
+    top: 0;
   }
 
   .cards {
     display: flex;
     flex-direction: row;
-    
+
     justify-content: space-evenly;
     position: absolute;
     bottom: 0;
@@ -22,7 +22,7 @@
 
   .stats {
     position: absolute;
-margin: auto;
+    margin: auto;
     bottom: 300px;
   }
 }

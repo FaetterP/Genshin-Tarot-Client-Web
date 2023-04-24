@@ -1,0 +1,15 @@
+.charactersList {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  justify-items: center;
+  gap: 20px;
+}
+
+.background {
+  background: linear-gradient(
+    180deg,
+    rgba(33, 27, 81, 1) 0%,
+    rgba(75, 113, 173, 1) 77%,
+    rgba(42, 75, 139, 1) 100%
+  );
+}
