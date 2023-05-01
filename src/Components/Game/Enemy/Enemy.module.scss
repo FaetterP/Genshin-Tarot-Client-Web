@@ -87,3 +87,11 @@
     }
   }
 }
+
+.enemyBlock.canSelected:hover {
+  background-color:lightgrey;
+}
+
+.enemyBlock.selected {
+  outline: 3px solid red;
+}

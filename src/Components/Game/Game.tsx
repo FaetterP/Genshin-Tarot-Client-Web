@@ -4,6 +4,7 @@ import Enemy from "./Enemy/Enemy";
 import PlayerStats from "./PlayerStats/PlayerStats";
 import Card from "./Card/Card";
 import styles from "./Game.module.scss";
+import Selections from "./Selections/Selections";
 
 export default function Game() {
   const me = useSelector((state: State) => state.players.me);
@@ -22,6 +23,9 @@ export default function Game() {
         {me.hand.map((card) => (
           <Card {...card} key={card.cardId} />
         ))}
+      </div>
+      <div>
+        <Selections />
       </div>
     </div>
   );

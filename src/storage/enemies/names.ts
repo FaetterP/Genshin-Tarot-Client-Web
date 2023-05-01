@@ -56,7 +56,7 @@ export const engNames: Record<string, string> = {
   GeoHypostasis: "Geo Hypostasis",
 };
 
-export const ruNames: Record<string, string> = {
+export const rusNames: Record<string, string> = {
   SmallAnemoSlime: "Анемо слайм",
   SmallCryoSlime: "Крио слайм",
   SmallDendroSlime: "Дендро слайм",

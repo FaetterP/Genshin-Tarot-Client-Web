@@ -66,12 +66,16 @@ const charactersSlice = createSlice({
       );
     },
 
-    setPlayers(state, action: PayloadAction<{ players: PlayerPrimitive[] }>) {
-      const { players } = action.payload;
-      state.me = players[0];
-      state.other = players.filter(
-        (player) => player.playerId !== state.me.playerId
-      );
+    setPlayers(
+      state,
+      action: PayloadAction<{
+        you: PlayerPrimitive;
+        otherPlayers: PlayerPrimitive[];
+      }>
+    ) {
+      const { you, otherPlayers } = action.payload;
+      state.me = you;
+      state.other = otherPlayers;
     },
   },
 });

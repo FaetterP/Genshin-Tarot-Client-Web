@@ -16,7 +16,7 @@
     padding: 10px 0;
   }
 
-  .upgradedName{
+  .upgradedName {
     font-weight: 800;
     background-color: #c3ab91;
 
@@ -35,4 +35,12 @@
     top: 0;
     right: 0;
   }
+}
+
+.cardBlock:hover {
+  outline: 3px solid orangered;
+}
+
+.cardBlock.selected {
+  outline: 3px solid red;
 }

@@ -56,7 +56,7 @@ export const engDescriptions: Record<string, string> = {
   GeoHypostasis: "Passive: I cannot be applied with Geo. I regain all of my health at the start of each player phase.",
 };
 
-export const ruDescriptions: Record<string, string> = {
+export const rusDescriptions: Record<string, string> = {
   SmallAnemoSlime: "При появлении: Накладывает на себя Анемо.",
   SmallCryoSlime: "При появлении: Накладывает на себя Крио.",
   SmallDendroSlime: "Пассивно: Получает 2 урона, когда накладывается Пиро.",

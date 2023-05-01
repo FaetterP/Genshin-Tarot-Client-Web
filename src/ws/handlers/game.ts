@@ -17,9 +17,16 @@ async function startGame(payload: { taskId: string }) {
 async function startCycle(payload: {
   cycle: number;
   taskId: string;
-  players: PlayerPrimitive[];
+  you: PlayerPrimitive;
+  otherPlayers: PlayerPrimitive[];
 }) {
-  store.dispatch(setPlayers({ players: payload.players }));
+  store.dispatch(
+    setPlayers({ you: payload.you, otherPlayers: payload.otherPlayers })
+  );
 }
 
-export default { handlers: { startGame, startCycle } };
+async function useCard(payload: { player: PlayerPrimitive }) {
+  console.error("no")
+}
+
+export default { handlers: { startGame, startCycle, useCard } };
