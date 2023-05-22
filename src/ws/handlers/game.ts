@@ -1,7 +1,7 @@
 import { send } from "..";
-import { PlayerPrimitive } from "../../../types/general";
+import { EnemyPrimitive, PlayerPrimitive } from "../../../types/general";
 import { store } from "../../redux";
-import { setPlayers } from "../../redux/players";
+import { setPlayers, useCard } from "../../redux/players";
 import { setPage } from "../../redux/service";
 
 async function startGame(payload: { taskId: string }) {
@@ -25,8 +25,19 @@ async function startCycle(payload: {
   );
 }
 
-async function useCard(payload: { player: PlayerPrimitive }) {
-  console.error("no")
+async function useCardHandler(payload: {
+  player: PlayerPrimitive;
+  card: string;
+}) {
+  const state = store.getState();
+
+  store.dispatch(
+    useCard({
+      player: payload.player,
+      card: payload.card,
+      isMe: payload.player.playerId === state.service.myPlayerId,
+    })
+  );
 }
 
-export default { handlers: { startGame, startCycle, useCard } };
+export default { handlers: { startGame, startCycle, useCard: useCardHandler } };

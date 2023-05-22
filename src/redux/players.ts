@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PlayerPrimitive } from "./../../types/general";
+import { EnemyPrimitive, PlayerPrimitive } from "./../../types/general";
 
 const initialState: {
   me: PlayerPrimitive;
@@ -77,6 +77,27 @@ const charactersSlice = createSlice({
       state.me = you;
       state.other = otherPlayers;
     },
+
+    useCard(
+      state,
+      action: PayloadAction<{
+        player: PlayerPrimitive;
+        card: string;
+        isMe: boolean;
+      }>
+    ) {
+      console.log(123)
+      const { isMe, player } = action.payload;
+      if (isMe) {
+        state.me = player;
+      } else {
+        const index = state.other.findIndex(
+          (pl) => pl.playerId === player.playerId
+        );
+        state.other[index] = player;
+      }
+      console.log(state)
+    },
   },
 });
 
@@ -86,4 +107,5 @@ export const {
   addCharacterAction,
   removeCharacterAction,
   setPlayers,
+  useCard
 } = charactersSlice.actions;
