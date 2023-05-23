@@ -21,7 +21,12 @@ export default function Enemy(props: EnemyPrimitive) {
 
   const dispatch = useDispatch();
 
-  const isCanSelected = !!useSelector((state: State) => state.card.needEnemies);
+  const needEnemies = useSelector((state: State) => state.card.needEnemies);
+  const selectedEnemies = useSelector(
+    (state: State) => state.card.enemies
+  ).length;
+
+  const isCanSelected = needEnemies && selectedEnemies < needEnemies;
   const isSelected = useSelector((state: State) => state.card.enemies).includes(
     props.id
   );

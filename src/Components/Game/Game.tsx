@@ -5,9 +5,11 @@ import PlayerStats from "./PlayerStats/PlayerStats";
 import Card from "./Card/Card";
 import styles from "./Game.module.scss";
 import Selections from "./Selections/Selections";
+import OtherPlayer from "./OtherPlayer/OtherPlayer";
 
 export default function Game() {
   const me = useSelector((state: State) => state.players.me);
+  const other = useSelector((state: State) => state.players.other);
 
   return (
     <div className={styles.game}>
@@ -26,6 +28,11 @@ export default function Game() {
       </div>
       <div>
         <Selections />
+      </div>
+      <div className={styles.otherPlayers}>
+        {other.map((player) => (
+          <OtherPlayer {...player} key={player.playerId} />
+        ))}
       </div>
     </div>
   );

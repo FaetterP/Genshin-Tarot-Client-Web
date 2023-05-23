@@ -4,12 +4,12 @@ import styles from "./PlayerStats.module.scss";
 export default function PlayerStats(props: PlayerPrimitive) {
   let actionPoints = "";
   for (let i = 0; i < props.actionPoints.normal; i++) {
-    actionPoints += "🔷";
+    actionPoints += "⬜";
   }
 
   let extraActionPoints = "";
   for (let i = 0; i < props.actionPoints.extra; i++) {
-    extraActionPoints += "🔶";
+    extraActionPoints += "🟧";
   }
 
   return (
