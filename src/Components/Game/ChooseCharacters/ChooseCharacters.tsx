@@ -1,6 +1,8 @@
+import { useSelector } from "react-redux";
 import { send } from "../../../ws";
 import CharacterLine from "./CharacterLine";
 import styles from "./ChooseCharacters.module.scss";
+import { State } from "../../../redux";
 
 const characters: ReadonlyArray<string> = [
   "Aether",
@@ -48,6 +50,10 @@ export function ChooseCharacters() {
     send(data);
   }
 
+  const startText =
+    useSelector((state: State) => state.lang.service.startGame) ||
+    "service.startGame";
+
   return (
     <div className={styles.background}>
       <div className={styles.charactersList}>
@@ -55,7 +61,7 @@ export function ChooseCharacters() {
           <CharacterLine character={character} key={character} />
         ))}
       </div>
-      <button onClick={() => startGame()}>Start</button>
+      <button onClick={() => startGame()}>{startText}</button>
     </div>
   );
 }

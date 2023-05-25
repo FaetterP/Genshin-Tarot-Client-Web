@@ -1,22 +1,18 @@
 import { useDispatch, useSelector } from "react-redux";
 import { EnemyPrimitive } from "../../../../types/general";
-import {
-  engDescriptions,
-  rusDescriptions,
-} from "../../../storage/enemies/descriptions";
 import { enemies } from "../../../storage/enemies/enemies";
-import { engNames, rusNames } from "../../../storage/enemies/names";
 import styles from "./Enemy.module.scss";
 import { State } from "../../../redux";
 import { selectEnemy } from "../../../redux/card";
 
 export default function Enemy(props: EnemyPrimitive) {
   const name =
-    rusNames[props.name] || engNames[props.name] || `${props.name}.name`;
+    useSelector((state: State) => state.lang.enemies.names[props.name]) ||
+    `${props.name}.name`;
   const description =
-    rusDescriptions[props.name] ||
-    engDescriptions[props.name] ||
-    `${props.name}.description`;
+    useSelector(
+      (state: State) => state.lang.enemies.descriptions[props.name]
+    ) || `${props.name}.description`;
   const { mora, attack } = enemies[props.name];
 
   const dispatch = useDispatch();

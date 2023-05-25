@@ -1,11 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { CardPrimitive } from "../../../../types/general";
 import { cards } from "../../../storage/cards/cards";
-import {
-  engDescriptions,
-  rusDescriptions,
-} from "../../../storage/cards/descriptions";
-import { engCards, rusCards } from "../../../storage/cards/names";
 import styles from "./Card.module.scss";
 import { selectCard } from "../../../redux/card";
 import { State } from "../../../redux";
@@ -17,10 +12,11 @@ export default function Card(props: CardPrimitive) {
     isUpgraded: false,
   };
   const name =
-    rusCards[props.name] || engCards[props.name] || `${props.name}.name`;
+    useSelector((state: State) => state.lang.cards.names[props.name]) ||
+    `${props.name}.name`;
+
   const description =
-    rusDescriptions[props.name] ||
-    engDescriptions[props.name] ||
+    useSelector((state: State) => state.lang.cards.descriptions[props.name]) ||
     `${props.name}.description`;
 
   let costText = "";

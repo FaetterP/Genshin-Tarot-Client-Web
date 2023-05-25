@@ -5,6 +5,10 @@ import styles from "./OtherEnemy.module.scss";
 import { selectEnemy } from "../../../redux/card";
 
 export default function OtherEnemy(props: EnemyPrimitive) {
+  const name =
+    useSelector((state: State) => state.lang.enemies.names[props.name]) ||
+    `${props.name}.name`;
+
   const needEnemies = useSelector((state: State) => state.card.needEnemies);
   const isRange = !!useSelector((state: State) => state.card.isRange);
   const selectedCount = useSelector(
@@ -31,7 +35,7 @@ export default function OtherEnemy(props: EnemyPrimitive) {
       }`}
       onClick={click}
     >
-      {props.name}
+      {name}
       {` ${props.hp}♥`}
     </div>
   );

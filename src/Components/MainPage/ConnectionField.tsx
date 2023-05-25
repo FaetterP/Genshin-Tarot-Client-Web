@@ -1,7 +1,8 @@
 import { useFormik } from "formik";
 import { connectToWS } from "../../ws";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setPage } from "../../redux/service";
+import { State } from "../../redux";
 
 export function ConnectionField() {
   const dispatch = useDispatch();
@@ -15,16 +16,23 @@ export function ConnectionField() {
     },
   });
 
+  const enterUrlText =
+    useSelector((state: State) => state.lang.service.enterUrl) ||
+    "service.enterUrl";
+  const connectText =
+    useSelector((state: State) => state.lang.service.connect) ||
+    "service.connect";
+
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
-        <h1>Введите url для подключения</h1>
+        <h1>{enterUrlText}</h1>
         <input
           name="url"
           onChange={formik.handleChange}
           value={formik.values.url}
         />
-        <button type="submit">Подключиться</button>
+        <button type="submit">{connectText}</button>
       </form>
     </div>
   );

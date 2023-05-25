@@ -33,7 +33,6 @@ const charactersSlice = createSlice({
     ) {
       const { cardId, cardKey } = action.payload;
       state.selectedCard = cardId;
-      console.log(cards[cardKey])
       const { enemiesCount, isRange, isCanAlternative, isNeedPlayer } =
         cards[cardKey].require || {};
 

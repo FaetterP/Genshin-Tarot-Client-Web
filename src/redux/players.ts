@@ -86,7 +86,6 @@ const charactersSlice = createSlice({
         isMe: boolean;
       }>
     ) {
-      console.log(123)
       const { isMe, player } = action.payload;
       if (isMe) {
         state.me = player;
@@ -96,7 +95,6 @@ const charactersSlice = createSlice({
         );
         state.other[index] = player;
       }
-      console.log(state)
     },
   },
 });

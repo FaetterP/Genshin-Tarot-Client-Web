@@ -1,11 +1,6 @@
 import { useSelector } from "react-redux";
 import { send } from "../../../ws";
 import { State } from "../../../redux";
-import { engNames, rusNames } from "../../../storage/characters/names";
-import {
-  engDescriptions,
-  rusDescriptions,
-} from "../../../storage/characters/bursts";
 import styles from "./CharacterLine.module.scss";
 
 export default function CharacterLine({ character }: { character: string }) {
@@ -33,6 +28,21 @@ export default function CharacterLine({ character }: { character: string }) {
     }
   }
 
+  const name =
+    useSelector((state: State) => state.lang.characters.names[character]) ||
+    `${character}.name`;
+  const {
+    name: burstName,
+    description,
+    cost,
+  } = useSelector(
+    (state: State) => state.lang.characters.bursts[character]
+  ) || {
+    name: `${character}.burst`,
+    description: `${character}.description`,
+    cost: 0,
+  };
+
   const me = useSelector((state: State) => {
     return state.players.players.find(
       (player) => player.playerId === state.service.myPlayerId
@@ -41,19 +51,6 @@ export default function CharacterLine({ character }: { character: string }) {
   if (!me) return <></>;
 
   const isCharacterChosen = me.characters.includes(character);
-
-  const name =
-    rusNames[character] || engNames[character] || `${character}.name`;
-  const {
-    name: burstName,
-    description,
-    cost,
-  } = rusDescriptions[character] ||
-    engDescriptions[character] || {
-      name: `${character}.burst`,
-      description: `${character}.description`,
-      cost: 0,
-    };
 
   let costText = "";
   for (let i = 0; i < cost; i++) {

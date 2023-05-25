@@ -28,3 +28,5 @@ export type CardPrimitive = {
   cardId: string;
   name: string;
 };
+
+export type Lang = "EN" | "RU";

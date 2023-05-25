@@ -20,10 +20,6 @@ export default function Selections() {
     isUseAlternative,
   } = useSelector((state: State) => state.card);
 
-  if (!selectedCard) {
-    return <></>;
-  }
-
   function useCard() {
     const data: Request = { action: "game.useCard", cardId: selectedCard };
     if (needEnemies) {
@@ -39,17 +35,28 @@ export default function Selections() {
     send(data);
   }
 
+  const useAltText =
+    useSelector((state: State) => state.lang.service.useAlt) ||
+    "service.useAlt";
+  const useCardText =
+    useSelector((state: State) => state.lang.service.useCard) ||
+    "service.useCard";
+
+  if (!selectedCard) {
+    return <></>;
+  }
+
   return (
     <div>
       {isCanAlternative ? (
         <div>
           <input type="checkbox"></input>
-          <label>use alt?</label>
+          <label>{useAltText}</label>
         </div>
       ) : (
         <></>
       )}
-      <button onClick={useCard}>Use card</button>
+      <button onClick={useCard}>{useCardText}</button>
     </div>
   );
 }
