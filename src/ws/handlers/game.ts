@@ -21,7 +21,11 @@ async function startCycle(payload: {
   otherPlayers: PlayerPrimitive[];
 }) {
   store.dispatch(
-    setPlayers({ you: payload.you, otherPlayers: payload.otherPlayers })
+    setPlayers({
+      you: payload.you,
+      otherPlayers: payload.otherPlayers,
+      cycle: payload.cycle,
+    })
   );
 }
 

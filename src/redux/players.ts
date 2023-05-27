@@ -5,6 +5,7 @@ const initialState: {
   me: PlayerPrimitive;
   other: PlayerPrimitive[];
   players: PlayerPrimitive[];
+  cycle: number;
 } = {
   players: [],
   me: {
@@ -20,6 +21,7 @@ const initialState: {
     hand: [],
   },
   other: [],
+  cycle: -1,
 };
 
 const charactersSlice = createSlice({
@@ -71,11 +73,13 @@ const charactersSlice = createSlice({
       action: PayloadAction<{
         you: PlayerPrimitive;
         otherPlayers: PlayerPrimitive[];
+        cycle: number;
       }>
     ) {
-      const { you, otherPlayers } = action.payload;
+      const { you, otherPlayers, cycle } = action.payload;
       state.me = you;
       state.other = otherPlayers;
+      state.cycle = cycle;
     },
 
     useCard(
@@ -105,5 +109,5 @@ export const {
   addCharacterAction,
   removeCharacterAction,
   setPlayers,
-  useCard
+  useCard,
 } = charactersSlice.actions;

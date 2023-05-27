@@ -6,6 +6,7 @@ import Card from "./Card/Card";
 import styles from "./Game.module.scss";
 import Selections from "./Selections/Selections";
 import OtherPlayer from "./OtherPlayer/OtherPlayer";
+import Cycles from "./Cycles/Cycles";
 
 export default function Game() {
   const me = useSelector((state: State) => state.players.me);
@@ -33,6 +34,9 @@ export default function Game() {
         {other.map((player) => (
           <OtherPlayer {...player} key={player.playerId} />
         ))}
+      </div>
+      <div className={styles.cycles}>
+        <Cycles currentCycle={1} />
       </div>
     </div>
   );
