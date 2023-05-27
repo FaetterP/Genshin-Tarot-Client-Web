@@ -20,7 +20,7 @@ export function connectToWS(url: string) {
   };
 
   ws.onerror = function (error) {
-    console.log("Ошибка " + error);
+    console.log("Ошибка ", error);
     store.dispatch(setPage({ page: "menu" }));
   };
 

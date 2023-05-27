@@ -36,7 +36,7 @@ export default function Game() {
         ))}
       </div>
       <div className={styles.cycles}>
-        <Cycles currentCycle={1} />
+        <Cycles />
       </div>
       <div className={styles.discard}>
           {me.discard.map(card=>(
