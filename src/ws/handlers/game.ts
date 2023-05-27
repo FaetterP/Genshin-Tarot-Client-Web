@@ -1,6 +1,7 @@
 import { send } from "..";
 import { EnemyPrimitive, PlayerPrimitive } from "../../../types/general";
 import { store } from "../../redux";
+import { clearUsedCard } from "../../redux/card";
 import { setPlayers, useCard } from "../../redux/players";
 import { setPage } from "../../redux/service";
 
@@ -42,6 +43,7 @@ async function useCardHandler(payload: {
       isMe: payload.player.playerId === state.service.myPlayerId,
     })
   );
+  store.dispatch(clearUsedCard(undefined));
 }
 
 export default { handlers: { startGame, startCycle, useCard: useCardHandler } };

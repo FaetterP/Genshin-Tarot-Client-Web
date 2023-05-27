@@ -8,6 +8,8 @@
 
   .enemies {
     position: absolute;
+    display: flex;
+    gap: 50px;
     top: 20px;
   }
 
@@ -36,5 +38,17 @@
     position: absolute;
     top: 0;
     left: 0;
+  }
+
+  .discard {
+    position: absolute;
+    left: 0;
+    color: darkslateblue;
+  }
+
+  .deck {
+    position: absolute;
+    right: 0;
+    color: chocolate;
   }
 }

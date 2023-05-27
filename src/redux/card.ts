@@ -61,8 +61,12 @@ const charactersSlice = createSlice({
         state.enemies.push(enemyId);
       }
     },
+    clearUsedCard(state, action) {
+      return initialState;
+    },
   },
 });
 
 export default charactersSlice.reducer;
-export const { selectCard, selectEnemy } = charactersSlice.actions;
+export const { selectCard, selectEnemy, clearUsedCard } =
+  charactersSlice.actions;

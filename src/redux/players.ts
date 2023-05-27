@@ -19,6 +19,8 @@ const initialState: {
     energy: 0,
     actionPoints: { normal: 0, extra: 0, total: 0 },
     hand: [],
+    discard: [],
+    deck: [],
   },
   other: [],
   cycle: -1,
@@ -41,6 +43,8 @@ const charactersSlice = createSlice({
         energy: 0,
         actionPoints: { normal: 0, extra: 0, total: 0 },
         hand: [],
+        discard: [],
+        deck: [],
       });
     },
 

@@ -38,6 +38,20 @@ export default function Game() {
       <div className={styles.cycles}>
         <Cycles currentCycle={1} />
       </div>
+      <div className={styles.discard}>
+          {me.discard.map(card=>(
+            <div>
+              {card.name}
+            </div>
+          ))}
+      </div>
+      <div className={styles.deck}>
+          {me.deck.map(card=>(
+            <div>
+              {card.name}
+            </div>
+          ))}
+      </div>
     </div>
   );
 }

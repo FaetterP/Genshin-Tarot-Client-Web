@@ -22,6 +22,8 @@ export type PlayerPrimitive = {
   enemies: EnemyPrimitive[];
   effects: string[];
   hand: CardPrimitive[];
+  discard: CardPrimitive[];
+  deck: CardPrimitive[];
 };
 
 export type CardPrimitive = {
