@@ -17,6 +17,7 @@ async function startGame(payload: { taskId: string }) {
 
 async function startCycle(payload: {
   cycle: number;
+  leylines: string[];
   taskId: string;
   you: PlayerPrimitive;
   otherPlayers: PlayerPrimitive[];
@@ -26,6 +27,7 @@ async function startCycle(payload: {
       you: payload.you,
       otherPlayers: payload.otherPlayers,
       cycle: payload.cycle,
+      leylines: payload.leylines,
     })
   );
 }
