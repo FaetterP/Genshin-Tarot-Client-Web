@@ -17,7 +17,7 @@ export default function PlayerStats(props: PlayerPrimitive) {
       <div className={styles.hp}>{props.hp}♥</div>
       <div className={styles.shields}>{props.shields}🛡</div>
       <div className={styles.energy}>{props.energy}⚛</div>
-      <div className={styles.mora}>{10}💰</div>
+      <div className={styles.mora}>{props.mora}💰</div>
       <div className={styles.actionPoints}>
         {actionPoints}
         {extraActionPoints}

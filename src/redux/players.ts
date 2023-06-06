@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { EnemyPrimitive, PlayerPrimitive } from "./../../types/general";
+import { PlayerPrimitive } from "./../../types/general";
 
 const initialState: {
   me: PlayerPrimitive;
