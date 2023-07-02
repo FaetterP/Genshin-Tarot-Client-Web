@@ -4,7 +4,6 @@ import { cards } from "../storage/cards/cards";
 const initialState: {
   enemies: string[];
   selectedPlayer: string;
-  isUseAlternative: boolean;
   selectedCard: string;
 
   needEnemies: number;
@@ -14,7 +13,6 @@ const initialState: {
 } = {
   enemies: [],
   selectedPlayer: "",
-  isUseAlternative: false,
   selectedCard: "",
 
   needEnemies: 0,
@@ -48,7 +46,6 @@ const charactersSlice = createSlice({
       state.isNeedPlayer = isNeedPlayer || false;
 
       state.enemies = [];
-      state.isUseAlternative = false;
       state.selectedPlayer = "";
     },
     selectEnemy(state, action: PayloadAction<{ enemyId: string }>) {
@@ -63,7 +60,7 @@ const charactersSlice = createSlice({
     },
     clearUsedCard(state, action) {
       return initialState;
-    },
+    }
   },
 });
 

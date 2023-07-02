@@ -121,7 +121,7 @@ export const cards: Record<
     isUpgraded: true,
     require: { enemiesCount: 1, isRange: true },
   },
-  IcyPaws: { cost: 1, isUpgraded: false },
+  IcyPaws: { cost: 1, isUpgraded: false, require: { isCanAlternative: true } },
   IcyPawsPlus: { cost: 1, isUpgraded: true },
   EdelBladework: {
     cost: 1,

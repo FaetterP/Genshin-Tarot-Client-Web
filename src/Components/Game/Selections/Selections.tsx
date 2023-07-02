@@ -1,6 +1,7 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux";
 import { send } from "../../../ws";
+import { useFormik } from "formik";
 
 type Request = {
   action: "game.useCard";
@@ -17,23 +18,27 @@ export default function Selections() {
     selectedCard,
     enemies,
     selectedPlayer,
-    isUseAlternative,
   } = useSelector((state: State) => state.card);
 
-  function useCard() {
-    const data: Request = { action: "game.useCard", cardId: selectedCard };
-    if (needEnemies) {
-      data.enemies = enemies;
-    }
-    if (selectedPlayer) {
-      data.selectedPlayer = selectedCard;
-    }
-    if (isUseAlternative) {
-      data.isUseAlternative = isUseAlternative;
-    }
+  const dispatch = useDispatch();
+  const formik = useFormik({
+    initialValues: {
+      isUseAlternative: false,
+    },
+    onSubmit: (values) => {
+      const data: Request = { action: "game.useCard", cardId: selectedCard };
+      if (needEnemies) {
+        data.enemies = enemies;
+      }
+      if (selectedPlayer) {
+        data.selectedPlayer = selectedCard;
+      }
 
-    send(data);
-  }
+      data.isUseAlternative = values.isUseAlternative;
+
+      send(data);
+    },
+  });
 
   const useAltText =
     useSelector((state: State) => state.lang.service.useAlt) ||
@@ -47,16 +52,22 @@ export default function Selections() {
   }
 
   return (
-    <div>
+    <form onSubmit={formik.handleSubmit}>
       {isCanAlternative ? (
         <div>
-          <input type="checkbox"></input>
+          <input
+            id="isUseAlternative"
+            name="isUseAlternative"
+            type="checkbox"
+            onChange={formik.handleChange}
+            value={formik.values.isUseAlternative ? 1 : 0}
+          ></input>
           <label>{useAltText}</label>
         </div>
       ) : (
         <></>
       )}
-      <button onClick={useCard}>{useCardText}</button>
-    </div>
+      <button type="submit">{useCardText}</button>
+    </form>
   );
 }
