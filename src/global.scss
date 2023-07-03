@@ -2,3 +2,20 @@
   margin: 0;
   padding: 0;
 }
+
+.generalButton {
+ padding: 5px;
+
+  height: 30px;
+  border-radius: 30px;
+  background-color: #ece5d8;
+
+  color: #535867;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.generalButton:hover {
+  background-color: #ccc6bc;
+}

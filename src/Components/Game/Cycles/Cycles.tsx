@@ -16,11 +16,10 @@ export default function Cycles() {
 
   return (
     <>
-      <div>
+      <div className={styles.cycleNumber}>
         {currentCycle}
-        {"/12"}
       </div>
-      <button onClick={click}>{endTurnText}</button>
+      <button onClick={click} className="generalButton">{endTurnText}</button>
       <div className={styles.leylines}>
         {leylines.map((line) => (
           <Leyline name={line}/>

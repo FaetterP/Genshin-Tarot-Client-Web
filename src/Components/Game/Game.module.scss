@@ -2,9 +2,20 @@
   position: relative;
   width: 100%;
   height: 100vh;
+  max-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+
+  .bg {
+    background-image: url("../../../public/bg.jpg");
+    z-index: -1;
+
+    background-size: 100%;
+    height: 100vh;
+    width: 100vw;
+  }
 
   .enemies {
     position: absolute;
@@ -14,23 +25,29 @@
   }
 
   .cards {
-    display: flex;
-    flex-direction: row;
+   display: flex;
+   flex-direction: row;
 
-    justify-content: space-evenly;
+   justify-content: space-evenly;
+   position: absolute;
+   bottom: 0;
+  }
+
+  .selections {
     position: absolute;
-    bottom: 0;
   }
 
   .stats {
     position: absolute;
     margin: auto;
     bottom: 300px;
+
+    background-color: #f2f2f4;
   }
 
   .otherPlayers {
     position: absolute;
-    left: 0;
+    right: 0;
     top: 10%;
   }
 
@@ -43,12 +60,24 @@
   .discard {
     position: absolute;
     left: 0;
-    color: darkslateblue;
+    background-color: darkslateblue;
+    border-radius: 5px;
+
+    div {
+      color: aqua;
+      margin: 3px;
+    }
   }
 
   .deck {
     position: absolute;
     right: 0;
-    color: chocolate;
+    background-color: chocolate;
+    border-radius: 5px;
+
+    div {
+      color: cornsilk;
+      margin: 3px;
+    }
   }
 }

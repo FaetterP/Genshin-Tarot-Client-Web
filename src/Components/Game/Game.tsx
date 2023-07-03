@@ -14,6 +14,7 @@ export default function Game() {
 
   return (
     <div className={styles.game}>
+      <div className={styles.bg}/>
       <div className={styles.enemies}>
         {me.enemies.map((enemy) => (
           <Enemy {...enemy} key={enemy.id} />
@@ -27,7 +28,7 @@ export default function Game() {
           <Card {...card} key={card.cardId} />
         ))}
       </div>
-      <div>
+      <div className={styles.selections}>
         <Selections />
       </div>
       <div className={styles.otherPlayers}>

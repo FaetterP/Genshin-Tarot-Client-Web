@@ -90,6 +90,8 @@
 
 .enemyBlock.canSelected:hover {
   background-color:lightgrey;
+
+  cursor: pointer;
 }
 
 .enemyBlock.selected {

@@ -1,7 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { State } from "../../../redux";
 import { send } from "../../../ws";
 import { useFormik } from "formik";
+import styles from "./Selections.module.scss"
 
 type Request = {
   action: "game.useCard";
@@ -20,7 +21,6 @@ export default function Selections() {
     selectedPlayer,
   } = useSelector((state: State) => state.card);
 
-  const dispatch = useDispatch();
   const formik = useFormik({
     initialValues: {
       isUseAlternative: false,
@@ -54,7 +54,7 @@ export default function Selections() {
   return (
     <form onSubmit={formik.handleSubmit}>
       {isCanAlternative ? (
-        <div>
+        <div className={styles.isCanAlternative}>
           <input
             id="isUseAlternative"
             name="isUseAlternative"
@@ -67,7 +67,7 @@ export default function Selections() {
       ) : (
         <></>
       )}
-      <button type="submit">{useCardText}</button>
+      <button type="submit" className="generalButton">{useCardText}</button>
     </form>
   );
 }
