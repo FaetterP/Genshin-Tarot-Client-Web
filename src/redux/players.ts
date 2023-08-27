@@ -18,7 +18,7 @@ const initialState: {
     characters: [],
     shields: 0,
     energy: 0,
-    mora:0,
+    mora: 0,
     actionPoints: { normal: 0, extra: 0, total: 0 },
     hand: [],
     discard: [],
@@ -44,7 +44,7 @@ const charactersSlice = createSlice({
         characters: [],
         shields: 0,
         energy: 0,
-        mora:0,
+        mora: 0,
         actionPoints: { normal: 0, extra: 0, total: 0 },
         hand: [],
         discard: [],
@@ -81,15 +81,19 @@ const charactersSlice = createSlice({
       action: PayloadAction<{
         you: PlayerPrimitive;
         otherPlayers: PlayerPrimitive[];
-        cycle: number;
-        leylines: string[];
       }>
     ) {
-      const { you, otherPlayers, cycle, leylines } = action.payload;
+      const { you, otherPlayers } = action.payload;
       state.me = you;
       state.other = otherPlayers;
-      state.cycle = cycle;
-      state.leylines = leylines;
+    },
+
+    setCycle(state, action: PayloadAction<{ cycle: number }>) {
+      state.cycle = action.payload.cycle;
+    },
+
+    setLeyline(state, action: PayloadAction<{ leylines: string[] }>) {
+      state.leylines = action.payload.leylines;
     },
 
     useCard(
@@ -119,5 +123,7 @@ export const {
   addCharacterAction,
   removeCharacterAction,
   setPlayers,
+  setCycle,
+  setLeyline,
   useCard,
 } = charactersSlice.actions;

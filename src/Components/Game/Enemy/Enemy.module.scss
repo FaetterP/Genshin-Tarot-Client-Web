@@ -1,3 +1,27 @@
+@keyframes spawn {
+  0% {
+    opacity: 0%;
+  }
+
+  100% {
+    opacity: 100%;
+  }
+}
+
+@keyframes attack {
+  0% {
+    scale: 100%;
+  }
+
+  80% {
+    scale: 125%;
+  }
+
+  100% {
+    scale: 100%;
+  }
+}
+
 .enemyBlock {
   background-color: #f2f2f4;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
@@ -88,12 +112,20 @@
   }
 }
 
-.enemyBlock.canSelected:hover {
-  background-color:lightgrey;
+.attackEffect {
+  animation: attack 1s infinite alternate ease-in-out;
+}
+
+.canSelected:hover {
+  background-color: lightgrey;
 
   cursor: pointer;
 }
 
-.enemyBlock.selected {
+.selected {
   outline: 3px solid red;
+}
+
+.spawn {
+  animation: spawn 2s infinite alternate ease-in-out;
 }

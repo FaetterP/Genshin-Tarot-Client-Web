@@ -1,8 +1,12 @@
 import { send } from "..";
-import { EnemyPrimitive, PlayerPrimitive } from "../../../types/general";
+import {
+  PlayerPrimitive,
+  ReportEffect,
+} from "../../../types/general";
 import { store } from "../../redux";
 import { clearUsedCard } from "../../redux/card";
-import { setPlayers, useCard } from "../../redux/players";
+import { showEffects } from "../../redux/effects";
+import { setCycle, setLeyline, setPlayers, useCard } from "../../redux/players";
 import { setPage } from "../../redux/service";
 
 async function startGame(payload: { taskId: string }) {
@@ -17,18 +21,17 @@ async function startGame(payload: { taskId: string }) {
 
 async function startCycle(payload: {
   cycle: number;
-  leylines: string[];
-  taskId: string;
   you: PlayerPrimitive;
   otherPlayers: PlayerPrimitive[];
+  leylines: string[];
+  report: ReportEffect[];
 }) {
+  store.dispatch(setCycle({ cycle: payload.cycle }));
+  store.dispatch(setLeyline({ leylines: payload.leylines }));
+
+  store.dispatch(showEffects({ reports: payload.report }));
   store.dispatch(
-    setPlayers({
-      you: payload.you,
-      otherPlayers: payload.otherPlayers,
-      cycle: payload.cycle,
-      leylines: payload.leylines,
-    })
+    setPlayers({ you: payload.you, otherPlayers: payload.otherPlayers })
   );
 }
 
@@ -48,4 +51,17 @@ async function useCardHandler(payload: {
   store.dispatch(clearUsedCard(undefined));
 }
 
-export default { handlers: { startGame, startCycle, useCard: useCardHandler } };
+async function endTurnReport(payload: {
+  taskId: string;
+  report: ReportEffect[];
+}) {
+  const state = store.getState();
+
+  store.dispatch(
+    showEffects({ reports: payload.report, taskId: payload.taskId })
+  );
+}
+
+export default {
+  handlers: { startGame, startCycle, useCard: useCardHandler, endTurnReport },
+};

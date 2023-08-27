@@ -33,3 +33,12 @@ export type CardPrimitive = {
 };
 
 export type Lang = "EN" | "RU";
+
+export type ReportEffect =
+  | { type: "createWave"; enemies: EnemyPrimitive[] }
+  | { type: "resetStats" }
+  | { type: "drawCards"; cards: CardPrimitive[] }
+  | { type: "clearHand" }
+  | { type: "useLeyline"; name: string }
+  | { type: "useEffect"; effect: string; isRemove: boolean }
+  | { type: "enemyAttack"; damage: number; enemy: string; player: string };

@@ -1,19 +1,26 @@
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { EnemyPrimitive } from "../../../../types/general";
-import { enemies } from "../../../storage/enemies/enemies";
 import styles from "./Enemy.module.scss";
-import { State } from "../../../redux";
+import { State, store } from "../../../redux";
 import { selectEnemy } from "../../../redux/card";
+import EnemyCard from "./EnemyCard";
+import { sleep } from "../../../utils/sleep";
+import { finishEffect } from "../../../redux/effects";
 
 export default function Enemy(props: EnemyPrimitive) {
-  const name =
-    useSelector((state: State) => state.lang.enemies.names[props.name]) ||
-    `${props.name}.name`;
-  const description =
-    useSelector(
-      (state: State) => state.lang.enemies.descriptions[props.name]
-    ) || `${props.name}.description`;
-  const { mora, attack } = enemies[props.name];
+  const enemyAttack = useSelector((state: State) => state.effects.enemyAttack);
+  const counter = useSelector((state: State) => state.effects.counter);
+
+  useEffect(() => {
+    (async () => {
+      if (!enemyAttack.isShown || enemyAttack.enemy !== props.id) return;
+
+      await sleep(2000);
+
+      store.dispatch(finishEffect());
+    })();
+  }, [enemyAttack.isShown, counter]);
 
   const dispatch = useDispatch();
 
@@ -33,22 +40,27 @@ export default function Enemy(props: EnemyPrimitive) {
     dispatch(selectEnemy({ enemyId: props.id }));
   }
 
+  function getEnemyAttack(): string {
+    if (enemyAttack.isShown && enemyAttack.enemy === props.id)
+      return styles.attackEffect;
+
+    return "";
+  }
+
+  function getIsCanSelected(): string {
+    return isCanSelected ? styles.canSelected : "";
+  }
+
+  function getIsSelected(): string {
+    return isSelected ? styles.selected : "";
+  }
+
   return (
     <div
-      className={`${styles.enemyBlock} ${
-        isCanSelected ? styles.canSelected : ""
-      }  ${isSelected ? styles.selected : ""}`}
+      className={`${getIsCanSelected()} ${getIsSelected()} ${getEnemyAttack()}`}
       onClick={click}
     >
-      <div className={styles.name}>{name}</div>
-      <div className={styles.hp}>{props.hp}♥</div>
-      <div className={styles.mora}>{mora}💰</div>
-      <div className={styles.attack}>{attack}⚔</div>
-      <div className={styles.shield}>{props.shield}🛡</div>
-      <div className={styles.description}>{description}</div>
-      <div className={styles.status}>
-        <div className={styles[props.elements[0]]}>{props.elements[0]}</div>
-      </div>
+      <EnemyCard {...props} />
     </div>
   );
 }

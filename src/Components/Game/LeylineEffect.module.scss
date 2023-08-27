@@ -1,0 +1,155 @@
+@keyframes opacity {
+  0% {
+    opacity: 0;
+    background-color: none;
+  }
+  100% {
+    opacity: 100;
+  }
+}
+
+.baseEffect {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  font-size: 150px;
+
+  transition: 1s;
+
+  backdrop-filter: blur(10px);
+  z-index: 50;
+
+  animation: opacity 1s infinite alternate ease-in-out;
+}
+
+.EngulfingStorm {
+  @extend .baseEffect;
+
+  color: wheat;
+
+  background-color: rgba(0, 0, 139, 0.495);
+}
+
+.SmolderingFlames {
+  @extend .baseEffect;
+
+  color: orange;
+
+  background-color: rgba(178, 34, 34, 0.537);
+}
+
+.MonsterAttendants {
+  @extend .baseEffect;
+
+  color: black;
+
+  background-color: rgba(139, 69, 19, 0.63);
+}
+
+.Adrenaline {
+  @extend .baseEffect;
+
+  color: red;
+
+  background-color: #ff000082;
+}
+
+.CondensedIce {
+  @extend .baseEffect;
+
+  color: blue;
+
+  background-color: rgba(0, 255, 255, 0.67);
+}
+
+.LightingBolts {
+  @extend .baseEffect;
+
+  color: ghostwhite;
+  font-style: italic;
+
+  background-color: #202d3eb8;
+}
+
+.ReinforcedShields {
+  @extend .baseEffect;
+
+  color: black;
+
+  background-color: rgba(128, 128, 128, 0.563);
+}
+
+.ElementalRefresh {
+  @extend .baseEffect;
+
+  color: dimgrey;
+
+  background-color: rgba(255, 255, 255, 0.608);
+}
+
+.SlowingWater {
+  @extend .baseEffect;
+
+  color: blue;
+
+  background-color: rgba(0, 255, 255, 0.477);
+}
+
+.ChaosCluster {
+  @extend .baseEffect;
+
+  color: red;
+
+  background-color: rgba(139, 0, 0, 0.392);
+}
+
+.HighEnergyCores {
+  @extend .baseEffect;
+
+  color: goldenrod;
+
+  background-color: rgba(139, 0, 0, 0.392);
+}
+
+.IcicleBlast {
+  @extend .baseEffect;
+
+  color: aqua;
+
+  background-color: rgba(137, 43, 226, 0.207);
+}
+
+.PlasmaField {
+  @extend .baseEffect;
+
+  color: dodgerblue;
+
+  background-color: aliceblue;
+}
+
+.EnergyTides {
+  @extend .baseEffect;
+
+  color: darkblue;
+
+  background-color: aliceblue;
+}
+
+.WindCurrent {
+  @extend .baseEffect;
+
+  color: whitesmoke;
+}
+
+.SheerCold {
+  @extend .baseEffect;
+
+  color: white;
+
+  background-color: rgba(0, 255, 255, 0.67);
+}

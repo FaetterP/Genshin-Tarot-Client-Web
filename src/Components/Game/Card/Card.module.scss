@@ -1,4 +1,6 @@
 .cardBlock {
+  padding-top: 70px;
+
   background-color: #151515;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
   color: white;
@@ -6,8 +8,6 @@
   height: 200px;
   width: 200px;
   position: relative;
-  padding-top: 70px;
-  margin: -140px 10px;
 
   transform: none;
   transition: transform 0.5s;
@@ -40,13 +40,19 @@
   }
 }
 
-.cardBlock:hover {
-  transform: translate(0, -140px);
+.canSelect{
+  margin: -140px 10px;
+
   transition: transform 0.5s;
 
-  cursor: pointer;
-}
+  &:hover {
+    transform: translate(0, -140px);
+    transition: transform 0.5s;
+  
+    cursor: pointer;
+  }
 
-.cardBlock.selected {
-  outline: 3px solid red;
+  &.selected {
+    outline: 3px solid red;
+  }
 }
