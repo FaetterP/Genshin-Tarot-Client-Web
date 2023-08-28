@@ -7,6 +7,7 @@ import stylesHand from "./Hand.module.scss";
 import stylesGame from "../Game.module.scss";
 import Card from "./Card";
 import CardTexture from "./CardTexture";
+import { setHand } from "../../../redux/players";
 
 export default function Hand() {
   const hand = useSelector((state: State) => state.players.me.hand);
@@ -19,6 +20,14 @@ export default function Hand() {
       if (!drawEffect.isShown && !clearHand.isShown) return;
 
       await sleep(2000);
+
+      if (clearHand.isShown) {
+        store.dispatch(setHand({ cards: [] }));
+      }
+
+      if (drawEffect.isShown) {
+        store.dispatch(setHand({ cards: drawEffect.cards }));
+      }
 
       store.dispatch(finishEffect());
     })();

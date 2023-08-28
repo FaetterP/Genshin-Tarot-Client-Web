@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { PlayerPrimitive } from "./../../types/general";
+import { CardPrimitive, PlayerPrimitive } from "./../../types/general";
 
 const initialState: {
   me: PlayerPrimitive;
@@ -85,6 +85,7 @@ const charactersSlice = createSlice({
     ) {
       const { you, otherPlayers } = action.payload;
       state.me = you;
+      state.me.hand = [];
       state.other = otherPlayers;
     },
 
@@ -94,6 +95,10 @@ const charactersSlice = createSlice({
 
     setLeyline(state, action: PayloadAction<{ leylines: string[] }>) {
       state.leylines = action.payload.leylines;
+    },
+
+    setHand(state, action: PayloadAction<{ cards: CardPrimitive[] }>) {
+      state.me.hand = action.payload.cards;
     },
 
     useCard(
@@ -126,4 +131,5 @@ export const {
   setCycle,
   setLeyline,
   useCard,
+  setHand,
 } = charactersSlice.actions;

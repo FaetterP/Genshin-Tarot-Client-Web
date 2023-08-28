@@ -55,8 +55,6 @@ async function endTurnReport(payload: {
   taskId: string;
   report: ReportEffect[];
 }) {
-  const state = store.getState();
-
   store.dispatch(
     showEffects({ reports: payload.report, taskId: payload.taskId })
   );
