@@ -8,21 +8,24 @@ import { sleep } from "../../../utils/sleep";
 import { finishEffect } from "../../../redux/effects";
 
 export default function PlayerStats(props: PlayerPrimitive) {
-  const isShownResetStats = useSelector(
-    (state: State) => state.effects.resetStats.isShown
-  );
+  const myId = useSelector((state: State) => state.players.me.playerId);
+  const resetStats = useSelector((state: State) => state.effects.resetStats);
   const counter = useSelector((state: State) => state.effects.counter);
 
   useEffect(() => {
     (async () => {
-      if (!isShownResetStats) return;
+      if (!resetStats.isShown) return;
+      if (resetStats.player !== myId) {
+        store.dispatch(finishEffect());
+        return;
+      }
 
       console.log("show reset stats");
       await sleep(1000);
 
       store.dispatch(finishEffect());
     })();
-  }, [isShownResetStats, counter]);
+  }, [resetStats.isShown, counter]);
 
   let actionPoints = "";
   for (let i = 0; i < props.actionPoints.normal; i++) {

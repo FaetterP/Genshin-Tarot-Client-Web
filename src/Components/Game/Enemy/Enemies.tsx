@@ -8,6 +8,7 @@ import stylesGame from "./../Game.module.scss";
 import stylesEnemy from "./Enemy.module.scss";
 
 export default function Enemies() {
+  const myId = useSelector((state: State) => state.players.me.playerId);
   const createWave = useSelector((state: State) => state.effects.createWave);
   const counter = useSelector((state: State) => state.effects.counter);
   const enemies = useSelector((state: State) => state.players.me.enemies);
@@ -15,12 +16,16 @@ export default function Enemies() {
   useEffect(() => {
     (async () => {
       if (!createWave.isShown) return;
+      if (createWave.player !== myId) {
+        store.dispatch(finishEffect());
+        return;
+      }
 
       await sleep(2000);
 
       store.dispatch(finishEffect());
     })();
-  }, [createWave.isShown, counter]);
+  }, [...Object.values(createWave), counter]);
 
   if (createWave.isShown) {
     return (

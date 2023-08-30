@@ -7,11 +7,11 @@ import {
 import { send } from "../ws";
 
 const initialState: {
-  createWave: { isShown: boolean; enemies: EnemyPrimitive[] };
-  clearHand: { isShown: boolean };
-  drawCards: { isShown: boolean; cards: CardPrimitive[] };
-  resetStats: { isShown: boolean };
-  useEffect: { isShown: boolean; name: string };
+  createWave: { isShown: boolean; enemies: EnemyPrimitive[]; player: string };
+  clearHand: { isShown: boolean; player: string };
+  drawCards: { isShown: boolean; cards: CardPrimitive[]; player: string };
+  resetStats: { isShown: boolean; player: string };
+  useEffect: { isShown: boolean; name: string; player: string };
   useLeyline: { isShown: boolean; name: string };
   enemyAttack: {
     isShown: boolean;
@@ -19,15 +19,15 @@ const initialState: {
     player: string;
     enemy: string;
   };
-  reports: { effect: ReportEffect; status: number }[];
+  reports: ReportEffect[];
   counter: number;
   taskId: string | undefined;
 } = {
-  createWave: { isShown: false, enemies: [] },
-  drawCards: { isShown: false, cards: [] },
-  clearHand: { isShown: false },
-  resetStats: { isShown: false },
-  useEffect: { isShown: false, name: "" },
+  createWave: { isShown: false, enemies: [], player: "" },
+  drawCards: { isShown: false, cards: [], player: "" },
+  clearHand: { isShown: false, player: "" },
+  resetStats: { isShown: false, player: "" },
+  useEffect: { isShown: false, name: "", player: "" },
   useLeyline: { isShown: false, name: "" },
   enemyAttack: {
     isShown: false,
@@ -47,17 +47,21 @@ const startMapper: Record<
   createWave: (state, action: any) => {
     state.createWave.isShown = true;
     state.createWave.enemies = action.enemies;
+    state.createWave.player = action.player;
   },
   drawCards: (state, action: any) => {
     state.drawCards.isShown = true;
     state.drawCards.cards = action.cards;
+    state.drawCards.player = action.player;
   },
   resetStats: (state, action: any) => {
     state.resetStats.isShown = true;
+    state.resetStats.player = action.player;
   },
   useEffect: (state, action: any) => {
     state.useEffect.isShown = true;
     state.useEffect.name = action.name;
+    state.useEffect.player = action.player;
   },
   useLeyline: (state, action: any) => {
     state.useLeyline.isShown = true;
@@ -65,6 +69,7 @@ const startMapper: Record<
   },
   clearHand: (state, action: any) => {
     state.clearHand.isShown = true;
+    state.clearHand.player = action.player;
   },
   enemyAttack: (state, action: any) => {
     state.enemyAttack.isShown = true;
@@ -81,17 +86,21 @@ const finishMapper: Record<
   createWave: (state, action: any) => {
     state.createWave.isShown = false;
     state.createWave.enemies = [];
+    state.createWave.player = "";
   },
   drawCards: (state, action: any) => {
     state.drawCards.isShown = false;
     state.drawCards.cards = [];
+    state.drawCards.player = "";
   },
   resetStats: (state, action: any) => {
     state.resetStats.isShown = false;
+    state.resetStats.player = "";
   },
   useEffect: (state, action: any) => {
     state.useEffect.isShown = false;
     state.useEffect.name = "";
+    state.useEffect.player = "";
   },
   useLeyline: (state, action: any) => {
     state.useLeyline.isShown = false;
@@ -99,6 +108,7 @@ const finishMapper: Record<
   },
   clearHand: (state, action: any) => {
     state.clearHand.isShown = false;
+    state.clearHand.player = "";
   },
   enemyAttack: (state, action: any) => {
     state.enemyAttack.isShown = false;
@@ -116,12 +126,9 @@ const effectsSlice = createSlice({
       state,
       action: PayloadAction<{ reports: ReportEffect[]; taskId?: string }>
     ) {
-      state.reports = action.payload.reports.map((report) => ({
-        effect: report,
-        status: 0,
-      }));
+      state.reports = action.payload.reports;
 
-      const effect = state.reports[0].effect;
+      const effect = state.reports[0];
       startMapper[effect.type](state, effect);
       state.taskId = action.payload.taskId;
     },
@@ -129,14 +136,16 @@ const effectsSlice = createSlice({
     finishEffect(state, action: PayloadAction) {
       state.counter += 1;
 
-console.log("finish "+state.reports[0].effect.type)
+      console.log(
+        `finish ${state.reports[0].type} ${(state.reports[0] as any).player}`
+      );
 
-      const effect = state.reports[0].effect;
+      const effect = state.reports[0];
       finishMapper[effect.type](state, effect);
       state.reports.shift();
 
       if (state.reports.length > 0) {
-        const effect = state.reports[0].effect;
+        const effect = state.reports[0];
         startMapper[effect.type](state, effect);
       } else if (state.taskId) {
         send({

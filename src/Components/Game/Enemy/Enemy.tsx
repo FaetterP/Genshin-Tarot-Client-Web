@@ -9,18 +9,20 @@ import { sleep } from "../../../utils/sleep";
 import { finishEffect } from "../../../redux/effects";
 
 export default function Enemy(props: EnemyPrimitive) {
+  const myId = useSelector((state: State) => state.players.me.playerId);
   const enemyAttack = useSelector((state: State) => state.effects.enemyAttack);
   const counter = useSelector((state: State) => state.effects.counter);
 
   useEffect(() => {
     (async () => {
-      if (!enemyAttack.isShown || enemyAttack.enemy !== props.id) return;
-
-      await sleep(2000);
+      if (!enemyAttack.isShown) return;
+      if (enemyAttack.player === myId && enemyAttack.enemy === props.id) {
+        await sleep(2000);
+      }
 
       store.dispatch(finishEffect());
     })();
-  }, [enemyAttack.isShown, counter]);
+  }, [...Object.values(enemyAttack), counter]);
 
   const dispatch = useDispatch();
 
