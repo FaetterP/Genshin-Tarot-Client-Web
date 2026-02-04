@@ -1,0 +1,48 @@
+.card {
+  width: 200px;
+  height: 100px;
+  min-height: 100px;
+  max-height: 100px;
+  padding-top: 16px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 6px;
+  background-color: #151515;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  color: white;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .name,
+  .upgradedName {
+    font-size: 13px;
+    line-height: 1.15;
+    padding: 0;
+    flex-shrink: 0;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .upgradedName {
+    background-color: #c3ab91;
+  }
+
+  .description {
+    font-size: 11px;
+    line-height: 1.2;
+    padding: 0;
+    overflow-y: auto;
+    flex: 1;
+    min-height: 0;
+    font-style: italic;
+  }
+
+  .cost {
+    font-size: 22px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+}

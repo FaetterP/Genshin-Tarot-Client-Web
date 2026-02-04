@@ -1,35 +1,78 @@
 .characterBlock {
-  width: 400px;
-  height: 200px;
-  padding: 20px;
+  width: 520px;
+  min-height: 200px;
+  padding: 14px 20px 18px;
 
-  background-color: #151515;
+  background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(195, 171, 145, 0.15);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
 
   .name {
     text-align: center;
-    color: gainsboro;
+    color: #e8e4dc;
     font-weight: 800;
-    font-size: 50px;
+    font-size: 38px;
+    letter-spacing: 0.02em;
+    margin-bottom: 2px;
   }
 
   .burst {
     width: 100%;
     position: relative;
+    min-height: 44px;
+
     .burstName {
       position: absolute;
       left: 0;
       color: #c3ab91;
+      font-size: 14px;
+      font-weight: 600;
     }
 
     .burstCost {
       position: absolute;
       right: 0;
+      letter-spacing: 1px;
     }
 
     .burstDescription {
-      margin-top: 30px;
-      color: white;
+      margin-top: 22px;
+      color: rgba(255, 255, 255, 0.92);
+      font-size: 12px;
+      line-height: 1.35;
     }
+  }
+
+  .skillCards {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+    align-items: center;
+    padding-top: 12px;
+    border-top: 1px solid rgba(195, 171, 145, 0.2);
+  }
+
+  .skillCardRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .cardArrow {
+    color: #c3ab91;
+    font-size: 24px;
+    flex-shrink: 0;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 4px rgba(195, 171, 145, 0.3));
+  }
+
+  .miniCard {
+    pointer-events: none;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
   }
 }
 

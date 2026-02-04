@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux";
 import { send } from "../../../ws";
 import { State } from "../../../redux";
+import { characterSkillCards } from "../../../storage/characters/cards";
+import CompactCard from "../Card/CompactCard";
 import styles from "./CharacterLine.module.scss";
 
 export default function CharacterLine({ character }: { character: string }) {
@@ -52,6 +54,8 @@ export default function CharacterLine({ character }: { character: string }) {
 
   const isCharacterChosen = me.characters.includes(character);
 
+  const skillCards = characterSkillCards[character];
+
   let costText = "";
   for (let i = 0; i < cost; i++) {
     costText += "⚪";
@@ -75,6 +79,28 @@ export default function CharacterLine({ character }: { character: string }) {
         </div>
         <div className={styles.burstDescription}>{description}</div>
       </div>
+      {skillCards && (
+        <div className={styles.skillCards}>
+          <div className={styles.skillCardRow}>
+            <div className={styles.miniCard}>
+              <CompactCard name={skillCards.card1} />
+            </div>
+            <span className={styles.cardArrow}>⟫</span>
+            <div className={styles.miniCard}>
+              <CompactCard name={`${skillCards.card1}Plus`} />
+            </div>
+          </div>
+          <div className={styles.skillCardRow}>
+            <div className={styles.miniCard}>
+              <CompactCard name={skillCards.card2} />
+            </div>
+            <span className={styles.cardArrow}>⟫</span>
+            <div className={styles.miniCard}>
+              <CompactCard name={`${skillCards.card2}Plus`} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

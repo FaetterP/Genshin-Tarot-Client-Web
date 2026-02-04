@@ -1,13 +1,13 @@
 import { useSelector } from "react-redux";
 import { State } from "../../../redux";
-import styles from "./Card.module.scss";
 import { cards } from "../../../storage/cards/cards";
+import styles from "./CompactCard.module.scss";
 
 type PropsType = {
   name: string;
 };
 
-export default function CardTexture(props: PropsType) {
+export default function CompactCard(props: PropsType) {
   const { cost, isUpgraded } = cards[props.name] || {
     cost: -1,
     isUpgraded: false,
@@ -29,9 +29,9 @@ export default function CardTexture(props: PropsType) {
   }
 
   return (
-    <div className={styles.cardBlock}>
+    <div className={styles.card}>
       <div className={styles.cost}>{costText}</div>
-      <div className={styles[isUpgraded ? "upgradedName" : "name"]}>{name}</div>
+      <div className={isUpgraded ? styles.upgradedName : styles.name}>{name}</div>
       <div className={styles.description}>{description}</div>
     </div>
   );
