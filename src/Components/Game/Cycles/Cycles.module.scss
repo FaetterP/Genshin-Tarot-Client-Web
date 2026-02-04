@@ -2,19 +2,94 @@
   display: block;
 }
 
+.cycleBlock {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px;
+}
+
+/* Круговой прогресс через CSS-переменные (0–12 как часы) */
+.cycleProgressbar {
+  --r: 25;
+  --PI: 3.14159;
+  --lengthCircle: calc(2 * var(--PI) * var(--r));
+  --color: #8b9a6b;
+  --percent: 0;
+
+  position: relative;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  display: block;
+  color: #252b33;
+}
+
+.cycleSvg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cycleInner {
+  color: #252b33;
+}
+
+.cycleProgressbarTrack,
+.cycleProgressbarThumb {
+  r: var(--r);
+  fill: transparent;
+  stroke-width: 2;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+
+.cycleProgressbarTrack {
+  stroke: #3d4652;
+}
+
+.cycleProgressbarThumb {
+  stroke: var(--color);
+  stroke-dasharray: calc(var(--lengthCircle) * var(--percent) / 100) var(--lengthCircle);
+  transform: rotate(-90deg);
+  stroke-linecap: round;
+  transition: stroke-dasharray 0.35s ease;
+}
+
 .cycleNumber {
-  background-color: #f4f1eb;
-  border: 5px solid #7c8f9f;
-  border-radius: 30px;
-
-  width: 40px;
-  height: 40px;
-
-  color: #424f65;
-  font-size: 30px;
-  font-weight: 800;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #e2dfd6;
+  font-size: 1.35rem;
+  font-weight: 700;
   font-family: cursive;
+  pointer-events: none;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
 
-  text-align: center;
-  vertical-align: middle;
+.endTurnButton {
+  padding: 8px 16px;
+  min-height: 36px;
+  border-radius: 20px;
+  border: 1px solid #4a5568;
+  background: linear-gradient(180deg, #3d4652 0%, #2d3540 100%);
+  color: #e2dfd6;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+
+  &:hover {
+    background: linear-gradient(180deg, #4a5568 0%, #3d4652 100%);
+    border-color: #5a6578;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
 }
