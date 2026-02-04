@@ -54,28 +54,4 @@
     top: 0;
     left: 0;
   }
-
-  .discard {
-    position: absolute;
-    left: 0;
-    background-color: darkslateblue;
-    border-radius: 5px;
-
-    div {
-      color: aqua;
-      margin: 3px;
-    }
-  }
-
-  .deck {
-    position: absolute;
-    right: 0;
-    background-color: chocolate;
-    border-radius: 5px;
-
-    div {
-      color: cornsilk;
-      margin: 3px;
-    }
-  }
 }

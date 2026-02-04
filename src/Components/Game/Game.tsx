@@ -8,6 +8,8 @@ import Cycles from "./Cycles/Cycles";
 import Hand from "./Card/Hand";
 import LeylineEffect from "./LeylineEffect";
 import Enemies from "./Enemy/Enemies";
+import DiscardDeck from "./DiscardDeck/DiscardDeck";
+import DrawDeck from "./DrawDeck/DrawDeck";
 
 export default function Game() {
   const me = useSelector((state: State) => state.players.me);
@@ -33,16 +35,8 @@ export default function Game() {
       <div className={styles.cycles}>
         <Cycles />
       </div>
-      <div className={styles.discard}>
-        {me.discard.map((card) => (
-          <div>{card.name}</div>
-        ))}
-      </div>
-      <div className={styles.deck}>
-        {me.deck.map((card) => (
-          <div>{card.name}</div>
-        ))}
-      </div>
+      <DiscardDeck cards={me.discard} />
+      <DrawDeck cards={me.deck} />
     </div>
   );
 }
