@@ -61,7 +61,9 @@ export function ChooseCharacters() {
           <CharacterLine character={character} key={character} />
         ))}
       </div>
-      <button onClick={() => startGame()}>{startText}</button>
+      <button className={styles.startButton} onClick={() => startGame()}>
+        {startText}
+      </button>
     </div>
   );
 }
