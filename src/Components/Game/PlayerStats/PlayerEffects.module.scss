@@ -1,8 +1,35 @@
 .effect {
+  position: relative;
+  display: inline-block;
   font-size: 30px;
   box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
   background-color: #f2f2f4;
 
   margin: 10px auto;
   width: fit-content;
+  cursor: help;
+}
+
+.effect .tooltip {
+  visibility: hidden;
+  max-width: 280px;
+  width: max-content;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.35;
+
+  position: absolute;
+  z-index: 10;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 6px;
+}
+
+.effect:hover .tooltip {
+  visibility: visible;
 }

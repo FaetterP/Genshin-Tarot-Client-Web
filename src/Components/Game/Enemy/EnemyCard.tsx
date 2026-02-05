@@ -4,11 +4,13 @@ import styles from "./Enemy.module.scss";
 import { enemies } from "../../../storage/enemies/enemies";
 import { EnemyPrimitive } from "../../../../types/general";
 import ChangeableStat from "../../ChangeableStat/ChangeableStat";
+import { toElementKey } from "../../../utils/elementColors";
 
 export default function EnemyCard(props: EnemyPrimitive) {
   const name =
     useSelector((state: State) => state.lang.enemies.names[props.name]) ||
     `${props.name}.name`;
+  const elementNames = useSelector((state: State) => state.lang.elements);
   const description =
     useSelector(
       (state: State) => state.lang.enemies.descriptions[props.name]
@@ -28,7 +30,11 @@ export default function EnemyCard(props: EnemyPrimitive) {
       </div>
       <div className={styles.description}>{description}</div>
       <div className={styles.status}>
-        <div className={styles[props.elements[0]]}>{props.elements[0]}</div>
+        {props.elements[0] && (
+          <div className={styles[toElementKey(props.elements[0])]}>
+            {elementNames[toElementKey(props.elements[0])] ?? props.elements[0]}
+          </div>
+        )}
       </div>
     </div>
   )

@@ -27,6 +27,8 @@ export default function PlayerStats(props: PlayerPrimitive) {
     })();
   }, [resetStats.isShown, counter]);
 
+  const normalMax = 3;
+  const spentActionPoints = "◻".repeat(normalMax - props.actionPoints.normal);
   const actionPoints = "⬜".repeat(props.actionPoints.normal);
   const extraActionPoints = "🟧".repeat(props.actionPoints.extra);
 
@@ -49,6 +51,7 @@ export default function PlayerStats(props: PlayerPrimitive) {
           <ChangeableStat value={props.mora}>{props.mora}💰</ChangeableStat>
         </div>
         <div className={styles.actionPoints}>
+          {spentActionPoints}
           {actionPoints}
           {extraActionPoints}
         </div>

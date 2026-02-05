@@ -21,8 +21,14 @@ import {
   rusText as rusTextService,
 } from "../storage/texts";
 import { engLeylines, rusLeylines } from "../storage/leylines";
+import { engElements, rusElements } from "../storage/elements";
+import {
+  engPlayerEffects,
+  rusPlayerEffects,
+} from "../storage/playerEffects";
 
 type LangType = {
+  elements: Record<string, string>;
   enemies: {
     names: Record<string, string>;
     descriptions: Record<string, string>;
@@ -37,22 +43,27 @@ type LangType = {
   };
   service: Record<string, string>;
   leylines: Record<string, string>;
+  playerEffects: Record<string, string>;
 };
 
 const mapper: { EN: LangType; RU: LangType } = {
   EN: {
+    elements: engElements,
     enemies: { names: engNamesEnemies, descriptions: engDescriptionsEnemies },
     cards: { names: engCards, descriptions: engDescriptionsCards },
     characters: { names: engNamesCharacters, bursts: engBursts },
     service: engTextService,
     leylines: engLeylines,
+    playerEffects: engPlayerEffects,
   },
   RU: {
+    elements: rusElements,
     enemies: { names: rusNamesEnemies, descriptions: rusDescriptionsEnemies },
     cards: { names: rusCards, descriptions: rusDescriptionsCards },
     characters: { names: rusNamesCharacters, bursts: rusBursts },
     service: rusTextService,
     leylines: rusLeylines,
+    playerEffects: rusPlayerEffects,
   },
 };
 
