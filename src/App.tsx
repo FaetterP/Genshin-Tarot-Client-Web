@@ -7,6 +7,7 @@ import { getBrowserLang } from "./utils/langUtils";
 import { changeLanguage } from "./redux/lang";
 import { useEffect } from "react";
 import MainMenu from "./Components/MainMenu/MainMenu";
+import { WsErrorToast } from "./Components/WsErrorToast/WsErrorToast";
 
 function App() {
   const page = useSelector((state: State) => state.service.page);
@@ -23,7 +24,12 @@ function App() {
     game: <Game />,
   };
 
-  return <div>{mapper[page]}</div>;
+  return (
+    <div>
+      {mapper[page]}
+      <WsErrorToast />
+    </div>
+  );
 }
 
 export default App;

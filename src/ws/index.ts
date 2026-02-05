@@ -1,5 +1,5 @@
 import { store } from "../redux";
-import { setPage } from "../redux/service";
+import { setPage, setWsError } from "../redux/service";
 import { buildHandlers } from "./handlers";
 
 let ws: WebSocket | undefined = undefined;
@@ -29,6 +29,10 @@ export function connectToWS(url: string) {
       const payload = JSON.parse(event.data.toString());
       console.log(payload);
 
+      if (payload.status === "error") {
+        store.dispatch(setWsError(payload.message || "UNKNOWN ERROR"));
+        return;
+      }
       if (payload.status) return;
 
       const { action } = payload;

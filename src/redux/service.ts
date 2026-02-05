@@ -3,9 +3,11 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState: {
   myPlayerId: string;
   page: "menu" | "characters" | "game";
+  wsError: string | null;
 } = {
   myPlayerId: "",
   page: "menu",
+  wsError: null,
 };
 
 const wsSlice = createSlice({
@@ -22,8 +24,12 @@ const wsSlice = createSlice({
     ) {
       state.page = action.payload.page;
     },
+
+    setWsError(state, action: PayloadAction<string | null>) {
+      state.wsError = action.payload;
+    },
   },
 });
 
 export default wsSlice.reducer;
-export const { setMyPlayerId, setPage } = wsSlice.actions;
+export const { setMyPlayerId, setPage, setWsError } = wsSlice.actions;
