@@ -1,0 +1,118 @@
+.overlay {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 500;
+}
+
+.card {
+  position: fixed;
+  width: 200px;
+  height: 200px;
+  z-index: 501;
+}
+
+/* Добор и сброс — те же анимации, что в начале/конце цикла (Hand) */
+.draw {
+  left: 0;
+  top: 0;
+  background-color: red;
+  animation: cardDrawKeyframes 2s forwards ease-in-out;
+}
+
+.discard {
+  left: 0;
+  top: 0;
+  background-color: red;
+  animation: cardDiscardKeyframes 2s forwards ease-in-out;
+}
+
+$hand-top: calc(100vh - 100px);
+
+@keyframes cardDrawKeyframes {
+  0% {
+    transform: translate(100vw, 50vh);
+  }
+  50% {
+    transform: translate(calc(50vw - 100px), calc(50vh - 100px));
+  }
+  100% {
+    transform: translate(var(--x), #{$hand-top});
+  }
+}
+
+@keyframes cardDiscardKeyframes {
+  0% {
+    transform: translate(var(--x), #{$hand-top});
+  }
+  50% {
+    transform: translate(calc(50vw - 100px), calc(50vh - 100px));
+  }
+  100% {
+    transform: translate(-200px, calc(50vh - 100px));
+  }
+}
+
+/* Добавление в руку: из центра вниз в руку */
+.addToHand {
+  animation: cardAddToHand 1.2s forwards ease-out;
+}
+
+@keyframes cardAddToHand {
+  0% {
+    left: 50vw;
+    top: 50vh;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    left: 50vw;
+    top: calc(100vh - 140px);
+    transform: translate(-50%, -100%);
+    opacity: 1;
+  }
+}
+
+/* Добавление в сброс: справа в колоду сброса (слева) */
+.addToDiscard {
+  animation: cardAddToDiscard 1.2s forwards ease-out;
+}
+
+@keyframes cardAddToDiscard {
+  0% {
+    left: 100vw;
+    top: 50vh;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    left: 90px;
+    top: 50vh;
+    transform: translate(-50%, -50%);
+    opacity: 0.3;
+  }
+}
+
+/* Добавление в колоду добора: слева в колоду добора (справа) */
+.addToDeck {
+  animation: cardAddToDeck 1.2s forwards ease-out;
+}
+
+@keyframes cardAddToDeck {
+  0% {
+    left: 0;
+    top: 50vh;
+    transform: translate(-50%, -50%);
+    opacity: 1;
+  }
+  100% {
+    left: calc(100vw - 90px);
+    top: 50vh;
+    transform: translate(-50%, -50%);
+    opacity: 0.3;
+  }
+}
+

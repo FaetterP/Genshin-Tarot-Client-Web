@@ -7,6 +7,8 @@ import OtherPlayer from "./OtherPlayer/OtherPlayer";
 import Cycles from "./Cycles/Cycles";
 import Hand from "./Card/Hand";
 import LeylineEffect from "./LeylineEffect";
+import CardAnimationOverlay from "./CardAnimationOverlay/CardAnimationOverlay";
+import StepAnimationRunner from "./StepAnimationRunner";
 import Enemies from "./Enemy/Enemies";
 import DiscardDeck from "./DiscardDeck/DiscardDeck";
 import DrawDeck from "./DrawDeck/DrawDeck";
@@ -18,6 +20,8 @@ export default function Game() {
   return (
     <div className={styles.game}>
       <div className={styles.bg} />
+      <StepAnimationRunner />
+      <CardAnimationOverlay />
       <LeylineEffect />
       <Enemies />
       <div className={styles.stats}>

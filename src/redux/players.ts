@@ -85,7 +85,6 @@ const charactersSlice = createSlice({
     ) {
       const { you, otherPlayers } = action.payload;
       state.me = you;
-      state.me.hand = [];
       state.other = otherPlayers;
     },
 

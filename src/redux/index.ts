@@ -4,6 +4,7 @@ import service from "./service";
 import card from "./card";
 import lang from "./lang";
 import effects from "./effects";
+import stepAnimation from "./stepAnimation";
 
 const rootReducer = combineReducers({
   players,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   card,
   lang,
   effects,
+  stepAnimation,
 });
 
 export type State = ReturnType<typeof rootReducer>;

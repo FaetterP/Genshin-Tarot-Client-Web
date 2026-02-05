@@ -8,6 +8,39 @@
   }
 }
 
+@keyframes deathBurn {
+  0% {
+    filter: brightness(1) sepia(0);
+    opacity: 1;
+    transform: scale(1);
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+  }
+  25% {
+    filter: brightness(1.3) sepia(0.2) saturate(1.2);
+    opacity: 1;
+    transform: scale(1.03);
+    box-shadow: 0 0 15px 8px rgba(255, 100, 0, 0.4);
+  }
+  50% {
+    filter: brightness(0.9) sepia(0.5) hue-rotate(-15deg);
+    opacity: 1;
+    transform: scale(1.02);
+    box-shadow: 0 0 20px 10px rgba(200, 60, 0, 0.5);
+  }
+  75% {
+    filter: brightness(0.4) sepia(0.9) hue-rotate(-25deg);
+    opacity: 0.6;
+    transform: scale(0.98);
+    box-shadow: 0 0 25px 12px rgba(80, 20, 0, 0.6);
+  }
+  100% {
+    filter: brightness(0.15) sepia(1) hue-rotate(-30deg);
+    opacity: 0;
+    transform: scale(0.92);
+    box-shadow: 0 0 30px 15px rgba(20, 5, 0, 0.8);
+  }
+}
+
 @keyframes attack {
   0% {
     scale: 100%;
@@ -116,6 +149,11 @@
   animation: attack 1s infinite alternate ease-in-out;
 }
 
+.death {
+  animation: deathBurn 1.5s forwards ease-in;
+  pointer-events: none;
+}
+
 .canSelected:hover {
   background-color: lightgrey;
 
@@ -128,4 +166,995 @@
 
 .spawn {
   animation: spawn 2s infinite alternate ease-in-out;
+}
+
+/* ----- Wrapper for effect overlays ----- */
+.enemyWrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* ----- Piercing damage: пробитие щита ----- */
+.piercingHit {
+  animation: piercingFlash 0.8s ease-out;
+}
+
+.piercingOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  animation: piercingSlash 0.8s ease-out forwards;
+  z-index: 5;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(
+      135deg,
+      transparent 45%,
+      rgba(255, 255, 255, 0.9) 48%,
+      rgba(255, 200, 100, 0.95) 50%,
+      rgba(255, 255, 255, 0.9) 52%,
+      transparent 55%
+    );
+    transform: translateX(-100%) skewX(-15deg);
+    animation: piercingLine 0.8s ease-out forwards;
+    filter: drop-shadow(0 0 8px rgba(255, 180, 50, 0.8));
+  }
+
+  &::after {
+    content: "✧";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 28px;
+    color: rgba(255, 220, 100, 0.95);
+    text-shadow: 0 0 12px rgba(255, 200, 0, 0.9);
+    animation: piercingIcon 0.8s ease-out forwards;
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
+
+@keyframes piercingFlash {
+  0% {
+    filter: brightness(1);
+  }
+  15% {
+    filter: brightness(1.8);
+  }
+  30% {
+    filter: brightness(1.3);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+@keyframes piercingLine {
+  0% {
+    transform: translateX(-100%) skewX(-15deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(200%) skewX(-15deg);
+    opacity: 0.3;
+  }
+}
+
+@keyframes piercingIcon {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  40% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.2);
+    opacity: 0;
+  }
+}
+
+/* ----- Block damage: враг заблокировал удар щитом (глухой удар) ----- */
+.blockHit {
+  animation: blockHitFlash 0.9s ease-out;
+}
+
+.blockOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 5;
+  animation: blockOverlayThud 0.9s ease-out forwards;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      ellipse at center,
+      rgba(100, 100, 110, 0.5) 0%,
+      rgba(60, 60, 70, 0.4) 50%,
+      rgba(40, 40, 50, 0.35) 100%
+    );
+    border-radius: inherit;
+    animation: blockGrayPulse 0.9s ease-out forwards;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 2px;
+    border: 2px solid rgba(120, 120, 130, 0.6);
+    border-radius: inherit;
+    box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.25);
+    animation: blockRing 0.9s ease-out forwards;
+  }
+}
+
+@keyframes blockHitFlash {
+  0% {
+    filter: brightness(1);
+  }
+  12% {
+    filter: brightness(0.65);
+  }
+  25% {
+    filter: brightness(0.85);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+@keyframes blockOverlayThud {
+  0% {
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes blockGrayPulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes blockRing {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  20% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+/* ----- Element application overlays (все ~1s) ----- */
+.elementEffect {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 4;
+  overflow: visible;
+}
+
+/* Подсветка карты цветом элемента при наложении эффекта (контейнер + сама карта .enemyBlock) */
+.elementGlow_Pyro {
+  box-shadow: 0 0 18px 4px rgba(255, 80, 30, 0.35);
+  .enemyBlock {
+    box-shadow:
+      0 0 5px 5px rgba(0, 0, 0, 0.2),
+      0 0 24px 8px rgba(255, 80, 30, 0.45),
+      inset 0 0 30px rgba(255, 100, 40, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+.elementGlow_Cryo {
+  box-shadow: 0 0 18px 4px rgba(160, 240, 255, 0.35);
+  .enemyBlock {
+    box-shadow:
+      0 0 5px 5px rgba(0, 0, 0, 0.2),
+      0 0 24px 8px rgba(160, 240, 255, 0.45),
+      inset 0 0 30px rgba(200, 255, 255, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+.elementGlow_Electro {
+  box-shadow: 0 0 18px 4px rgba(180, 100, 255, 0.35);
+  .enemyBlock {
+    box-shadow:
+      0 0 5px 5px rgba(0, 0, 0, 0.2),
+      0 0 24px 8px rgba(180, 100, 255, 0.45),
+      inset 0 0 30px rgba(200, 130, 255, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+.elementGlow_Hydro {
+  box-shadow: 0 0 18px 4px rgba(80, 170, 255, 0.35);
+  .enemyBlock {
+    box-shadow:
+      0 0 5px 5px rgba(0, 0, 0, 0.2),
+      0 0 24px 8px rgba(80, 170, 255, 0.45),
+      inset 0 0 30px rgba(100, 190, 255, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+.elementGlow_Geo {
+  box-shadow: 0 0 18px 4px rgba(180, 140, 80, 0.35);
+  .enemyBlock {
+    box-shadow:
+      0 0 5px 5px rgba(0, 0, 0, 0.2),
+      0 0 24px 8px rgba(180, 140, 80, 0.45),
+      inset 0 0 30px rgba(170, 130, 70, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+.elementGlow_Anemo {
+  box-shadow: 0 0 18px 4px rgba(140, 255, 220, 0.35);
+  .enemyBlock {
+    box-shadow:
+      0 0 5px 5px rgba(0, 0, 0, 0.2),
+      0 0 24px 8px rgba(140, 255, 220, 0.45),
+      inset 0 0 30px rgba(160, 255, 230, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+@keyframes elementGlowPulse {
+  0% {
+    filter: brightness(1);
+  }
+  20% {
+    filter: brightness(1.08);
+  }
+  100% {
+    filter: brightness(1);
+  }
+}
+
+/* Geo: расходящиеся неровные каменные многоугольники от центра */
+.element_Geo {
+  background: transparent;
+  animation: elementOut 1s ease-out forwards;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 80px;
+    height: 80px;
+    margin-left: -40px;
+    margin-top: -40px;
+    clip-path: polygon(
+      50% 2%,
+      88% 22%,
+      98% 55%,
+      82% 95%,
+      48% 92%,
+      12% 98%,
+      0% 58%,
+      18% 18%
+    );
+    border: 5px solid rgba(180, 145, 90, 0.9);
+    background: transparent;
+    transform: scale(0.35);
+    transform-origin: center center;
+    animation: geoRingsOut 1s ease-out forwards;
+    filter: drop-shadow(0 0 10px rgba(120, 90, 50, 0.5));
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 120px;
+    height: 120px;
+    margin-left: -60px;
+    margin-top: -60px;
+    clip-path: polygon(
+      50% 0%,
+      95% 28%,
+      100% 50%,
+      90% 88%,
+      55% 100%,
+      15% 85%,
+      0% 50%,
+      22% 12%
+    );
+    background: linear-gradient(
+      135deg,
+      rgba(200, 165, 110, 0.55) 0%,
+      rgba(170, 135, 85, 0.4) 40%,
+      rgba(140, 110, 65, 0.25) 100%
+    );
+    transform: scale(0);
+    transform-origin: center center;
+    animation: geoPulseFromCenter 1s ease-out forwards;
+  }
+}
+
+@keyframes geoRingsOut {
+  0% {
+    transform: scale(0.35);
+    opacity: 1;
+  }
+  15% {
+    opacity: 1;
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+@keyframes geoPulseFromCenter {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1.35);
+    opacity: 0;
+  }
+}
+
+@keyframes elementOut {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Pyro: огонь снизу вверх + искажение как от жара */
+.element_Pyro {
+  background: transparent;
+  animation: elementOut 1s ease-out forwards;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    right: -20px;
+    top: -20px;
+    bottom: -20px;
+    background: linear-gradient(
+      to top,
+      rgba(255, 60, 20, 0.95) 0%,
+      rgba(255, 100, 40, 0.9) 25%,
+      rgba(255, 140, 60, 0.7) 50%,
+      rgba(255, 180, 80, 0.4) 75%,
+      transparent 100%
+    );
+    transform-origin: bottom center;
+    transform: scaleY(0);
+    animation: pyroBurnUp 1s ease-out forwards;
+    filter: drop-shadow(0 0 25px rgba(255, 80, 20, 0.6));
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    height: 120%;
+    background: linear-gradient(
+      to top,
+      rgba(255, 40, 10, 0.9) 0%,
+      rgba(255, 90, 30, 0.6) 40%,
+      rgba(255, 130, 50, 0.3) 70%,
+      transparent 100%
+    );
+    transform-origin: bottom center;
+    transform: scaleY(0);
+    animation: pyroBurnUp 1s 0.1s ease-out forwards;
+    pointer-events: none;
+  }
+}
+
+@keyframes pyroBurnUp {
+  0% {
+    transform: scaleY(0);
+    opacity: 1;
+    filter: drop-shadow(0 0 25px rgba(255, 80, 20, 0.6)) blur(0);
+  }
+  15% {
+    filter: drop-shadow(0 0 28px rgba(255, 90, 25, 0.65)) blur(0.5px);
+  }
+  25% {
+    opacity: 1;
+    transform: scaleY(1.15);
+    filter: drop-shadow(0 0 25px rgba(255, 80, 20, 0.6)) blur(0);
+  }
+  40% {
+    filter: drop-shadow(0 0 30px rgba(255, 85, 22, 0.7)) blur(1px);
+  }
+  55% {
+    filter: drop-shadow(0 0 26px rgba(255, 78, 18, 0.6)) blur(0.4px);
+  }
+  70% {
+    opacity: 1;
+    transform: scaleY(1.05);
+    filter: drop-shadow(0 0 25px rgba(255, 80, 20, 0.6)) blur(0.6px);
+  }
+  85% {
+    filter: drop-shadow(0 0 28px rgba(255, 82, 21, 0.62)) blur(0.3px);
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+    filter: drop-shadow(0 0 25px rgba(255, 80, 20, 0.6)) blur(0);
+  }
+}
+
+/* Hydro (aqua): волнистая вода сверху вниз, текучесть */
+.element_Hydro {
+  background: transparent;
+  animation: elementOut 1s ease-out forwards;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -25px;
+    right: -25px;
+    top: -25px;
+    bottom: -25px;
+    background: linear-gradient(
+      180deg,
+      transparent 0%,
+      rgba(80, 160, 255, 0.85) 8%,
+      rgba(120, 190, 255, 0.5) 18%,
+      rgba(90, 170, 255, 0.75) 28%,
+      rgba(130, 200, 255, 0.45) 38%,
+      rgba(100, 180, 255, 0.8) 48%,
+      rgba(110, 185, 255, 0.5) 58%,
+      rgba(140, 210, 255, 0.35) 70%,
+      rgba(100, 175, 255, 0.5) 82%,
+      transparent 100%
+    );
+    transform-origin: top center;
+    transform: scaleY(0);
+    animation: hydroFlowDown 1s ease-out forwards;
+    filter: drop-shadow(0 0 20px rgba(100, 180, 255, 0.5));
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: -20px;
+    right: -20px;
+    top: -20px;
+    height: 130%;
+    background: repeating-linear-gradient(
+      180deg,
+      transparent 0px,
+      transparent 12px,
+      rgba(150, 210, 255, 0.4) 14px,
+      rgba(80, 170, 255, 0.55) 20px,
+      rgba(130, 200, 255, 0.35) 26px,
+      transparent 32px
+    );
+    background-size: 100% 64px;
+    transform-origin: top center;
+    transform: scaleY(0);
+    animation: hydroFlowDown 1s 0.06s ease-out forwards, hydroWave 0.48s linear 2 0.06s forwards;
+  }
+}
+
+@keyframes hydroFlowDown {
+  0% {
+    transform: scaleY(0);
+    opacity: 1;
+  }
+  30% {
+    opacity: 1;
+    transform: scaleY(1.12);
+  }
+  75% {
+    opacity: 0.95;
+    transform: scaleY(1.05);
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+@keyframes hydroWave {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 64px;
+  }
+}
+
+/* Anemo: ветер — по всей карточке бирюзовый тон + вихрь */
+.element_Anemo {
+  background: linear-gradient(
+    135deg,
+    rgba(140, 255, 220, 0.2) 0%,
+    rgba(160, 255, 230, 0.25) 50%,
+    rgba(130, 240, 210, 0.2) 100%
+  );
+  animation: elementOut 1s ease-out forwards;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -15px;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg 45deg,
+      rgba(160, 255, 220, 0.55) 70deg,
+      transparent 95deg 135deg,
+      rgba(140, 240, 210, 0.5) 160deg,
+      transparent 185deg 225deg,
+      rgba(180, 255, 230, 0.45) 250deg,
+      transparent 275deg 315deg,
+      rgba(150, 255, 218, 0.5) 340deg,
+      transparent 365deg
+    );
+    border-radius: 50%;
+    transform: scale(0.4) rotate(0deg);
+    animation: anemoSwirl 1s ease-out forwards;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 3px solid transparent;
+    border-top-color: rgba(150, 255, 220, 0.55);
+    border-right-color: rgba(150, 255, 220, 0.25);
+    border-bottom-color: rgba(150, 255, 220, 0.1);
+    border-left-color: rgba(150, 255, 220, 0.2);
+    border-radius: 8px;
+    transform: rotate(0deg);
+    animation: anemoRing 1s ease-out forwards;
+  }
+}
+
+@keyframes anemoSwirl {
+  0% {
+    transform: scale(0.4) rotate(0deg);
+    opacity: 0;
+  }
+  18% {
+    opacity: 1;
+    transform: scale(1.15) rotate(180deg);
+  }
+  100% {
+    transform: scale(1.25) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+@keyframes anemoRing {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Electro: фиолетовая молния по диагонали, бьёт по центру карты */
+.element_Electro {
+  background: transparent;
+  animation: elementOut 1s ease-out forwards;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 420px;
+    height: 48px;
+    margin-left: -210px;
+    margin-top: -24px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(180, 100, 255, 0.5) 12%,
+      rgba(230, 170, 255, 0.98) 28%,
+      rgba(200, 120, 255, 0.95) 50%,
+      rgba(230, 170, 255, 0.98) 72%,
+      rgba(180, 100, 255, 0.5) 88%,
+      transparent 100%
+    );
+    clip-path: polygon(
+      0% 50%,
+      12% 15%,
+      25% 65%,
+      38% 8%,
+      50% 75%,
+      62% 12%,
+      75% 70%,
+      88% 35%,
+      100% 50%
+    );
+    transform: rotate(-45deg) translateX(-120%);
+    transform-origin: center center;
+    animation: electroBoltDiagonal 1s ease-out forwards;
+    filter: drop-shadow(0 0 28px rgba(200, 120, 255, 0.95)) drop-shadow(0 0 14px rgba(230, 170, 255, 0.8));
+  }
+}
+
+@keyframes electroBoltDiagonal {
+  0% {
+    transform: rotate(-45deg) translateX(-120%);
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+    transform: rotate(-45deg) translateX(-80%);
+  }
+  90% {
+    opacity: 0.9;
+    transform: rotate(-45deg) translateX(120%);
+  }
+  100% {
+    transform: rotate(-45deg) translateX(120%);
+    opacity: 0;
+  }
+}
+
+/* Cryo: ледяной шлейф на всю высоту карты, слева направо */
+.element_Cryo {
+  background: transparent;
+  animation: elementOut 1s ease-out forwards;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -20px;
+    top: 0;
+    bottom: 0;
+    width: 90px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(180, 255, 255, 0.15) 25%,
+      rgba(200, 255, 255, 0.75) 50%,
+      rgba(160, 245, 255, 0.85) 75%,
+      rgba(200, 255, 255, 0.2) 100%
+    );
+    transform: translateX(-100%);
+    animation: cryoTrailLeftToRight 1s ease-out forwards;
+    filter: drop-shadow(0 0 18px rgba(180, 255, 255, 0.55));
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: -15px;
+    top: 0;
+    bottom: 0;
+    width: 35px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(220, 255, 255, 0.5) 40%,
+      rgba(255, 255, 255, 0.8) 50%,
+      rgba(200, 255, 255, 0.5) 60%,
+      transparent 100%
+    );
+    transform: translateX(-100%);
+    animation: cryoTrailLeftToRight 1s 0.06s ease-out forwards;
+  }
+}
+
+@keyframes cryoTrailLeftToRight {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+    transform: translateX(280px);
+  }
+  100% {
+    transform: translateX(280px);
+    opacity: 0;
+  }
+}
+
+/* ----- Reaction: два элемента, взрыв, снятие щита ----- */
+/* Цвета задаются через --reaction-color1 и --reaction-color2 из пары элементов */
+.reactionEffect {
+  position: absolute;
+  inset: -10px;
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 6;
+  animation: reactionBurst 1.4s ease-out forwards;
+  --reaction-color1: rgba(255, 200, 100, 0.9);
+  --reaction-color2: rgba(150, 200, 255, 0.9);
+}
+
+.reactionEffect::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.75) 0%,
+    var(--reaction-color1) 20%,
+    var(--reaction-color2) 45%,
+    transparent 70%
+  );
+  animation: reactionCore 1.4s ease-out forwards;
+}
+
+/* Взрыв в центре — свечение в два цвета элемента */
+.reactionEffect::after {
+  content: "💥";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  font-size: 36px;
+  transform: translate(-50%, -50%) scale(0);
+  animation: reactionIcon 1.4s ease-out forwards;
+  filter:
+    drop-shadow(0 0 8px var(--reaction-color1))
+    drop-shadow(0 0 12px var(--reaction-color2));
+}
+
+/* Декоративные частицы — свечение в два цвета реакции */
+.reactionEffect {
+  box-shadow:
+    0 0 20px -5px var(--reaction-color1),
+    0 0 25px -5px var(--reaction-color2);
+}
+
+/* Мелкие детали по типу реакции (пара элементов, классы на том же div что и .reactionEffect) */
+.reactionEffect.reaction_Anemo_Cryo::before {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.7) 0%,
+    var(--reaction-color1) 18%,
+    var(--reaction-color2) 40%,
+    transparent 65%
+  );
+}
+.reactionEffect.reaction_Anemo_Electro::before {
+  background: radial-gradient(
+    ellipse 80% 120% at 50% 50%,
+    rgba(255, 255, 255, 0.6) 0%,
+    var(--reaction-color1) 22%,
+    var(--reaction-color2) 48%,
+    transparent 70%
+  );
+}
+.reactionEffect.reaction_Anemo_Hydro::before {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.75) 0%,
+    var(--reaction-color2) 25%,
+    var(--reaction-color1) 45%,
+    transparent 68%
+  );
+}
+.reactionEffect.reaction_Anemo_Pyro::before {
+  background: radial-gradient(
+    ellipse 120% 80% at 50% 50%,
+    rgba(255, 255, 255, 0.65) 0%,
+    var(--reaction-color1) 20%,
+    var(--reaction-color2) 42%,
+    transparent 70%
+  );
+}
+.reactionEffect.reaction_Cryo_Electro {
+  box-shadow:
+    0 0 20px -5px var(--reaction-color1),
+    0 0 25px -5px var(--reaction-color2),
+    0 0 35px 0 rgba(200, 200, 255, 0.25);
+}
+.reactionEffect.reaction_Cryo_Hydro::before {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.8) 0%,
+    var(--reaction-color2) 20%,
+    var(--reaction-color1) 38%,
+    transparent 65%
+  );
+}
+.reactionEffect.reaction_Cryo_Pyro {
+  box-shadow:
+    0 0 22px -4px var(--reaction-color1),
+    0 0 28px -4px var(--reaction-color2),
+    0 0 15px 2px var(--reaction-color1);
+}
+.reactionEffect.reaction_Dendro_Electro::after {
+  filter:
+    drop-shadow(0 0 6px var(--reaction-color1))
+    drop-shadow(0 0 14px var(--reaction-color2))
+    drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
+}
+.reactionEffect.reaction_Dendro_Hydro::before {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.7) 0%,
+    var(--reaction-color2) 18%,
+    var(--reaction-color1) 40%,
+    transparent 68%
+  );
+}
+.reactionEffect.reaction_Dendro_Pyro {
+  box-shadow:
+    0 0 24px -4px var(--reaction-color1),
+    0 0 20px -4px var(--reaction-color2),
+    0 0 18px 0 var(--reaction-color2);
+}
+.reactionEffect.reaction_Electro_Hydro::after {
+  filter:
+    drop-shadow(0 0 10px var(--reaction-color1))
+    drop-shadow(0 0 14px var(--reaction-color2));
+}
+.reactionEffect.reaction_Electro_Pyro {
+  box-shadow:
+    0 0 22px -4px var(--reaction-color1),
+    0 0 26px -4px var(--reaction-color2),
+    0 0 12px 2px var(--reaction-color2);
+}
+.reactionEffect.reaction_Geo_Cryo::before {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.7) 0%,
+    var(--reaction-color2) 20%,
+    var(--reaction-color1) 42%,
+    transparent 68%
+  );
+}
+.reactionEffect.reaction_Geo_Electro {
+  box-shadow:
+    0 0 20px -5px var(--reaction-color1),
+    0 0 25px -5px var(--reaction-color2),
+    0 0 30px 2px var(--reaction-color2);
+}
+.reactionEffect.reaction_Geo_Pyro {
+  box-shadow:
+    0 0 24px -4px var(--reaction-color1),
+    0 0 22px -4px var(--reaction-color2);
+}
+.reactionEffect.reaction_Hydro_Pyro::before {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.75) 0%,
+    var(--reaction-color1) 18%,
+    var(--reaction-color2) 42%,
+    transparent 68%
+  );
+}
+.reactionEffect.reaction_Anemo_Dendro::before,
+.reactionEffect.reaction_Anemo_Geo::before,
+.reactionEffect.reaction_Cryo_Geo::before,
+.reactionEffect.reaction_Dendro_Geo::before,
+.reactionEffect.reaction_Geo_Hydro::before {
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.72) 0%,
+    var(--reaction-color1) 20%,
+    var(--reaction-color2) 45%,
+    transparent 70%
+  );
+}
+
+@keyframes reactionBurst {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  15% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.3);
+  }
+}
+
+@keyframes reactionCore {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.4);
+  }
+}
+
+@keyframes reactionIcon {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 1;
+  }
+  25% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 1;
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
 }

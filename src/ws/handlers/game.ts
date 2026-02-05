@@ -1,12 +1,19 @@
 import { send } from "..";
 import {
+  DetailedStep,
   PlayerPrimitive,
   ReportEffect,
 } from "../../../types/general";
 import { store } from "../../redux";
 import { clearUsedCard } from "../../redux/card";
 import { showEffects } from "../../redux/effects";
-import { setCycle, setLeyline, setPlayers, useCard } from "../../redux/players";
+import {
+  setCycle,
+  setLeyline,
+  setPlayers,
+  useCard as applyCardAction,
+} from "../../redux/players";
+import { startStepAnimation } from "../../redux/stepAnimation";
 import { setPage } from "../../redux/service";
 
 async function startGame(payload: { taskId: string }) {
@@ -25,7 +32,23 @@ async function startCycle(payload: {
   otherPlayers: PlayerPrimitive[];
   leylines: string[];
   report: ReportEffect[];
+  steps?: DetailedStep[];
 }) {
+  if (payload.steps && payload.steps.length > 0) {
+    store.dispatch(
+      startStepAnimation({
+        steps: payload.steps,
+        afterCycle: {
+          cycle: payload.cycle,
+          you: payload.you,
+          otherPlayers: payload.otherPlayers,
+          leylines: payload.leylines,
+          report: payload.report,
+        },
+      })
+    );
+    return;
+  }
   store.dispatch(setCycle({ cycle: payload.cycle }));
   store.dispatch(setLeyline({ leylines: payload.leylines }));
 
@@ -38,23 +61,50 @@ async function startCycle(payload: {
 async function useCardHandler(payload: {
   player: PlayerPrimitive;
   card: string;
+  steps: DetailedStep[];
 }) {
   const state = store.getState();
+  const isMe = payload.player.playerId === state.service.myPlayerId;
+
+  if (payload.steps.length === 0) {
+    store.dispatch(
+      applyCardAction({
+        player: payload.player,
+        card: payload.card,
+        isMe,
+      })
+    );
+    store.dispatch(clearUsedCard(undefined));
+    return;
+  }
 
   store.dispatch(
-    useCard({
+    startStepAnimation({
+      steps: payload.steps,
       player: payload.player,
       card: payload.card,
-      isMe: payload.player.playerId === state.service.myPlayerId,
+      isMe,
     })
   );
-  store.dispatch(clearUsedCard(undefined));
 }
 
 async function endTurnReport(payload: {
   taskId: string;
   report: ReportEffect[];
+  steps?: DetailedStep[];
 }) {
+  if (payload.steps && payload.steps.length > 0) {
+    store.dispatch(
+      startStepAnimation({
+        steps: payload.steps,
+        afterEndTurn: {
+          taskId: payload.taskId,
+          report: payload.report,
+        },
+      })
+    );
+    return;
+  }
   store.dispatch(
     showEffects({ reports: payload.report, taskId: payload.taskId })
   );
