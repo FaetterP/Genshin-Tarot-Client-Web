@@ -4,6 +4,7 @@ import { State, store } from "../../redux";
 import { showEffects } from "../../redux/effects";
 import {
   useCard as applyCardAction,
+  applyPlayerUpdate,
   setCycle,
   setHand,
   setLeyline,
@@ -21,6 +22,7 @@ import {
   setAnimatingAddCard,
   setAnimatingDiscardCards,
   setAnimatingDrawCards,
+  setAnimatingUpgradeCard,
   setBlockingEnemy,
   setCardsLeavingDeckForDraw,
   setDyingEnemy,
@@ -41,6 +43,7 @@ const PIERCING_EFFECT_MS = 800;
 const BLOCK_EFFECT_MS = 900;
 const ELEMENT_EFFECT_MS = 1000;
 const REACTION_EFFECT_MS = 1400;
+const UPGRADE_CARD_MS = 2200;
 const DEFAULT_STEP_MS = 200;
 
 async function runStepAnimations(
@@ -50,6 +53,9 @@ async function runStepAnimations(
 ): Promise<void> {
   const discardCards: CardPrimitive[] = [];
   const drawCards: CardPrimitive[] = [];
+  const hasUpgradeForMe = steps.some(
+    (s) => s.type === "upgrade_card" && s.playerId === myPlayerId
+  );
 
   for (const step of steps) {
     switch (step.type) {
@@ -74,9 +80,13 @@ async function runStepAnimations(
       }
       case "add_card": {
         if (step.playerId === myPlayerId) {
-          dispatch(setAnimatingAddCard({ card: step.card, to: step.to }));
-          await sleep(CARD_ANIMATION_MS);
-          dispatch(setAnimatingAddCard(null));
+          if (!(hasUpgradeForMe && step.to === "hand")) {
+            dispatch(setAnimatingAddCard({ card: step.card, to: step.to }));
+            await sleep(CARD_ANIMATION_MS);
+            dispatch(setAnimatingAddCard(null));
+          } else {
+            await sleep(DEFAULT_STEP_MS);
+          }
         } else {
           await sleep(DEFAULT_STEP_MS);
         }
@@ -141,6 +151,22 @@ async function runStepAnimations(
         dispatch(removeAppearingEnemy({ enemyId: step.enemy.id }));
         break;
       }
+      case "upgrade_card": {
+        if (step.playerId === myPlayerId) {
+          dispatch(
+            setAnimatingUpgradeCard({
+              playerId: step.playerId,
+              oldCard: step.oldCard,
+              newCard: step.newCard,
+            })
+          );
+          await sleep(UPGRADE_CARD_MS);
+          dispatch(setAnimatingUpgradeCard(null));
+        } else {
+          await sleep(DEFAULT_STEP_MS);
+        }
+        break;
+      }
       default:
         await sleep(DEFAULT_STEP_MS);
         break;
@@ -179,10 +205,16 @@ export default function StepAnimationRunner() {
   const afterEndTurnPayload = useSelector(
     (state: State) => state.stepAnimation.afterEndTurnPayload
   );
+  const afterUpgradePayload = useSelector(
+    (state: State) => state.stepAnimation.afterUpgradePayload
+  );
   const runningRef = useRef(false);
 
   const hasCompletion =
-    finalPayload || afterCyclePayload || afterEndTurnPayload;
+    finalPayload ||
+    afterCyclePayload ||
+    afterEndTurnPayload ||
+    afterUpgradePayload;
 
   useEffect(() => {
     if (steps.length === 0 || !hasCompletion || runningRef.current) {
@@ -221,6 +253,9 @@ export default function StepAnimationRunner() {
             taskId: afterEndTurnPayload.taskId,
           })
         );
+      } else if (afterUpgradePayload) {
+        store.dispatch(applyPlayerUpdate({ player: afterUpgradePayload.player }));
+        store.dispatch(clearUsedCard(undefined));
       }
 
       setTimeout(() => {
@@ -233,6 +268,7 @@ export default function StepAnimationRunner() {
     finalPayload,
     afterCyclePayload,
     afterEndTurnPayload,
+    afterUpgradePayload,
     hasCompletion,
     dispatch,
   ]);

@@ -55,4 +55,64 @@
   &.selected {
     outline: 3px solid red;
   }
+
+  &.upgrading {
+    pointer-events: none;
+    outline: none;
+  }
+}
+
+/* Анимация улучшения только по цветам, без перемещений */
+.upgradingInner {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.upgradingOld,
+.upgradingNew {
+  position: absolute;
+  inset: 0;
+  width: 200px;
+  height: 200px;
+}
+
+.upgradingOld {
+  animation: upgradingOld 2.2s forwards;
+}
+
+.upgradingNew {
+  opacity: 0;
+  animation: upgradingNew 2.2s forwards;
+}
+
+/* Три точки: начало → 75% бежевый → 100% белый */
+@keyframes upgradingOld {
+  0% {
+    filter: none;
+    opacity: 1;
+  }
+  75% {
+    filter: sepia(0.35) saturate(0.85) hue-rotate(-15deg) brightness(0.9);
+    opacity: 1;
+  }
+  100% {
+    filter: brightness(2.5) saturate(0.1);
+    opacity: 0;
+  }
+}
+
+/* Новая карта: появляется когда старая исчезла; две точки — белый (75%) → нормальный (100%) */
+@keyframes upgradingNew {
+  0%, 74% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 1;
+    filter: brightness(2.5);
+  }
+  100% {
+    opacity: 1;
+    filter: none;
+  }
 }

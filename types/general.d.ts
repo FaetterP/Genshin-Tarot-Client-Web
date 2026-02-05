@@ -35,7 +35,7 @@ export type CardPrimitive = {
 export type Lang = "EN" | "RU";
 
 export type DetailedStep =
-  | { type: "add_card"; playerId: string; card: CardPrimitive; to: "hand" | "deck" | "discard" }
+  | { type: "add_card"; playerId: string; card: CardPrimitive, to: "hand" | "deck" | "discard" } //Карта взялась не из колоды, а например из эффекта
   | { type: "discard_card"; playerId: string; card: CardPrimitive }
   | { type: "draw_cards"; playerId: string; cards: CardPrimitive[] }
   | { type: "enemy_take_damage"; enemyId: string; damage: number; isPiercing: boolean; element?: string }
@@ -52,7 +52,8 @@ export type DetailedStep =
   | { type: "enemy_get_element"; enemyId: string; element: string }
   | { type: "enemy_reaction"; enemyId: string; element1: string; element2: string }
   | { type: "enemy_change_shield"; enemyId: string; delta: number }
-  | { type: "enemy_heal"; enemyId: string; amount: number };
+  | { type: "enemy_heal"; enemyId: string; amount: number }
+  | { type: "upgrade_card"; playerId: string; oldCard: CardPrimitive; newCard: CardPrimitive };
 
 export type ReportEffect =
   | { type: "createWave"; enemies: EnemyPrimitive[]; player: string }

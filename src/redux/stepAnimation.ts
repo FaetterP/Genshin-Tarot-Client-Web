@@ -25,6 +25,10 @@ export type StepAnimationAfterEndTurn = {
   report: ReportEffect[];
 };
 
+export type StepAnimationAfterUpgrade = {
+  player: PlayerPrimitive;
+};
+
 export type AddCardDestination = "hand" | "deck" | "discard";
 
 export type ElementOnEnemy = { enemyId: string; element: string };
@@ -34,17 +38,25 @@ export type ReactionOnEnemy = {
   element2: string;
 };
 
+export type AnimatingUpgradeCard = {
+  playerId: string;
+  oldCard: CardPrimitive;
+  newCard: CardPrimitive;
+};
+
 const initialState: {
   steps: DetailedStep[];
   finalPayload: StepAnimationFinalPayload | null;
   afterCyclePayload: StepAnimationAfterCycle | null;
   afterEndTurnPayload: StepAnimationAfterEndTurn | null;
+  afterUpgradePayload: StepAnimationAfterUpgrade | null;
   dyingEnemyIds: string[];
   appearingEnemyIds: string[];
   animatingDiscardCards: CardPrimitive[] | null;
   animatingDrawCards: CardPrimitive[] | null;
   cardsLeavingDeckForDraw: CardPrimitive[] | null;
   animatingAddCard: { card: CardPrimitive; to: AddCardDestination } | null;
+  animatingUpgradeCard: AnimatingUpgradeCard | null;
   piercingEnemyIds: string[];
   blockingEnemyIds: string[];
   elementOnEnemy: ElementOnEnemy | null;
@@ -54,12 +66,14 @@ const initialState: {
   finalPayload: null,
   afterCyclePayload: null,
   afterEndTurnPayload: null,
+  afterUpgradePayload: null,
   dyingEnemyIds: [],
   appearingEnemyIds: [],
   animatingDiscardCards: null,
   animatingDrawCards: null,
   cardsLeavingDeckForDraw: null,
   animatingAddCard: null,
+  animatingUpgradeCard: null,
   piercingEnemyIds: [],
   blockingEnemyIds: [],
   elementOnEnemy: null,
@@ -87,6 +101,10 @@ const stepAnimationSlice = createSlice({
             steps: DetailedStep[];
             afterEndTurn: StepAnimationAfterEndTurn;
           }
+        | {
+            steps: DetailedStep[];
+            afterUpgrade: StepAnimationAfterUpgrade;
+          }
       >
     ) {
       const { steps } = action.payload;
@@ -97,7 +115,7 @@ const stepAnimationSlice = createSlice({
       state.blockingEnemyIds = [];
       state.elementOnEnemy = null;
       state.reactionOnEnemy = null;
-      if ("player" in action.payload) {
+      if ("player" in action.payload && "card" in action.payload) {
         state.finalPayload = {
           player: action.payload.player,
           card: action.payload.card,
@@ -105,15 +123,30 @@ const stepAnimationSlice = createSlice({
         };
         state.afterCyclePayload = null;
         state.afterEndTurnPayload = null;
+        state.afterUpgradePayload = null;
       } else if ("afterCycle" in action.payload) {
         state.finalPayload = null;
         state.afterCyclePayload = action.payload.afterCycle;
         state.afterEndTurnPayload = null;
+        state.afterUpgradePayload = null;
+      } else if ("afterUpgrade" in action.payload) {
+        state.finalPayload = null;
+        state.afterCyclePayload = null;
+        state.afterEndTurnPayload = null;
+        state.afterUpgradePayload = action.payload.afterUpgrade;
       } else {
         state.finalPayload = null;
         state.afterCyclePayload = null;
         state.afterEndTurnPayload = action.payload.afterEndTurn;
+        state.afterUpgradePayload = null;
       }
+    },
+
+    setAnimatingUpgradeCard(
+      state,
+      action: PayloadAction<AnimatingUpgradeCard | null>
+    ) {
+      state.animatingUpgradeCard = action.payload;
     },
 
     setDyingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
@@ -197,12 +230,14 @@ const stepAnimationSlice = createSlice({
       state.finalPayload = null;
       state.afterCyclePayload = null;
       state.afterEndTurnPayload = null;
+      state.afterUpgradePayload = null;
       state.dyingEnemyIds = [];
       state.appearingEnemyIds = [];
       state.animatingDiscardCards = null;
       state.animatingDrawCards = null;
       state.cardsLeavingDeckForDraw = null;
       state.animatingAddCard = null;
+      state.animatingUpgradeCard = null;
       state.piercingEnemyIds = [];
       state.blockingEnemyIds = [];
       state.elementOnEnemy = null;
@@ -222,6 +257,7 @@ export const {
   setAnimatingDrawCards,
   setCardsLeavingDeckForDraw,
   setAnimatingAddCard,
+  setAnimatingUpgradeCard,
   setPiercingEnemy,
   clearPiercingEnemy,
   setBlockingEnemy,

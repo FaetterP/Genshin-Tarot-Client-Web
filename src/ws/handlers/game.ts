@@ -12,6 +12,7 @@ import {
   setLeyline,
   setPlayers,
   useCard as applyCardAction,
+  applyPlayerUpdate,
 } from "../../redux/players";
 import { startStepAnimation } from "../../redux/stepAnimation";
 import { setPage } from "../../redux/service";
@@ -88,6 +89,27 @@ async function useCardHandler(payload: {
   );
 }
 
+async function upgradeCardHandler(payload: {
+  cardId: string;
+  player: PlayerPrimitive;
+  steps?: DetailedStep[];
+}) {
+  const { cardId, player, steps } = payload;
+
+  if (!steps || steps.length === 0) {
+    store.dispatch(applyPlayerUpdate({ player }));
+    store.dispatch(clearUsedCard(undefined));
+    return;
+  }
+
+  store.dispatch(
+    startStepAnimation({
+      steps,
+      afterUpgrade: { player },
+    })
+  );
+}
+
 async function endTurnReport(payload: {
   taskId: string;
   report: ReportEffect[];
@@ -111,5 +133,11 @@ async function endTurnReport(payload: {
 }
 
 export default {
-  handlers: { startGame, startCycle, useCard: useCardHandler, endTurnReport },
+  handlers: {
+    startGame,
+    startCycle,
+    useCard: useCardHandler,
+    upgradeCard: upgradeCardHandler,
+    endTurnReport,
+  },
 };

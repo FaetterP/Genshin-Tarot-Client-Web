@@ -4,7 +4,6 @@ import { finishEffect } from "../../../redux/effects";
 import { useSelector } from "react-redux";
 import stylesGame from "../Game.module.scss";
 import Card from "./Card";
-import CardTexture from "./CardTexture";
 import { setHand } from "../../../redux/players";
 
 export default function Hand() {
@@ -13,6 +12,9 @@ export default function Hand() {
   const drawEffect = useSelector((state: State) => state.effects.drawCards);
   const clearHand = useSelector((state: State) => state.effects.clearHand);
   const counter = useSelector((state: State) => state.effects.counter);
+  const animatingUpgradeCard = useSelector(
+    (state: State) => state.stepAnimation.animatingUpgradeCard
+  );
 
   useEffect(() => {
     if (!drawEffect.isShown && !clearHand.isShown) return;
@@ -31,7 +33,15 @@ export default function Hand() {
   return (
     <div className={stylesGame.cards}>
       {hand.map((card) => (
-        <Card {...card} key={card.cardId} />
+        <Card
+          {...card}
+          key={card.cardId}
+          upgrading={
+            animatingUpgradeCard?.oldCard.cardId === card.cardId
+              ? animatingUpgradeCard
+              : undefined
+          }
+        />
       ))}
     </div>
   );

@@ -24,11 +24,14 @@ export default function CardAnimationOverlay() {
   const animatingAddCard = useSelector(
     (state: State) => state.stepAnimation.animatingAddCard
   );
+  const animatingUpgradeCard = useSelector(
+    (state: State) => state.stepAnimation.animatingUpgradeCard
+  );
 
   const hasAnimation =
     (animatingDiscardCards?.length ?? 0) > 0 ||
     (animatingDrawCards?.length ?? 0) > 0 ||
-    animatingAddCard !== null;
+    (animatingAddCard !== null && animatingUpgradeCard === null);
 
   if (!hasAnimation) return null;
 
@@ -62,7 +65,7 @@ export default function CardAnimationOverlay() {
         </div>
       ))}
 
-      {animatingAddCard && (
+      {animatingAddCard && !animatingUpgradeCard && (
         <div
           className={`${styles.card} ${addCardClassMap[animatingAddCard.to]}`}
           key={animatingAddCard.card.cardId}

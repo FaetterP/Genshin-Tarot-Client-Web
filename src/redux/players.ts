@@ -123,6 +123,21 @@ const charactersSlice = createSlice({
       }
     },
 
+    applyPlayerUpdate(
+      state,
+      action: PayloadAction<{ player: PlayerPrimitive }>
+    ) {
+      const { player } = action.payload;
+      if (state.me.playerId === player.playerId) {
+        state.me = player;
+      } else {
+        const index = state.other.findIndex(
+          (pl) => pl.playerId === player.playerId
+        );
+        if (index >= 0) state.other[index] = player;
+      }
+    },
+
     removeEnemy(state, action: PayloadAction<{ enemyId: string }>) {
       const { enemyId } = action.payload;
       const inMe = state.me.enemies.findIndex((e) => e.id === enemyId);
@@ -177,6 +192,7 @@ export const {
   setCycle,
   setLeyline,
   useCard,
+  applyPlayerUpdate,
   setHand,
   removeEnemy,
   addEnemy,

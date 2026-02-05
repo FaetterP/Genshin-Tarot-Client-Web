@@ -4,6 +4,7 @@ export const engText: Record<string, string> = {
   startGame: "Start Game",
   useAlt: "Use alternative?",
   useCard: "Use Card",
+  upgradeCard: "Upgrade",
   endTurn: "End Turn",
 };
 
@@ -13,5 +14,6 @@ export const rusText: Record<string, string> = {
   startGame: "Начать игру",
   useAlt: "Использовать 'вы можете'?",
   useCard: "Использовать карту",
+  upgradeCard: "Улучшить",
   endTurn: "Завершить ход",
 };
