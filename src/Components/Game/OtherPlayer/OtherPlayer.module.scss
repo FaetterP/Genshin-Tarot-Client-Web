@@ -1,7 +1,20 @@
-.otherPlayer{
+.otherPlayer {
   padding: 3px;
   margin: 5px;
-  
   background-color: white;
   border-radius: 5px;
+
+  &.canSelectPlayer {
+    cursor: pointer;
+    transition: box-shadow 0.15s, outline 0.15s;
+
+    &:hover {
+      box-shadow: 0 0 0 2px rgba(195, 171, 145, 0.5);
+    }
+  }
+
+  &.selectedPlayer {
+    outline: 2px solid gold;
+    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+  }
 }

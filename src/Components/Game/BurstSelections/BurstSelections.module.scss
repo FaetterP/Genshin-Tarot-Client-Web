@@ -1,0 +1,48 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(195, 171, 145, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.hint {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.selectCharacter {
+  select {
+    padding: 6px 10px;
+    font-size: 14px;
+    background: #2a2520;
+    color: #e8e4dc;
+    border: 1px solid rgba(195, 171, 145, 0.3);
+    border-radius: 8px;
+  }
+}
+
+.divideRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+
+  input[type="number"] {
+    width: 56px;
+    padding: 4px 8px;
+    font-size: 14px;
+    background: #2a2520;
+    color: #e8e4dc;
+    border: 1px solid rgba(195, 171, 145, 0.3);
+    border-radius: 6px;
+  }
+}

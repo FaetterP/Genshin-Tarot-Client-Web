@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { CardPrimitive } from "../../../../types/general";
 import styles from "./Card.module.scss";
 import { selectCard } from "../../../redux/card";
+import { clearBurstSelection } from "../../../redux/burst";
 import { State } from "../../../redux";
 import CardTexture from "./CardTexture";
 import { cards } from "../../../storage/cards/cards";
@@ -17,6 +18,7 @@ export default function Card(props: Props) {
 
   function select() {
     if (upgrading || !canPlay) return;
+    dispatch(clearBurstSelection());
     dispatch(selectCard({ cardId: props.cardId, cardKey: props.name }));
   }
 

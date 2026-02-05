@@ -43,6 +43,13 @@
     bottom: 300px;
   }
 
+  .burstRow {
+    position: absolute;
+    bottom: 240px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
   .otherPlayers {
     position: absolute;
     right: 0;

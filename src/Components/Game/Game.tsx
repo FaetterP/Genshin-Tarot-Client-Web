@@ -3,6 +3,8 @@ import { State } from "../../redux";
 import PlayerStats from "./PlayerStats/PlayerStats";
 import styles from "./Game.module.scss";
 import Selections from "./Selections/Selections";
+import BurstButtons from "./BurstButtons/BurstButtons";
+import BurstSelections from "./BurstSelections/BurstSelections";
 import OtherPlayer from "./OtherPlayer/OtherPlayer";
 import Cycles from "./Cycles/Cycles";
 import Hand from "./Card/Hand";
@@ -29,9 +31,13 @@ export default function Game() {
       <div className={styles.stats}>
         <PlayerStats {...me} />
       </div>
+      <div className={styles.burstRow}>
+        <BurstButtons />
+      </div>
       <Hand />
       <div className={styles.selections}>
         <Selections />
+        <BurstSelections />
       </div>
       <div className={styles.otherPlayers}>
         {other.map((player) => (

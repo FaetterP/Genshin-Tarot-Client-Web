@@ -58,7 +58,7 @@ const charactersSlice = createSlice({
         state.enemies.push(enemyId);
       }
     },
-    clearUsedCard(state, action) {
+    clearUsedCard(state, _action: PayloadAction<void>) {
       return initialState;
     }
   },

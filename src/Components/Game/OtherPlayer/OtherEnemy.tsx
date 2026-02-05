@@ -4,6 +4,8 @@ import { State } from "../../../redux";
 import enemyEffectStyles from "../Enemy/Enemy.module.scss";
 import styles from "./OtherEnemy.module.scss";
 import { selectEnemy } from "../../../redux/card";
+import { toggleBurstEnemy } from "../../../redux/burst";
+import { burstsRequire } from "../../../storage/characters/burstsRequire";
 import {
   getElementStyleClass,
   getReactionDecorClass,
@@ -31,16 +33,26 @@ export default function OtherEnemy(props: EnemyPrimitive) {
   const reactionOnEnemy = useSelector(
     (state: State) => state.stepAnimation.reactionOnEnemy
   );
-  const needEnemies = useSelector((state: State) => state.card.needEnemies);
-  const isRange = !!useSelector((state: State) => state.card.isRange);
-  const selectedCount = useSelector(
-    (state: State) => state.card.enemies
-  ).length;
+  const burstCharacter = useSelector((state: State) => state.burst.character);
+  const burstRequire = burstCharacter ? burstsRequire[burstCharacter] : null;
+  const isBurstEnemyMode =
+    !!burstCharacter &&
+    (burstRequire?.needEnemies ?? 0) > 0 &&
+    !!burstRequire?.isRange;
+
+  const cardNeedEnemies = useSelector((state: State) => state.card.needEnemies);
+  const cardIsRange = !!useSelector((state: State) => state.card.isRange);
+  const cardEnemies = useSelector((state: State) => state.card.enemies);
+  const burstEnemies = useSelector((state: State) => state.burst.enemies);
+  const needEnemies = isBurstEnemyMode
+    ? (burstRequire?.needEnemies ?? 0)
+    : cardNeedEnemies;
+  const isRange = isBurstEnemyMode || cardIsRange;
+  const selectedCount = isBurstEnemyMode ? burstEnemies.length : cardEnemies.length;
+  const selectedList = isBurstEnemyMode ? burstEnemies : cardEnemies;
 
   const isCanSelected = needEnemies && isRange && selectedCount < needEnemies;
-  const isSelected = useSelector((state: State) => state.card.enemies).includes(
-    props.id
-  );
+  const isSelected = selectedList.includes(props.id);
   const isDying = dyingEnemyIds.includes(props.id);
   const isPiercingHit = piercingEnemyIds.includes(props.id);
   const isBlockingHit = blockingEnemyIds.includes(props.id);
@@ -74,7 +86,11 @@ export default function OtherEnemy(props: EnemyPrimitive) {
 
   const handleClick = () => {
     if (!isCanSelected) return;
-    dispatch(selectEnemy({ enemyId: props.id }));
+    if (isBurstEnemyMode) {
+      dispatch(toggleBurstEnemy({ enemyId: props.id }));
+    } else {
+      dispatch(selectEnemy({ enemyId: props.id }));
+    }
   };
 
   return (

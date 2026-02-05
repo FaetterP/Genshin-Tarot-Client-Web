@@ -6,6 +6,8 @@ export const engText: Record<string, string> = {
   useCard: "Use Card",
   upgradeCard: "Upgrade",
   endTurn: "End Turn",
+  useBurst: "Use Burst",
+  cancel: "Cancel",
 };
 
 export const rusText: Record<string, string> = {
@@ -16,4 +18,6 @@ export const rusText: Record<string, string> = {
   useCard: "Использовать карту",
   upgradeCard: "Улучшить",
   endTurn: "Завершить ход",
+  useBurst: "Использовать взрыв",
+  cancel: "Отмена",
 };
