@@ -35,6 +35,9 @@ export default function Enemy(props: EnemyPrimitive) {
   const dyingEnemyIds = useSelector(
     (state: State) => state.stepAnimation.dyingEnemyIds
   );
+  const appearingEnemyIds = useSelector(
+    (state: State) => state.stepAnimation.appearingEnemyIds
+  );
   const piercingEnemyIds = useSelector(
     (state: State) => state.stepAnimation.piercingEnemyIds
   );
@@ -57,6 +60,7 @@ export default function Enemy(props: EnemyPrimitive) {
     props.id
   );
   const isDying = dyingEnemyIds.includes(props.id);
+  const isAppearing = appearingEnemyIds.includes(props.id);
   const isPiercingHit = piercingEnemyIds.includes(props.id);
   const isBlockingHit = blockingEnemyIds.includes(props.id);
   const isElementEffect =
@@ -98,7 +102,10 @@ export default function Enemy(props: EnemyPrimitive) {
   const selectedClass = isSelected ? styles.selected : "";
 
   return (
-    <div className={styles.enemyWrapper} onClick={handleClick}>
+    <div
+      className={`${styles.enemyWrapper} ${isAppearing ? styles.appearing : ""}`}
+      onClick={handleClick}
+    >
       <div
         className={`${canSelectClass} ${selectedClass} ${attackClass} ${isDying ? styles.death : ""} ${isPiercingHit ? styles.piercingHit : ""} ${isBlockingHit ? styles.blockHit : ""} ${elementGlowClass}`}
       >

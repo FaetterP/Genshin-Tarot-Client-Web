@@ -5,8 +5,12 @@ import { showEffects } from "../../redux/effects";
 import {
   useCard as applyCardAction,
   setCycle,
+  setHand,
   setLeyline,
   setPlayers,
+  removeEnemy,
+  addEnemy,
+  addElementToEnemy,
 } from "../../redux/players";
 import { clearUsedCard } from "../../redux/card";
 import {
@@ -18,7 +22,10 @@ import {
   setAnimatingDiscardCards,
   setAnimatingDrawCards,
   setBlockingEnemy,
+  setCardsLeavingDeckForDraw,
   setDyingEnemy,
+  setAppearingEnemy,
+  removeAppearingEnemy,
   setElementOnEnemy,
   setPiercingEnemy,
   setReactionOnEnemy,
@@ -27,7 +34,9 @@ import { sleep } from "../../utils/sleep";
 import { CardPrimitive, DetailedStep } from "../../../types/general";
 
 const DEATH_ANIMATION_MS = 1500;
+const ENEMY_APPEAR_MS = 500;
 const CARD_ANIMATION_MS = 2000;
+const DECK_EXIT_MS = 350;
 const PIERCING_EFFECT_MS = 800;
 const BLOCK_EFFECT_MS = 900;
 const ELEMENT_EFFECT_MS = 1000;
@@ -48,6 +57,7 @@ async function runStepAnimations(
         dispatch(setDyingEnemy({ enemyId: step.enemyId }));
         await sleep(DEATH_ANIMATION_MS);
         dispatch(removeDyingEnemy({ enemyId: step.enemyId }));
+        dispatch(removeEnemy({ enemyId: step.enemyId }));
         break;
       }
       case "discard_card": {
@@ -84,6 +94,7 @@ async function runStepAnimations(
           );
           await sleep(ELEMENT_EFFECT_MS);
           dispatch(setElementOnEnemy(null));
+          dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element }));
         }
         if (
           !step.isPiercing &&
@@ -100,9 +111,12 @@ async function runStepAnimations(
         );
         await sleep(ELEMENT_EFFECT_MS);
         dispatch(setElementOnEnemy(null));
+        dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element }));
         break;
       }
       case "enemy_reaction": {
+        dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element1 }));
+        dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element2 }));
         dispatch(
           setReactionOnEnemy({
             enemyId: step.enemyId,
@@ -120,6 +134,13 @@ async function runStepAnimations(
         dispatch(clearBlockingEnemy({ enemyId: step.enemyId }));
         break;
       }
+      case "enemy_appearance": {
+        dispatch(addEnemy({ playerId: step.playerId, enemy: step.enemy }));
+        dispatch(setAppearingEnemy({ enemyId: step.enemy.id }));
+        await sleep(ENEMY_APPEAR_MS);
+        dispatch(removeAppearingEnemy({ enemyId: step.enemy.id }));
+        break;
+      }
       default:
         await sleep(DEFAULT_STEP_MS);
         break;
@@ -127,11 +148,19 @@ async function runStepAnimations(
   }
 
   if (discardCards.length > 0) {
+    const state = store.getState();
+    const me = state.players.me;
+    const discardIds = new Set(discardCards.map((c) => c.cardId));
+    dispatch(
+      setHand({ cards: me.hand.filter((c) => !discardIds.has(c.cardId)) })
+    );
     dispatch(setAnimatingDiscardCards(discardCards));
     await sleep(CARD_ANIMATION_MS);
     dispatch(setAnimatingDiscardCards(null));
   }
   if (drawCards.length > 0) {
+    dispatch(setCardsLeavingDeckForDraw(drawCards));
+    await sleep(DECK_EXIT_MS);
     dispatch(setAnimatingDrawCards(drawCards));
     await sleep(CARD_ANIMATION_MS);
     dispatch(setAnimatingDrawCards(null));
@@ -194,8 +223,10 @@ export default function StepAnimationRunner() {
         );
       }
 
-      store.dispatch(clearStepAnimation());
-      runningRef.current = false;
+      setTimeout(() => {
+        store.dispatch(clearStepAnimation());
+        runningRef.current = false;
+      }, 0);
     })();
   }, [
     steps,

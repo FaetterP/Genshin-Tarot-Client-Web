@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useSelector } from "react-redux";
 import { State } from "../../../redux";
@@ -6,14 +6,80 @@ import CompactCard from "../Card/CompactCard";
 import styles from "./DrawDeck.module.scss";
 import { CardPrimitive } from "../../../../types/general";
 
+const ENTER_DURATION_MS = 350;
+const LIST_RESIZE_DURATION_MS = 300;
+
 export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
   const cardNames = useSelector((state: State) => state.lang.cards.names);
+  const cardsLeavingDeckForDraw = useSelector(
+    (state: State) => state.stepAnimation.cardsLeavingDeckForDraw
+  );
   const panelRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const prevCardsRef = useRef<CardPrimitive[]>([]);
+  const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hoveredCard, setHoveredCard] = useState<{
     name: string;
     panelLeft: number;
     centerY: number;
   } | null>(null);
+  const [exitingCards, setExitingCards] = useState<CardPrimitive[]>([]);
+  const [enteringIds, setEnteringIds] = useState<Set<string>>(new Set());
+
+  const leavingForDrawIds = new Set(
+    (cardsLeavingDeckForDraw ?? []).map((c) => c.cardId)
+  );
+
+  useEffect(() => {
+    const prev = prevCardsRef.current;
+    const prevIds = new Set(prev.map((c) => c.cardId));
+    const currentIds = new Set(cards.map((c) => c.cardId));
+    const added = cards.filter((c) => !prevIds.has(c.cardId));
+    const removed = prev.filter(
+      (c) => !currentIds.has(c.cardId) && !leavingForDrawIds.has(c.cardId)
+    );
+    if (added.length > 0 && prev.length > 0) {
+      setEnteringIds((s) => new Set([...Array.from(s), ...added.map((c) => c.cardId)]));
+    }
+    if (removed.length > 0) {
+      setExitingCards((prevExiting) => [...prevExiting, ...removed]);
+    }
+    prevCardsRef.current = [...cards];
+  }, [cards, cardsLeavingDeckForDraw]);
+
+  useEffect(() => {
+    if (enteringIds.size === 0) return;
+    const t = setTimeout(() => setEnteringIds(new Set()), ENTER_DURATION_MS);
+    return () => clearTimeout(t);
+  }, [enteringIds]);
+
+  const handleExitAnimationEnd = (cardId: string) => {
+    const list = listRef.current;
+    if (list) {
+      list.style.height = `${list.getBoundingClientRect().height}px`;
+      list.classList.add(styles.listResizing);
+    }
+    setExitingCards((prev) => prev.filter((c) => c.cardId !== cardId));
+  };
+
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list || !list.style.height || list.style.height === "auto") return;
+    const raf = requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        list.style.height = `${list.scrollHeight}px`;
+        const t = setTimeout(() => {
+          list.style.height = "";
+          list.classList.remove(styles.listResizing);
+        }, LIST_RESIZE_DURATION_MS);
+        resizeTimeoutRef.current = t;
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf);
+      if (resizeTimeoutRef.current) clearTimeout(resizeTimeoutRef.current);
+    };
+  }, [exitingCards]);
 
   function handleMouseEnter(card: CardPrimitive) {
     const panel = panelRef.current;
@@ -29,20 +95,26 @@ export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
   return (
     <>
       <div ref={panelRef} className={styles.panel}>
-        <div className={styles.list}>
-          {cards.map((card) => {
-            const displayName = cardNames[card.name] || card.name;
-            return (
-              <div
-                key={card.cardId}
-                className={styles.card}
-                onMouseEnter={() => handleMouseEnter(card)}
-                onMouseLeave={() => setHoveredCard(null)}
-              >
-                {displayName}
-              </div>
-            );
-          })}
+        <div ref={listRef} className={styles.list}>
+          {exitingCards.map((card) => (
+            <div
+              key={`exiting-${card.cardId}`}
+              className={`${styles.card} ${styles.cardExiting}`}
+              onAnimationEnd={() => handleExitAnimationEnd(card.cardId)}
+            >
+              {cardNames[card.name] || card.name}
+            </div>
+          ))}
+          {cards.map((card) => (
+            <div
+              key={card.cardId}
+              className={`${styles.card} ${enteringIds.has(card.cardId) ? styles.cardEntering : ""} ${leavingForDrawIds.has(card.cardId) ? styles.cardExiting : ""}`}
+              onMouseEnter={() => handleMouseEnter(card)}
+              onMouseLeave={() => setHoveredCard(null)}
+            >
+              {cardNames[card.name] || card.name}
+            </div>
+          ))}
         </div>
       </div>
       {hoveredCard &&

@@ -169,9 +169,24 @@
 }
 
 /* ----- Wrapper for effect overlays ----- */
+@keyframes appearFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-100vh);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .enemyWrapper {
   position: relative;
   display: inline-block;
+
+  &.appearing {
+    animation: appearFromTop 0.5s ease-out forwards;
+  }
 }
 
 /* ----- Piercing damage: пробитие щита ----- */

@@ -15,18 +15,15 @@
   z-index: 501;
 }
 
-/* Добор и сброс — те же анимации, что в начале/конце цикла (Hand) */
 .draw {
   left: 0;
   top: 0;
-  background-color: red;
   animation: cardDrawKeyframes 2s forwards ease-in-out;
 }
 
 .discard {
   left: 0;
   top: 0;
-  background-color: red;
   animation: cardDiscardKeyframes 2s forwards ease-in-out;
 }
 
@@ -56,7 +53,6 @@ $hand-top: calc(100vh - 100px);
   }
 }
 
-/* Добавление в руку: из центра вниз в руку */
 .addToHand {
   animation: cardAddToHand 1.2s forwards ease-out;
 }
@@ -76,7 +72,6 @@ $hand-top: calc(100vh - 100px);
   }
 }
 
-/* Добавление в сброс: справа в колоду сброса (слева) */
 .addToDiscard {
   animation: cardAddToDiscard 1.2s forwards ease-out;
 }
@@ -96,7 +91,6 @@ $hand-top: calc(100vh - 100px);
   }
 }
 
-/* Добавление в колоду добора: слева в колоду добора (справа) */
 .addToDeck {
   animation: cardAddToDeck 1.2s forwards ease-out;
 }

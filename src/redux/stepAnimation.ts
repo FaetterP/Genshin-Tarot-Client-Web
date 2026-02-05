@@ -40,8 +40,10 @@ const initialState: {
   afterCyclePayload: StepAnimationAfterCycle | null;
   afterEndTurnPayload: StepAnimationAfterEndTurn | null;
   dyingEnemyIds: string[];
+  appearingEnemyIds: string[];
   animatingDiscardCards: CardPrimitive[] | null;
   animatingDrawCards: CardPrimitive[] | null;
+  cardsLeavingDeckForDraw: CardPrimitive[] | null;
   animatingAddCard: { card: CardPrimitive; to: AddCardDestination } | null;
   piercingEnemyIds: string[];
   blockingEnemyIds: string[];
@@ -53,8 +55,10 @@ const initialState: {
   afterCyclePayload: null,
   afterEndTurnPayload: null,
   dyingEnemyIds: [],
+  appearingEnemyIds: [],
   animatingDiscardCards: null,
   animatingDrawCards: null,
+  cardsLeavingDeckForDraw: null,
   animatingAddCard: null,
   piercingEnemyIds: [],
   blockingEnemyIds: [],
@@ -88,6 +92,7 @@ const stepAnimationSlice = createSlice({
       const { steps } = action.payload;
       state.steps = steps;
       state.dyingEnemyIds = [];
+      state.appearingEnemyIds = [];
       state.piercingEnemyIds = [];
       state.blockingEnemyIds = [];
       state.elementOnEnemy = null;
@@ -121,6 +126,16 @@ const stepAnimationSlice = createSlice({
       );
     },
 
+    setAppearingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      state.appearingEnemyIds.push(action.payload.enemyId);
+    },
+
+    removeAppearingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      state.appearingEnemyIds = state.appearingEnemyIds.filter(
+        (id) => id !== action.payload.enemyId
+      );
+    },
+
     setAnimatingDiscardCards(
       state,
       action: PayloadAction<CardPrimitive[] | null>
@@ -130,6 +145,13 @@ const stepAnimationSlice = createSlice({
 
     setAnimatingDrawCards(state, action: PayloadAction<CardPrimitive[] | null>) {
       state.animatingDrawCards = action.payload;
+    },
+
+    setCardsLeavingDeckForDraw(
+      state,
+      action: PayloadAction<CardPrimitive[] | null>
+    ) {
+      state.cardsLeavingDeckForDraw = action.payload;
     },
 
     setAnimatingAddCard(
@@ -176,8 +198,10 @@ const stepAnimationSlice = createSlice({
       state.afterCyclePayload = null;
       state.afterEndTurnPayload = null;
       state.dyingEnemyIds = [];
+      state.appearingEnemyIds = [];
       state.animatingDiscardCards = null;
       state.animatingDrawCards = null;
+      state.cardsLeavingDeckForDraw = null;
       state.animatingAddCard = null;
       state.piercingEnemyIds = [];
       state.blockingEnemyIds = [];
@@ -192,8 +216,11 @@ export const {
   startStepAnimation,
   setDyingEnemy,
   removeDyingEnemy,
+  setAppearingEnemy,
+  removeAppearingEnemy,
   setAnimatingDiscardCards,
   setAnimatingDrawCards,
+  setCardsLeavingDeckForDraw,
   setAnimatingAddCard,
   setPiercingEnemy,
   clearPiercingEnemy,

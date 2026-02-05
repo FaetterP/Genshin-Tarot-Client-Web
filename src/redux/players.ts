@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CardPrimitive, PlayerPrimitive } from "./../../types/general";
+import {
+  CardPrimitive,
+  EnemyPrimitive,
+  PlayerPrimitive,
+} from "./../../types/general";
 
 const initialState: {
   me: PlayerPrimitive;
@@ -118,6 +122,49 @@ const charactersSlice = createSlice({
         state.other[index] = player;
       }
     },
+
+    removeEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      const { enemyId } = action.payload;
+      const inMe = state.me.enemies.findIndex((e) => e.id === enemyId);
+      if (inMe !== -1) {
+        state.me.enemies.splice(inMe, 1);
+        return;
+      }
+      for (const player of state.other) {
+        const idx = player.enemies.findIndex((e) => e.id === enemyId);
+        if (idx !== -1) {
+          player.enemies.splice(idx, 1);
+          return;
+        }
+      }
+    },
+
+    addEnemy(
+      state,
+      action: PayloadAction<{ playerId: string; enemy: EnemyPrimitive }>
+    ) {
+      const { playerId, enemy } = action.payload;
+      if (state.me.playerId === playerId) {
+        state.me.enemies.push(enemy);
+        return;
+      }
+      const player = state.other.find((p) => p.playerId === playerId);
+      if (player) player.enemies.push(enemy);
+    },
+
+    addElementToEnemy(
+      state,
+      action: PayloadAction<{ enemyId: string; element: string }>
+    ) {
+      const { enemyId, element } = action.payload;
+      const addTo = (enemy: EnemyPrimitive) => {
+        if (enemy.id === enemyId && !enemy.elements.includes(element)) {
+          enemy.elements.push(element);
+        }
+      };
+      state.me.enemies.forEach(addTo);
+      state.other.forEach((p) => p.enemies.forEach(addTo));
+    },
   },
 });
 
@@ -131,4 +178,7 @@ export const {
   setLeyline,
   useCard,
   setHand,
+  removeEnemy,
+  addEnemy,
+  addElementToEnemy,
 } = charactersSlice.actions;
