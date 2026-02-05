@@ -20,6 +20,14 @@ export default function CompactCard(props: PropsType) {
     useSelector((state: State) => state.lang.cards.descriptions[props.name]) ||
     `${props.name}.description`;
 
+  const reactionLight = props.name === "Dash" || props.name === "Overheat";
+  const reactionDark = props.name === "Burn" || props.name === "Freeze";
+  const cardClass = reactionLight
+    ? styles.cardLight
+    : reactionDark
+      ? styles.cardDark
+      : styles.card;
+
   let costText = "";
   for (let i = 0; i < 3 - cost; i++) {
     costText += "◻";
@@ -29,7 +37,7 @@ export default function CompactCard(props: PropsType) {
   }
 
   return (
-    <div className={styles.card}>
+    <div className={cardClass}>
       <div className={styles.cost}>{costText}</div>
       <div className={isUpgraded ? styles.upgradedName : styles.name}>{name}</div>
       <div className={styles.description}>{description}</div>

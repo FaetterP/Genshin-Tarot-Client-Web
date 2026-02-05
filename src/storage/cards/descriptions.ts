@@ -147,6 +147,10 @@ export const engDescriptions: Record<string, string> = {
   RainOfStonePlus: "Apply Geo and deal 2 piercing damage to 1 enemy in your zone. You may spend 1 energy to gain 1 Action Point to spend this turn.",
   DominusLapidis: "Give 3 Guard to yourself and 1 other player. Apply Geo to all enemies in your zone. At the start of next turn, apply Geo to all enemies in your zone.",
   DominusLapidisPlus: "Give 3 Guard to yourself and 1 other player. Apply Geo to all enemies in your zone. At the start of next turn, apply Geo to all enemies in your zone.",
+  Dash: "Trash this card, then draw 2 cards. You gain 1 additional Action Point to spend this turn.",
+  Overheat: "Trash this card, then draw 2 cards. The next time you deal damage this turn, increase the damage dealt by 1. If this damage defeats the enemy, gain 2 Energy.",
+  Burn: "Take 1 Damage when you draw this card. Take 2 Damage instead if this is the second or later Burn card you've drawn this turn. Trash all Burn cards in your hand when Hydro or Cryo is applied to an enemy in your zone.",
+  Freeze: "While this is in your hand, you cannot gain nor spend any Energy. You may trash all Freeze cards in your hand by spending 1 Action Point.",
 };
 
 export const rusDescriptions:Record<string, string>={
@@ -298,4 +302,8 @@ export const rusDescriptions:Record<string, string>={
   RainOfStonePlus: "Накладывает Гео и наносит 2 пронзающего урона 1 врагу в вашей зоне. Вы можете потратить 1 энергию, чтобы получить 1 Очко Действия.",
   DominusLapidis: "Даёт 3 защиты вам и 1 другому игроку. Накладывает Гео всем врагам в вашей зоне. В начале следующего хода накладывает Гео всем врагам в вашей зоне.",
   DominusLapidisPlus: "Даёт 3 защиты вам и 1 другому игроку. Накладывает Гео всем врагам в вашей зоне. В начале следующего хода накладывает Гео всем врагам в вашей зоне.",
+  Dash: "Сбросьте эту карту, затем возьмите 2 карты. Вы получаете 1 дополнительное Очко действия для использования в этот ход.",
+  Overheat: "Сбросьте эту карту, затем возьмите 2 карты. В следующий раз, когда вы нанесёте урон в этот ход, увеличьте нанесённый урон на 1. Если этот урон побеждает врага, получите 2 энергии.",
+  Burn: "Получите 1 урон, когда вы берёте эту карту. Получите 2 урона, если это вторая или последующая карта «Горение», которую вы взяли за этот ход. Сбросьте все карты «Горение» из руки, когда Гидро или Крио накладывается на врага в вашей зоне.",
+  Freeze: "Пока эта карта у вас в руке, вы не можете получать или тратить энергию. Вы можете сбросить все карты «Заморозка» из руки, потратив 1 Очко действия.",
 }

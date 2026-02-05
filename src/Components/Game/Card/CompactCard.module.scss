@@ -46,3 +46,41 @@
     right: 0;
   }
 }
+
+.cardLight {
+  composes: card;
+  background-color: #fdf9ed;
+  color: #2c2c2c;
+
+  .name,
+  .upgradedName {
+    color: #1a1a1a;
+  }
+
+  .description {
+    color: #333;
+  }
+
+  .cost {
+    color: #2c2c2c;
+  }
+}
+
+.cardDark {
+  composes: card;
+  background-color: #252d3f;
+  color: #e8e8e8;
+
+  .name,
+  .upgradedName {
+    color: #fff;
+  }
+
+  .description {
+    color: #e0e0e0;
+  }
+
+  .cost {
+    color: #e8e8e8;
+  }
+}

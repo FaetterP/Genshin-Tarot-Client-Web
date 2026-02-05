@@ -40,6 +40,56 @@
   }
 }
 
+/* Светлые карты реакций (Рывок, Перегрузка) */
+.cardBlockLight {
+  background-color: #fdf9ed;
+  color: #2c2c2c;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.15);
+  background-image: radial-gradient(
+    ellipse 80% 80% at 50% 50%,
+    rgba(220, 200, 170, 0.25) 0%,
+    transparent 70%
+  );
+
+  .name,
+  .upgradedName {
+    color: #1a1a1a;
+  }
+
+  .description {
+    color: #333;
+  }
+
+  .cost {
+    color: #2c2c2c;
+  }
+}
+
+/* Тёмно-синие карты реакций (Горение, Заморозка) */
+.cardBlockDark {
+  background-color: #252d3f;
+  color: #e8e8e8;
+  box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.3);
+  background-image: radial-gradient(
+    ellipse 80% 80% at 50% 50%,
+    rgba(60, 80, 120, 0.35) 0%,
+    transparent 70%
+  );
+
+  .name,
+  .upgradedName {
+    color: #fff;
+  }
+
+  .description {
+    color: #e0e0e0;
+  }
+
+  .cost {
+    color: #e8e8e8;
+  }
+}
+
 .canSelect{
   margin: -140px 10px;
 
@@ -50,6 +100,13 @@
     transition: transform 0.5s;
   
     cursor: pointer;
+  }
+
+  &.cannotPlay {
+    cursor: not-allowed;
+    &:hover {
+      cursor: not-allowed;
+    }
   }
 
   &.selected {

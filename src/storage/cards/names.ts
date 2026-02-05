@@ -147,6 +147,10 @@ export const engCards: Record<string, string> = {
   RainOfStonePlus: "Rain Of Stone+",
   DominusLapidis: "Dominus Lapidis",
   DominusLapidisPlus: "Dominus Lapidis+",
+  Dash: "Dash",
+  Overheat: "Overheat",
+  Burn: "Burn",
+  Freeze: "Freeze",
 };
 
 export const rusCards: Record<string, string> = {
@@ -298,4 +302,8 @@ export const rusCards: Record<string, string> = {
   RainOfStonePlus: "Каменный дождь+",
   DominusLapidis: "Власть над камнем",
   DominusLapidisPlus: "Власть над камнем+",
+  Dash: "Рывок",
+  Overheat: "Перегрузка",
+  Burn: "Горение",
+  Freeze: "Заморозка",
 };

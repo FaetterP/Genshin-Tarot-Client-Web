@@ -4,6 +4,7 @@ import styles from "./Card.module.scss";
 import { selectCard } from "../../../redux/card";
 import { State } from "../../../redux";
 import CardTexture from "./CardTexture";
+import { cards } from "../../../storage/cards/cards";
 
 type Props = CardPrimitive & {
   upgrading?: { oldCard: CardPrimitive; newCard: CardPrimitive };
@@ -12,9 +13,10 @@ type Props = CardPrimitive & {
 export default function Card(props: Props) {
   const { upgrading, ...card } = props;
   const dispatch = useDispatch();
+  const canPlay = cards[props.name]?.canPlay === true;
 
   function select() {
-    if (upgrading) return;
+    if (upgrading || !canPlay) return;
     dispatch(selectCard({ cardId: props.cardId, cardKey: props.name }));
   }
 
@@ -41,7 +43,7 @@ export default function Card(props: Props) {
 
   return (
     <div
-      className={`${styles.canSelect} ${isSelected ? styles.selected : ""}`}
+      className={`${styles.canSelect} ${isSelected ? styles.selected : ""} ${!canPlay ? styles.cannotPlay : ""}`}
       onClick={select}
     >
       <CardTexture name={props.name} />

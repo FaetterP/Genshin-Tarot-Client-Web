@@ -24,10 +24,12 @@ export default function Selections() {
   } = useSelector((state: State) => state.card);
   const hand = useSelector((state: State) => state.players.me.hand);
   const selectedCardInHand = hand.find((c) => c.cardId === selectedCard);
+  const canPlayCard =
+    selectedCardInHand &&
+    cards[selectedCardInHand.name]?.canPlay === true;
   const canUpgrade =
     selectedCardInHand &&
-    cards[selectedCardInHand.name] &&
-    !cards[selectedCardInHand.name].isUpgraded;
+    cards[selectedCardInHand.name]?.canUpgrade === true;
 
   const formik = useFormik({
     initialValues: {
@@ -84,7 +86,9 @@ export default function Selections() {
         <></>
       )}
       <div className={styles.buttons}>
-        <button type="submit" className="generalButton">{useCardText}</button>
+        {canPlayCard && (
+          <button type="submit" className="generalButton">{useCardText}</button>
+        )}
         {canUpgrade && selectedCardInHand && (
           <div className={styles.upgradeButtonWrap}>
             <div className={styles.upgradeTooltip}>

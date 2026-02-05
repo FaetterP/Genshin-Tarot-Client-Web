@@ -20,6 +20,14 @@ export default function CardTexture(props: PropsType) {
     useSelector((state: State) => state.lang.cards.descriptions[props.name]) ||
     `${props.name}.description`;
 
+  const reactionLight = props.name === "Dash" || props.name === "Overheat";
+  const reactionDark = props.name === "Burn" || props.name === "Freeze";
+  const blockClass = reactionLight
+    ? `${styles.cardBlock} ${styles.cardBlockLight}`
+    : reactionDark
+      ? `${styles.cardBlock} ${styles.cardBlockDark}`
+      : styles.cardBlock;
+
   let costText = "";
   for (let i = 0; i < 3 - cost; i++) {
     costText += "◻";
@@ -29,7 +37,7 @@ export default function CardTexture(props: PropsType) {
   }
 
   return (
-    <div className={styles.cardBlock}>
+    <div className={blockClass}>
       <div className={styles.cost}>{costText}</div>
       <div className={styles[isUpgraded ? "upgradedName" : "name"]}>{name}</div>
       <div className={styles.description}>{description}</div>

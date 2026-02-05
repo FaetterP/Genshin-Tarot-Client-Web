@@ -42,7 +42,7 @@ export type DetailedStep =
   | { type: "enemy_block_damage"; enemyId: string; element?: string }
   | { type: "enemy_death"; enemyId: string }
   | { type: "enemy_appearance"; playerId: string; enemy: EnemyPrimitive }
-  | { type: "player_take_damage"; playerId: string; damage: number; isPiercing: boolean; enemyId?: string }
+  | { type: "player_take_damage"; playerId: string; damage: number; isPiercing: boolean, enemyId?: string }
   | { type: "player_change_energy"; playerId: string; delta: number }
   | { type: "player_change_shield"; playerId: string; delta: number }
   | { type: "player_change_mora"; playerId: string; delta: number }
@@ -53,7 +53,9 @@ export type DetailedStep =
   | { type: "enemy_reaction"; enemyId: string; element1: string; element2: string }
   | { type: "enemy_change_shield"; enemyId: string; delta: number }
   | { type: "enemy_heal"; enemyId: string; amount: number }
-  | { type: "upgrade_card"; playerId: string; oldCard: CardPrimitive; newCard: CardPrimitive };
+  | { type: "upgrade_card"; playerId: string; oldCard: CardPrimitive; newCard: CardPrimitive }
+  | { type: "energy_freezed"; playerId: string; delta: number }
+  | { type: "trash_card"; playerId: string; card: CardPrimitive };
 
 export type ReportEffect =
   | { type: "createWave"; enemies: EnemyPrimitive[]; player: string }

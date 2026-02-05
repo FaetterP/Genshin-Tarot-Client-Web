@@ -61,6 +61,7 @@ const initialState: {
   blockingEnemyIds: string[];
   elementOnEnemy: ElementOnEnemy | null;
   reactionOnEnemy: ReactionOnEnemy | null;
+  energyFreezedPlayerId: string | null;
 } = {
   steps: [],
   finalPayload: null,
@@ -78,6 +79,7 @@ const initialState: {
   blockingEnemyIds: [],
   elementOnEnemy: null,
   reactionOnEnemy: null,
+  energyFreezedPlayerId: null,
 };
 
 const stepAnimationSlice = createSlice({
@@ -115,6 +117,7 @@ const stepAnimationSlice = createSlice({
       state.blockingEnemyIds = [];
       state.elementOnEnemy = null;
       state.reactionOnEnemy = null;
+      state.energyFreezedPlayerId = null;
       if ("player" in action.payload && "card" in action.payload) {
         state.finalPayload = {
           player: action.payload.player,
@@ -225,6 +228,14 @@ const stepAnimationSlice = createSlice({
       state.reactionOnEnemy = action.payload;
     },
 
+    setEnergyFreezed(
+      state,
+      action: PayloadAction<{ playerId: string } | null>
+    ) {
+      state.energyFreezedPlayerId =
+        action.payload === null ? null : action.payload.playerId;
+    },
+
     clearStepAnimation(state) {
       state.steps = [];
       state.finalPayload = null;
@@ -242,6 +253,7 @@ const stepAnimationSlice = createSlice({
       state.blockingEnemyIds = [];
       state.elementOnEnemy = null;
       state.reactionOnEnemy = null;
+      state.energyFreezedPlayerId = null;
     },
   },
 });
@@ -264,5 +276,6 @@ export const {
   clearBlockingEnemy,
   setElementOnEnemy,
   setReactionOnEnemy,
+  setEnergyFreezed,
   clearStepAnimation,
 } = stepAnimationSlice.actions;

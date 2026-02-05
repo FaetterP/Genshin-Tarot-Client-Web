@@ -21,6 +21,7 @@ const effectsMap: Record<string, { display: string }> = {
   Nightrider: { display: "🌑🦅" },
   NightriderPlus: { display: "🌑🦅+" },
   NiwabiFireDance: { display: "🔥🎶" },
+  Overheat: { display: "⚡🔥" },
   Pyronado: { display: "🔥💨" },
   Raincutter: { display: "🌧" },
   SkywardSonnet: { display: "🌬🎶" },

@@ -31,6 +31,7 @@ import {
   setElementOnEnemy,
   setPiercingEnemy,
   setReactionOnEnemy,
+  setEnergyFreezed,
 } from "../../redux/stepAnimation";
 import { sleep } from "../../utils/sleep";
 import { CardPrimitive, DetailedStep } from "../../../types/general";
@@ -44,6 +45,7 @@ const BLOCK_EFFECT_MS = 900;
 const ELEMENT_EFFECT_MS = 1000;
 const REACTION_EFFECT_MS = 1400;
 const UPGRADE_CARD_MS = 2200;
+const ENERGY_FREEZED_MS = 1200;
 const DEFAULT_STEP_MS = 200;
 
 async function runStepAnimations(
@@ -162,6 +164,16 @@ async function runStepAnimations(
           );
           await sleep(UPGRADE_CARD_MS);
           dispatch(setAnimatingUpgradeCard(null));
+        } else {
+          await sleep(DEFAULT_STEP_MS);
+        }
+        break;
+      }
+      case "energy_freezed": {
+        if (step.playerId === myPlayerId) {
+          dispatch(setEnergyFreezed({ playerId: step.playerId }));
+          await sleep(ENERGY_FREEZED_MS);
+          dispatch(setEnergyFreezed(null));
         } else {
           await sleep(DEFAULT_STEP_MS);
         }

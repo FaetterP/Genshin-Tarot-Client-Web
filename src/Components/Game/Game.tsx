@@ -8,6 +8,7 @@ import Cycles from "./Cycles/Cycles";
 import Hand from "./Card/Hand";
 import LeylineEffect from "./LeylineEffect";
 import CardAnimationOverlay from "./CardAnimationOverlay/CardAnimationOverlay";
+import EnergyFreezedOverlay from "./EnergyFreezedOverlay/EnergyFreezedOverlay";
 import StepAnimationRunner from "./StepAnimationRunner";
 import Enemies from "./Enemy/Enemies";
 import DiscardDeck from "./DiscardDeck/DiscardDeck";
@@ -21,6 +22,7 @@ export default function Game() {
     <div className={styles.game}>
       <div className={styles.bg} />
       <StepAnimationRunner />
+      <EnergyFreezedOverlay />
       <CardAnimationOverlay />
       <LeylineEffect />
       <Enemies />
