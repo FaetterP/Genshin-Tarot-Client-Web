@@ -26,6 +26,10 @@ import {
   engPlayerEffects,
   rusPlayerEffects,
 } from "../storage/playerEffects";
+import {
+  engEnemyEffects,
+  rusEnemyEffects,
+} from "../storage/enemyEffects";
 
 type LangType = {
   elements: Record<string, string>;
@@ -44,6 +48,7 @@ type LangType = {
   service: Record<string, string>;
   leylines: Record<string, string>;
   playerEffects: Record<string, string>;
+  enemyEffects: Record<string, string>;
 };
 
 const mapper: { EN: LangType; RU: LangType } = {
@@ -55,6 +60,7 @@ const mapper: { EN: LangType; RU: LangType } = {
     service: engTextService,
     leylines: engLeylines,
     playerEffects: engPlayerEffects,
+    enemyEffects: engEnemyEffects,
   },
   RU: {
     elements: rusElements,
@@ -64,6 +70,7 @@ const mapper: { EN: LangType; RU: LangType } = {
     service: rusTextService,
     leylines: rusLeylines,
     playerEffects: rusPlayerEffects,
+    enemyEffects: rusEnemyEffects,
   },
 };
 

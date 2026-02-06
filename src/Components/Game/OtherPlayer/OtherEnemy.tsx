@@ -12,6 +12,7 @@ import {
   getReactionStyle,
   toElementKey,
 } from "../../../utils/elementColors";
+import EnemyEffects from "../Enemy/EnemyEffects";
 
 export default function OtherEnemy(props: EnemyPrimitive) {
   const name =
@@ -100,6 +101,9 @@ export default function OtherEnemy(props: EnemyPrimitive) {
     >
       {name}
       {` ${props.hp}♥`}
+      {props.effects?.length > 0 && (
+        <EnemyEffects effects={props.effects} />
+      )}
       {isPiercingHit && (
         <div
           className={enemyEffectStyles.piercingOverlay}

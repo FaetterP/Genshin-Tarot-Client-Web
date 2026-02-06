@@ -15,8 +15,6 @@ const effectsMap: Record<string, { display: string }> = {
   LayeredFrost: { display: "☃" },
   LetTheShowBegin: { display: "💦🎶" },
   MirrorReflections: { display: "👉👈" },
-  Nightrider: { display: "🌑🦅" },
-  NightriderPlus: { display: "🌑🦅+" },
   NiwabiFireDance: { display: "🔥🎶" },
   Overheat: { display: "⚡🔥" },
   Pyronado: { display: "🔥💨" },

@@ -5,6 +5,7 @@ import { enemies } from "../../../storage/enemies/enemies";
 import { EnemyPrimitive } from "../../../types/general";
 import ChangeableStat from "../../ChangeableStat/ChangeableStat";
 import { toElementKey } from "../../../utils/elementColors";
+import EnemyEffects from "./EnemyEffects";
 
 export default function EnemyCard(props: EnemyPrimitive) {
   const name =
@@ -39,6 +40,7 @@ export default function EnemyCard(props: EnemyPrimitive) {
           </div>
         )}
       </div>
+      {props.effects?.length > 0 && <EnemyEffects effects={props.effects} />}
     </div>
   )
 }

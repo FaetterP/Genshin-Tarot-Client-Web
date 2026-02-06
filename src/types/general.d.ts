@@ -5,6 +5,7 @@ export type EnemyPrimitive = {
   shield: number;
   elements: string[];
   isStunned: boolean;
+  effects: string[];
 };
 
 export type PlayerPrimitive = {
