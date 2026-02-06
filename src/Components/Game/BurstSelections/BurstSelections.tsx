@@ -10,6 +10,7 @@ import { burstsRequire } from "../../../storage/characters/burstsRequire";
 import { engDescriptions as engBursts } from "../../../storage/characters/bursts";
 import styles from "./BurstSelections.module.scss";
 import { GameUseBurstRequest } from "../../../types/request";
+import { shortPlayerId } from "../../../utils/formatPlayerId";
 
 const allCharacterKeys = Object.keys(engBursts);
 
@@ -91,7 +92,7 @@ export default function BurstSelections() {
       )}
       {needPlayer && (
         <div className={styles.hint}>
-          {burstSelectedPlayer ? `Игрок: ${burstSelectedPlayer}` : "Выберите игрока"}
+          {burstSelectedPlayer ? `Игрок: ${shortPlayerId(burstSelectedPlayer)}` : "Выберите игрока"}
         </div>
       )}
       {needCharacter && (
@@ -124,7 +125,7 @@ export default function BurstSelections() {
             const count = entry?.count ?? 0;
             return (
               <div key={p.playerId} className={styles.divideRow}>
-                <span>{p.playerId}</span>
+                <span>{shortPlayerId(p.playerId)}</span>
                 <input
                   type="number"
                   min={0}

@@ -5,7 +5,7 @@ import styles from "./Game.module.scss";
 import Selections from "./Selections/Selections";
 import BurstButtons from "./BurstButtons/BurstButtons";
 import BurstSelections from "./BurstSelections/BurstSelections";
-import OtherPlayer from "./OtherPlayer/OtherPlayer";
+import OtherPlayer, { type OtherPlayerProps } from "./OtherPlayer/OtherPlayer";
 import Cycles from "./Cycles/Cycles";
 import Hand from "./Card/Hand";
 import LeylineEffect from "./LeylineEffect";
@@ -19,6 +19,10 @@ import DrawDeck from "./DrawDeck/DrawDeck";
 export default function Game() {
   const me = useSelector((state: State) => state.players.me);
   const other = useSelector((state: State) => state.players.other);
+  const playersLabel = useSelector(
+    (state: State) => state.lang.service?.players ?? "Players"
+  );
+  const allPlayers = me?.playerId ? [me, ...other] : other;
 
   return (
     <div className={styles.game}>
@@ -40,9 +44,18 @@ export default function Game() {
         <BurstSelections />
       </div>
       <div className={styles.otherPlayers}>
-        {other.map((player) => (
-          <OtherPlayer {...player} key={player.playerId} />
-        ))}
+        <div className={styles.playersHeader}>
+          {playersLabel} {allPlayers.length}
+        </div>
+        <div className={styles.playersList}>
+          {allPlayers.map((player) => {
+            const props: OtherPlayerProps = {
+              ...player,
+              isMe: player.playerId === me?.playerId,
+            };
+            return <OtherPlayer {...props} key={player.playerId} />;
+          })}
+        </div>
       </div>
       <div className={styles.cycles}>
         <Cycles />

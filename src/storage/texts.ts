@@ -8,6 +8,8 @@ export const engText: Record<string, string> = {
   endTurn: "End Turn",
   useBurst: "Use Burst",
   cancel: "Cancel",
+  meLabel: "Me",
+  players: "Players: ",
 };
 
 export const rusText: Record<string, string> = {
@@ -20,4 +22,6 @@ export const rusText: Record<string, string> = {
   endTurn: "Завершить ход",
   useBurst: "Использовать взрыв",
   cancel: "Отмена",
+  meLabel: "Я",
+  players: "Игроков: ",
 };

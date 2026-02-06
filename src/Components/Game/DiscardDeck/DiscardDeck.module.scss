@@ -20,6 +20,8 @@
   gap: 4px;
   padding: 14px 10px 14px 14px;
   transition: height 0.3s ease-out;
+  max-height: 60vh;
+  overflow-y: auto;
 
   &.listResizing {
     overflow: hidden;

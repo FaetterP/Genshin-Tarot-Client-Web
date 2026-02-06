@@ -24,6 +24,12 @@ export default function Selections() {
     selectedCardInHand &&
     cards[selectedCardInHand.name]?.canUpgrade === true;
 
+  const isNeedPlayer = useSelector((state: State) => state.card.isNeedPlayer);
+  const canSubmitCard =
+    canPlayCard &&
+    (!isNeedPlayer || !!selectedPlayer) &&
+    (!needEnemies || enemies.length >= needEnemies);
+
   const formik = useFormik({
     initialValues: {
       isUseAlternative: false,
@@ -34,7 +40,7 @@ export default function Selections() {
         data.enemies = enemies;
       }
       if (selectedPlayer) {
-        data.selectedPlayer = selectedCard;
+        data.selectedPlayer = selectedPlayer;
       }
 
       data.isUseAlternative = values.isUseAlternative;
@@ -80,7 +86,13 @@ export default function Selections() {
       )}
       <div className={styles.buttons}>
         {canPlayCard && (
-          <button type="submit" className="generalButton">{useCardText}</button>
+          <button
+            type="submit"
+            className="generalButton"
+            disabled={!canSubmitCard}
+          >
+            {useCardText}
+          </button>
         )}
         {canUpgrade && selectedCardInHand && (
           <div className={styles.upgradeButtonWrap}>

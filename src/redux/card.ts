@@ -58,6 +58,9 @@ const charactersSlice = createSlice({
         state.enemies.push(enemyId);
       }
     },
+    setCardSelectedPlayer(state, action: PayloadAction<{ playerId: string }>) {
+      state.selectedPlayer = action.payload.playerId;
+    },
     clearUsedCard(state, _action: PayloadAction<void>) {
       return initialState;
     }
@@ -65,5 +68,5 @@ const charactersSlice = createSlice({
 });
 
 export default charactersSlice.reducer;
-export const { selectCard, selectEnemy, clearUsedCard } =
+export const { selectCard, selectEnemy, setCardSelectedPlayer, clearUsedCard } =
   charactersSlice.actions;

@@ -4,19 +4,37 @@ import OtherEnemy from "./OtherEnemy";
 import styles from "./OtherPlayer.module.scss";
 import { State } from "../../../redux";
 import { setBurstSelectedPlayer } from "../../../redux/burst";
+import { setCardSelectedPlayer } from "../../../redux/card";
 import { burstsRequire } from "../../../storage/characters/burstsRequire";
+import { shortPlayerId } from "../../../utils/formatPlayerId";
 
-export default function OtherPlayer(props: PlayerPrimitive) {
+export type OtherPlayerProps = PlayerPrimitive & { isMe?: boolean };
+
+export default function OtherPlayer(props: OtherPlayerProps) {
   const dispatch = useDispatch();
   const burstCharacter = useSelector((state: State) => state.burst.character);
   const burstRequire = burstCharacter ? burstsRequire[burstCharacter] : null;
-  const needPlayer = !!burstRequire?.needPlayer;
-  const selectedPlayer = useSelector((state: State) => state.burst.selectedPlayer);
+  const cardNeedPlayer = useSelector((state: State) => state.card.isNeedPlayer);
+  const burstNeedPlayer = !!burstRequire?.needPlayer;
+  const needPlayer = burstNeedPlayer || cardNeedPlayer;
+  const burstSelectedPlayer = useSelector(
+    (state: State) => state.burst.selectedPlayer
+  );
+  const cardSelectedPlayer = useSelector(
+    (state: State) => state.card.selectedPlayer
+  );
+  const selectedPlayer = burstNeedPlayer ? burstSelectedPlayer : cardSelectedPlayer;
   const isSelected = selectedPlayer === props.playerId;
+  const meLabel = useSelector(
+    (state: State) => state.lang.service?.meLabel ?? "Me"
+  );
 
   const handleClick = () => {
-    if (needPlayer) {
+    if (!needPlayer) return;
+    if (burstNeedPlayer) {
       dispatch(setBurstSelectedPlayer({ playerId: props.playerId }));
+    } else {
+      dispatch(setCardSelectedPlayer({ playerId: props.playerId }));
     }
   };
 
@@ -26,12 +44,20 @@ export default function OtherPlayer(props: PlayerPrimitive) {
       onClick={needPlayer ? handleClick : undefined}
       role={needPlayer ? "button" : undefined}
     >
-      {props.playerId}
-      <div>
-        {props.enemies.map((enemy) => (
-          <OtherEnemy key={enemy.id} {...enemy} />
-        ))}
-      </div>
+      {props.isMe ? (
+        <>
+          {meLabel} {shortPlayerId(props.playerId)}
+        </>
+      ) : (
+        <>
+          {shortPlayerId(props.playerId)}
+          <div>
+            {props.enemies.map((enemy) => (
+              <OtherEnemy key={enemy.id} {...enemy} />
+            ))}
+          </div>
+        </>
+      )}
     </div>
   );
 }

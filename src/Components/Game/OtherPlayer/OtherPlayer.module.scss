@@ -1,20 +1,38 @@
 .otherPlayer {
-  padding: 3px;
-  margin: 5px;
-  background-color: white;
-  border-radius: 5px;
+  padding: 8px 12px;
+  margin-bottom: 6px;
+  background: rgba(50, 50, 55, 0.7);
+  border-radius: 10px;
+  border-left: 3px solid rgba(120, 120, 130, 0.6);
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
+  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+  min-width: 0;
+  overflow-wrap: break-word;
+  word-break: break-word;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &:hover {
+    background: rgba(65, 65, 72, 0.85);
+  }
 
   &.canSelectPlayer {
     cursor: pointer;
-    transition: box-shadow 0.15s, outline 0.15s;
+    transition: box-shadow 0.15s, outline 0.15s, background 0.2s;
 
     &:hover {
-      box-shadow: 0 0 0 2px rgba(195, 171, 145, 0.5);
+      box-shadow: 0 0 0 2px rgba(180, 170, 150, 0.5);
+      background: rgba(72, 72, 78, 0.9);
     }
   }
 
   &.selectedPlayer {
-    outline: 2px solid gold;
-    box-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+    outline: 2px solid rgba(255, 215, 0, 0.9);
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.35);
+    background: rgba(60, 60, 68, 0.95);
+    border-left-color: rgba(255, 215, 0, 0.75);
   }
 }
