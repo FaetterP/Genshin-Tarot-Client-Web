@@ -9,8 +9,12 @@ export default function Hand() {
     (state: State) => state.stepAnimation.animatingUpgradeCard
   );
 
+  const isStacked = hand.length > 5;
+
   return (
-    <div className={stylesGame.cards}>
+    <div
+      className={`${stylesGame.cards} ${isStacked ? stylesGame.cardsStacked : ""}`}
+    >
       {hand.map((card) => (
         <Card
           {...card}

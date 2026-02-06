@@ -25,12 +25,27 @@
   }
 
   .cards {
-   display: flex;
-   flex-direction: row;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-end;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 100%;
+    overflow: visible;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
 
-   justify-content: space-evenly;
-   position: absolute;
-   bottom: 0;
+  /* Наложение карт при большом количестве в руке */
+  .cardsStacked > * {
+    margin-left: -55px;
+  }
+
+  .cardsStacked > *:first-child {
+    margin-left: 10px;
   }
 
   .selections {
