@@ -5,6 +5,7 @@ import { selectBurstCharacter } from "../../../redux/burst";
 import { clearUsedCard } from "../../../redux/card";
 import { burstsRequire } from "../../../storage/characters/burstsRequire";
 import styles from "./BurstButtons.module.scss";
+import { GameUseBurstRequest } from "../../../types/request";
 
 export default function BurstButtons() {
   const dispatch = useDispatch();
@@ -31,7 +32,10 @@ export default function BurstButtons() {
       dispatch(clearUsedCard(undefined));
       dispatch(selectBurstCharacter({ character }));
     } else {
-      send({ action: "game.useBurst", character });
+      send<GameUseBurstRequest>({
+        action: "game.useBurst",
+        character,
+      });
     }
   }
 

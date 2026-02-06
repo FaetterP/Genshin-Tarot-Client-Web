@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Lang } from "../../types/general";
+import { Lang } from "../types/general";
 import { engNames as engNamesEnemies } from "../storage/enemies/names";
 import {
   engDescriptions as engDescriptionsEnemies,

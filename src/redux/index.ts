@@ -4,7 +4,6 @@ import service from "./service";
 import card from "./card";
 import burst from "./burst";
 import lang from "./lang";
-import effects from "./effects";
 import stepAnimation from "./stepAnimation";
 
 const rootReducer = combineReducers({
@@ -13,7 +12,6 @@ const rootReducer = combineReducers({
   card,
   burst,
   lang,
-  effects,
   stepAnimation,
 });
 

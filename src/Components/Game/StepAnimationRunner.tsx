@@ -1,7 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { State, store } from "../../redux";
-import { showEffects } from "../../redux/effects";
 import {
   useCard as applyCardAction,
   applyPlayerUpdate,
@@ -32,9 +31,15 @@ import {
   setPiercingEnemy,
   setReactionOnEnemy,
   setEnergyFreezed,
+  setAnimatingLeyline,
+  setAnimatingEffectTrigger,
+  setAnimatingEnemyAttack,
 } from "../../redux/stepAnimation";
+import { send } from "../../ws";
+import { TaskCompleteTaskRequest } from "../../types/request";
 import { sleep } from "../../utils/sleep";
-import { CardPrimitive, DetailedStep } from "../../../types/general";
+import { CardPrimitive } from "../../types/general";
+import { DetailedStep } from "../../types/detailedStep";
 
 const DEATH_ANIMATION_MS = 1500;
 const ENEMY_APPEAR_MS = 500;
@@ -46,6 +51,9 @@ const ELEMENT_EFFECT_MS = 1000;
 const REACTION_EFFECT_MS = 1400;
 const UPGRADE_CARD_MS = 2200;
 const ENERGY_FREEZED_MS = 1200;
+const LEYLINE_EFFECT_MS = 2000;
+const EFFECT_TRIGGER_MS = 1000;
+const ENEMY_ATTACK_MS = 2000;
 const DEFAULT_STEP_MS = 200;
 
 async function runStepAnimations(
@@ -179,6 +187,36 @@ async function runStepAnimations(
         }
         break;
       }
+      case "use_leyline": {
+        dispatch(setAnimatingLeyline(step.name));
+        await sleep(LEYLINE_EFFECT_MS);
+        dispatch(setAnimatingLeyline(null));
+        break;
+      }
+      case "effect_trigger": {
+        dispatch(
+          setAnimatingEffectTrigger({
+            effect: step.effect,
+            isRemove: step.isRemove,
+            playerId: step.playerId,
+          })
+        );
+        await sleep(EFFECT_TRIGGER_MS);
+        dispatch(setAnimatingEffectTrigger(null));
+        break;
+      }
+      case "enemy_attack": {
+        dispatch(
+          setAnimatingEnemyAttack({
+            enemyId: step.enemyId,
+            playerId: step.playerId,
+            damage: step.damage,
+          })
+        );
+        await sleep(ENEMY_ATTACK_MS);
+        dispatch(setAnimatingEnemyAttack(null));
+        break;
+      }
       default:
         await sleep(DEFAULT_STEP_MS);
         break;
@@ -217,6 +255,9 @@ export default function StepAnimationRunner() {
   const afterEndTurnPayload = useSelector(
     (state: State) => state.stepAnimation.afterEndTurnPayload
   );
+  const afterEndCyclePayload = useSelector(
+    (state: State) => state.stepAnimation.afterEndCyclePayload
+  );
   const afterUpgradePayload = useSelector(
     (state: State) => state.stepAnimation.afterUpgradePayload
   );
@@ -226,6 +267,7 @@ export default function StepAnimationRunner() {
     finalPayload ||
     afterCyclePayload ||
     afterEndTurnPayload ||
+    afterEndCyclePayload ||
     afterUpgradePayload;
 
   useEffect(() => {
@@ -251,7 +293,6 @@ export default function StepAnimationRunner() {
       } else if (afterCyclePayload) {
         store.dispatch(setCycle({ cycle: afterCyclePayload.cycle }));
         store.dispatch(setLeyline({ leylines: afterCyclePayload.leylines }));
-        store.dispatch(showEffects({ reports: afterCyclePayload.report }));
         store.dispatch(
           setPlayers({
             you: afterCyclePayload.you,
@@ -259,12 +300,17 @@ export default function StepAnimationRunner() {
           })
         );
       } else if (afterEndTurnPayload) {
-        store.dispatch(
-          showEffects({
-            reports: afterEndTurnPayload.report,
+        if (afterEndTurnPayload.taskId) {
+          send<TaskCompleteTaskRequest>({
+            action: "task.completeTask",
             taskId: afterEndTurnPayload.taskId,
-          })
-        );
+          });
+        }
+      } else if (afterEndCyclePayload) {
+        send<TaskCompleteTaskRequest>({
+          action: "task.completeTask",
+          taskId: afterEndCyclePayload.taskId,
+        });
       } else if (afterUpgradePayload) {
         store.dispatch(applyPlayerUpdate({ player: afterUpgradePayload.player }));
         store.dispatch(clearUsedCard(undefined));
@@ -280,6 +326,7 @@ export default function StepAnimationRunner() {
     finalPayload,
     afterCyclePayload,
     afterEndTurnPayload,
+    afterEndCyclePayload,
     afterUpgradePayload,
     hasCompletion,
     dispatch,

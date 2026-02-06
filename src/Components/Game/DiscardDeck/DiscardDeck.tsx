@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { useSelector } from "react-redux";
 import { State } from "../../../redux";
 import CompactCard from "../Card/CompactCard";
-import { CardPrimitive } from "../../../../types/general";
+import { CardPrimitive } from "../../../types/general";
 import styles from "./DiscardDeck.module.scss";
 
 const ENTER_DURATION_MS = 350;

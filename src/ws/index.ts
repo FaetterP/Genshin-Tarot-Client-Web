@@ -1,5 +1,7 @@
 import { store } from "../redux";
 import { setPage, setWsError } from "../redux/service";
+import { AnyRequest } from "../types/request";
+import { AnyResponse, ErrorResponse, OkResponse } from "../types/response";
 import { buildHandlers } from "./handlers";
 
 let ws: WebSocket | undefined = undefined;
@@ -26,27 +28,26 @@ export function connectToWS(url: string) {
 
   ws.onmessage = async function (event) {
     try {
-      const payload = JSON.parse(event.data.toString());
-      console.log(payload);
+      const payload: AnyResponse | ErrorResponse | OkResponse = JSON.parse(event.data.toString());
 
-      if (payload.status === "error") {
-        store.dispatch(setWsError(payload.message || "UNKNOWN ERROR"));
+      if ((payload as ErrorResponse).status === "error") {
+        store.dispatch(setWsError((payload as ErrorResponse).message || "UNKNOWN ERROR"));
         return;
       }
-      if (payload.status) return;
+      if ((payload as OkResponse).status === "ok") return;
 
-      const { action } = payload;
+      const { action } = payload as AnyResponse;
       const handler = handlers[action];
       if (!handler) throw new Error(`Unsupported action ${action}`);
 
-      const res = await handler(payload);
+      handler(payload);
     } catch (e) {
       console.error(e);
     }
   };
 }
 
-export function send(data: any) {
+export function send<T extends AnyRequest>(data: T) {
   if (!ws) return;
 
   ws.send(JSON.stringify(data));

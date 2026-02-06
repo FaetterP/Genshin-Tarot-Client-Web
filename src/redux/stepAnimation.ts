@@ -1,10 +1,31 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  CardPrimitive,
-  DetailedStep,
-  PlayerPrimitive,
-  ReportEffect,
-} from "../../types/general";
+import { CardPrimitive, PlayerPrimitive } from "../types/general";
+import { DetailedStep } from "../types/detailedStep";
+
+/** Один элемент очереди анимаций — такой же payload, как у startStepAnimation */
+export type StepAnimationPayload =
+  | {
+      steps: DetailedStep[];
+      player: PlayerPrimitive;
+      card: string;
+      isMe: boolean;
+    }
+  | {
+      steps: DetailedStep[];
+      afterCycle: StepAnimationAfterCycle;
+    }
+  | {
+      steps: DetailedStep[];
+      afterEndTurn: StepAnimationAfterEndTurn;
+    }
+  | {
+      steps: DetailedStep[];
+      afterEndCycle: StepAnimationAfterEndCycle;
+    }
+  | {
+      steps: DetailedStep[];
+      afterUpgrade: StepAnimationAfterUpgrade;
+    };
 
 export type StepAnimationFinalPayload = {
   player: PlayerPrimitive;
@@ -17,12 +38,14 @@ export type StepAnimationAfterCycle = {
   you: PlayerPrimitive;
   otherPlayers: PlayerPrimitive[];
   leylines: string[];
-  report: ReportEffect[];
 };
 
 export type StepAnimationAfterEndTurn = {
+  taskId?: string;
+};
+
+export type StepAnimationAfterEndCycle = {
   taskId: string;
-  report: ReportEffect[];
 };
 
 export type StepAnimationAfterUpgrade = {
@@ -44,12 +67,26 @@ export type AnimatingUpgradeCard = {
   newCard: CardPrimitive;
 };
 
+export type AnimatingEffectTrigger = {
+  effect: string;
+  isRemove: boolean;
+  playerId: string;
+};
+
+export type AnimatingEnemyAttack = {
+  enemyId: string;
+  playerId: string;
+  damage: number;
+};
+
 const initialState: {
   steps: DetailedStep[];
   finalPayload: StepAnimationFinalPayload | null;
   afterCyclePayload: StepAnimationAfterCycle | null;
   afterEndTurnPayload: StepAnimationAfterEndTurn | null;
+  afterEndCyclePayload: StepAnimationAfterEndCycle | null;
   afterUpgradePayload: StepAnimationAfterUpgrade | null;
+  animationQueue: StepAnimationPayload[];
   dyingEnemyIds: string[];
   appearingEnemyIds: string[];
   animatingDiscardCards: CardPrimitive[] | null;
@@ -62,12 +99,17 @@ const initialState: {
   elementOnEnemy: ElementOnEnemy | null;
   reactionOnEnemy: ReactionOnEnemy | null;
   energyFreezedPlayerId: string | null;
+  animatingLeyline: string | null;
+  animatingEffectTrigger: AnimatingEffectTrigger | null;
+  animatingEnemyAttack: AnimatingEnemyAttack | null;
 } = {
   steps: [],
   finalPayload: null,
   afterCyclePayload: null,
   afterEndTurnPayload: null,
+  afterEndCyclePayload: null,
   afterUpgradePayload: null,
+  animationQueue: [],
   dyingEnemyIds: [],
   appearingEnemyIds: [],
   animatingDiscardCards: null,
@@ -80,6 +122,9 @@ const initialState: {
   elementOnEnemy: null,
   reactionOnEnemy: null,
   energyFreezedPlayerId: null,
+  animatingLeyline: null,
+  animatingEffectTrigger: null,
+  animatingEnemyAttack: null,
 };
 
 const stepAnimationSlice = createSlice({
@@ -88,28 +133,17 @@ const stepAnimationSlice = createSlice({
   reducers: {
     startStepAnimation(
       state,
-      action: PayloadAction<
-        | {
-            steps: DetailedStep[];
-            player: PlayerPrimitive;
-            card: string;
-            isMe: boolean;
-          }
-        | {
-            steps: DetailedStep[];
-            afterCycle: StepAnimationAfterCycle;
-          }
-        | {
-            steps: DetailedStep[];
-            afterEndTurn: StepAnimationAfterEndTurn;
-          }
-        | {
-            steps: DetailedStep[];
-            afterUpgrade: StepAnimationAfterUpgrade;
-          }
-      >
+      action: PayloadAction<StepAnimationPayload>
     ) {
-      const { steps } = action.payload;
+      const payload = action.payload;
+      const { steps } = payload;
+
+      // Если уже идёт анимация — ставим в очередь
+      if (state.steps.length > 0) {
+        state.animationQueue.push(payload);
+        return;
+      }
+
       state.steps = steps;
       state.dyingEnemyIds = [];
       state.appearingEnemyIds = [];
@@ -118,29 +152,42 @@ const stepAnimationSlice = createSlice({
       state.elementOnEnemy = null;
       state.reactionOnEnemy = null;
       state.energyFreezedPlayerId = null;
-      if ("player" in action.payload && "card" in action.payload) {
+      state.animatingLeyline = null;
+      state.animatingEffectTrigger = null;
+      state.animatingEnemyAttack = null;
+      if ("player" in payload && "card" in payload) {
         state.finalPayload = {
-          player: action.payload.player,
-          card: action.payload.card,
-          isMe: action.payload.isMe,
+          player: payload.player,
+          card: payload.card,
+          isMe: payload.isMe,
         };
         state.afterCyclePayload = null;
         state.afterEndTurnPayload = null;
+        state.afterEndCyclePayload = null;
         state.afterUpgradePayload = null;
-      } else if ("afterCycle" in action.payload) {
+      } else if ("afterCycle" in payload) {
         state.finalPayload = null;
-        state.afterCyclePayload = action.payload.afterCycle;
+        state.afterCyclePayload = payload.afterCycle;
         state.afterEndTurnPayload = null;
+        state.afterEndCyclePayload = null;
         state.afterUpgradePayload = null;
-      } else if ("afterUpgrade" in action.payload) {
+      } else if ("afterUpgrade" in payload) {
         state.finalPayload = null;
         state.afterCyclePayload = null;
         state.afterEndTurnPayload = null;
-        state.afterUpgradePayload = action.payload.afterUpgrade;
+        state.afterEndCyclePayload = null;
+        state.afterUpgradePayload = payload.afterUpgrade;
+      } else if ("afterEndCycle" in payload) {
+        state.finalPayload = null;
+        state.afterCyclePayload = null;
+        state.afterEndTurnPayload = null;
+        state.afterEndCyclePayload = payload.afterEndCycle;
+        state.afterUpgradePayload = null;
       } else {
         state.finalPayload = null;
         state.afterCyclePayload = null;
-        state.afterEndTurnPayload = action.payload.afterEndTurn;
+        state.afterEndTurnPayload = payload.afterEndTurn;
+        state.afterEndCyclePayload = null;
         state.afterUpgradePayload = null;
       }
     },
@@ -236,11 +283,30 @@ const stepAnimationSlice = createSlice({
         action.payload === null ? null : action.payload.playerId;
     },
 
+    setAnimatingLeyline(state, action: PayloadAction<string | null>) {
+      state.animatingLeyline = action.payload;
+    },
+
+    setAnimatingEffectTrigger(
+      state,
+      action: PayloadAction<AnimatingEffectTrigger | null>
+    ) {
+      state.animatingEffectTrigger = action.payload;
+    },
+
+    setAnimatingEnemyAttack(
+      state,
+      action: PayloadAction<AnimatingEnemyAttack | null>
+    ) {
+      state.animatingEnemyAttack = action.payload;
+    },
+
     clearStepAnimation(state) {
       state.steps = [];
       state.finalPayload = null;
       state.afterCyclePayload = null;
       state.afterEndTurnPayload = null;
+      state.afterEndCyclePayload = null;
       state.afterUpgradePayload = null;
       state.dyingEnemyIds = [];
       state.appearingEnemyIds = [];
@@ -254,6 +320,60 @@ const stepAnimationSlice = createSlice({
       state.elementOnEnemy = null;
       state.reactionOnEnemy = null;
       state.energyFreezedPlayerId = null;
+      state.animatingLeyline = null;
+      state.animatingEffectTrigger = null;
+      state.animatingEnemyAttack = null;
+
+      // Запускаем следующую анимацию из очереди
+      const next = state.animationQueue.shift();
+      if (next) {
+        state.steps = next.steps;
+        state.dyingEnemyIds = [];
+        state.appearingEnemyIds = [];
+        state.piercingEnemyIds = [];
+        state.blockingEnemyIds = [];
+        state.elementOnEnemy = null;
+        state.reactionOnEnemy = null;
+        state.energyFreezedPlayerId = null;
+        state.animatingLeyline = null;
+        state.animatingEffectTrigger = null;
+        state.animatingEnemyAttack = null;
+        if ("player" in next && "card" in next) {
+          state.finalPayload = {
+            player: next.player,
+            card: next.card,
+            isMe: next.isMe,
+          };
+          state.afterCyclePayload = null;
+          state.afterEndTurnPayload = null;
+          state.afterEndCyclePayload = null;
+          state.afterUpgradePayload = null;
+        } else if ("afterCycle" in next) {
+          state.finalPayload = null;
+          state.afterCyclePayload = next.afterCycle;
+          state.afterEndTurnPayload = null;
+          state.afterEndCyclePayload = null;
+          state.afterUpgradePayload = null;
+        } else if ("afterUpgrade" in next) {
+          state.finalPayload = null;
+          state.afterCyclePayload = null;
+          state.afterEndTurnPayload = null;
+          state.afterEndCyclePayload = null;
+          state.afterUpgradePayload = next.afterUpgrade;
+        } else if ("afterEndCycle" in next) {
+          state.finalPayload = null;
+          state.afterCyclePayload = null;
+          state.afterEndTurnPayload = null;
+          state.afterEndCyclePayload = next.afterEndCycle;
+          state.afterUpgradePayload = null;
+        } else {
+          state.finalPayload = null;
+          state.afterCyclePayload = null;
+          state.afterEndTurnPayload = next.afterEndTurn;
+          state.afterEndCyclePayload = null;
+          state.afterUpgradePayload = null;
+        }
+      }
     },
   },
 });
@@ -277,5 +397,8 @@ export const {
   setElementOnEnemy,
   setReactionOnEnemy,
   setEnergyFreezed,
+  setAnimatingLeyline,
+  setAnimatingEffectTrigger,
+  setAnimatingEnemyAttack,
   clearStepAnimation,
 } = stepAnimationSlice.actions;

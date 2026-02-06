@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { State } from "../../../redux";
 import styles from "./Enemy.module.scss";
 import { enemies } from "../../../storage/enemies/enemies";
-import { EnemyPrimitive } from "../../../../types/general";
+import { EnemyPrimitive } from "../../../types/general";
 import ChangeableStat from "../../ChangeableStat/ChangeableStat";
 import { toElementKey } from "../../../utils/elementColors";
 

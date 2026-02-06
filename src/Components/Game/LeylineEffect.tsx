@@ -1,29 +1,16 @@
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
-import { State, store } from "../../redux";
-import { finishEffect } from "../../redux/effects";
-import { sleep } from "../../utils/sleep";
+import { State } from "../../redux";
 import styles from "./LeylineEffect.module.scss";
 
 export default function LeylineEffect() {
-  const leyline = useSelector((state: State) => state.effects.useLeyline);
-  const counter = useSelector((state: State) => state.effects.counter);
-
-  useEffect(() => {
-    (async () => {
-      if (leyline.isShown) {
-        await sleep(2000);
-
-        store.dispatch(finishEffect());
-      }
-    })();
-  }, [leyline.isShown, counter]);
-
+  const animatingLeyline = useSelector(
+    (state: State) => state.stepAnimation.animatingLeyline
+  );
   const displayName = useSelector(
-    (state: State) => state.lang.leylines[leyline.name]
+    (state: State) => state.lang.leylines[animatingLeyline ?? ""]
   );
 
-  if (!leyline.isShown) return <></>;
+  if (!animatingLeyline) return null;
 
-  return <div className={styles[leyline.name]}>{displayName}</div>;
+  return <div className={styles[animatingLeyline]}>{displayName}</div>;
 }

@@ -9,16 +9,7 @@ import {
 import { burstsRequire } from "../../../storage/characters/burstsRequire";
 import { engDescriptions as engBursts } from "../../../storage/characters/bursts";
 import styles from "./BurstSelections.module.scss";
-
-type UseBurstBody = {
-  action: "game.useBurst";
-  character: string;
-  selectedPlayer?: string;
-  selectedEnemy?: string;
-  selectedEnemies?: string[];
-  divide?: { playerId: string; count: number }[];
-  selectedCharacter?: string;
-};
+import { GameUseBurstRequest } from "../../../types/request";
 
 const allCharacterKeys = Object.keys(engBursts);
 
@@ -63,14 +54,24 @@ export default function BurstSelections() {
 
   function handleConfirm() {
     if (!canConfirm || !burstCharacter) return;
-    const body: UseBurstBody = { action: "game.useBurst", character: burstCharacter };
-    if (needPlayer && burstSelectedPlayer) body.selectedPlayer = burstSelectedPlayer;
-    if (needEnemies === 1 && burstEnemies.length === 1) body.selectedEnemy = burstEnemies[0];
-    else if (burstEnemies.length > 0) body.selectedEnemies = [...burstEnemies];
+    const body: GameUseBurstRequest = {
+      action: "game.useBurst",
+      character: burstCharacter,
+    };
+    if (needPlayer && burstSelectedPlayer)
+      body.selectedPlayer = burstSelectedPlayer;
+
+    if (needEnemies === 1 && burstEnemies.length === 1)
+      body.selectedEnemy = burstEnemies[0];
+    else if (burstEnemies.length > 0)
+      body.selectedEnemies = [...burstEnemies];
+
     if (needDivide && burstDivide.length > 0)
       body.divide = burstDivide.filter((d) => d.count > 0);
-    if (needCharacter && burstSelectedChar) body.selectedCharacter = burstSelectedChar;
-    send(body);
+    if (needCharacter && burstSelectedChar) {
+      body.selectedCharacter = burstSelectedChar;
+    }
+    send<GameUseBurstRequest>(body);
     dispatch(clearBurstSelection());
   }
 

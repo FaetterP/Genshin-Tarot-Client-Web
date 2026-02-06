@@ -3,6 +3,7 @@ import { send } from "../../../ws";
 import CharacterLine from "./CharacterLine";
 import styles from "./ChooseCharacters.module.scss";
 import { State } from "../../../redux";
+import { GameStartRequest } from "../../../types/request";
 
 const characters: ReadonlyArray<string> = [
   "Aether",
@@ -46,8 +47,7 @@ const characters: ReadonlyArray<string> = [
 
 export function ChooseCharacters() {
   function startGame() {
-    const data = { action: "game.startGame" };
-    send(data);
+    send<GameStartRequest>({ action: "game.startGame" });
   }
 
   const startText =

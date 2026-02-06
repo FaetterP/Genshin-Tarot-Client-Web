@@ -3,7 +3,7 @@ import {
   CardPrimitive,
   EnemyPrimitive,
   PlayerPrimitive,
-} from "./../../types/general";
+} from "../types/general";
 
 const initialState: {
   me: PlayerPrimitive;

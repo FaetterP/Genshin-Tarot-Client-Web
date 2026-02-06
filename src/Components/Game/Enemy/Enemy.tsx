@@ -1,14 +1,11 @@
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { EnemyPrimitive } from "../../../../types/general";
+import { EnemyPrimitive } from "../../../types/general";
 import styles from "./Enemy.module.scss";
-import { State, store } from "../../../redux";
+import { State } from "../../../redux";
 import { selectEnemy } from "../../../redux/card";
 import { toggleBurstEnemy } from "../../../redux/burst";
 import { burstsRequire } from "../../../storage/characters/burstsRequire";
 import EnemyCard from "./EnemyCard";
-import { sleep } from "../../../utils/sleep";
-import { finishEffect } from "../../../redux/effects";
 import {
   getElementStyleClass,
   getReactionDecorClass,
@@ -17,22 +14,12 @@ import {
 } from "../../../utils/elementColors";
 
 export default function Enemy(props: EnemyPrimitive) {
-  const myId = useSelector((state: State) => state.players.me.playerId);
-  const enemyAttack = useSelector((state: State) => state.effects.enemyAttack);
-  const counter = useSelector((state: State) => state.effects.counter);
-
-  useEffect(() => {
-    (async () => {
-      if (!enemyAttack.isShown) return;
-      if (enemyAttack.player === myId && enemyAttack.enemy === props.id) {
-        await sleep(2000);
-      }
-
-      store.dispatch(finishEffect());
-    })();
-  }, [...Object.values(enemyAttack), counter]);
-
   const dispatch = useDispatch();
+  const animatingEnemyAttack = useSelector(
+    (state: State) => state.stepAnimation.animatingEnemyAttack
+  );
+  const isEnemyAttackShown =
+    animatingEnemyAttack?.enemyId === props.id;
 
   const dyingEnemyIds = useSelector(
     (state: State) => state.stepAnimation.dyingEnemyIds
@@ -109,10 +96,7 @@ export default function Enemy(props: EnemyPrimitive) {
     }
   };
 
-  const attackClass =
-    enemyAttack.isShown && enemyAttack.enemy === props.id
-      ? styles.attackEffect
-      : "";
+  const attackClass = isEnemyAttackShown ? styles.attackEffect : "";
   const canSelectClass = isCanSelected ? styles.canSelected : "";
   const selectedClass = isSelected ? styles.selected : "";
 

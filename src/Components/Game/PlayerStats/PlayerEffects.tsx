@@ -1,9 +1,6 @@
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import styles from "./PlayerEffects.module.scss";
-import { State, store } from "../../../redux";
-import { sleep } from "../../../utils/sleep";
-import { finishEffect } from "../../../redux/effects";
+import { State } from "../../../redux";
 
 type PropsType = {
   effects: string[];
@@ -32,22 +29,12 @@ const effectsMap: Record<string, { display: string }> = {
 };
 
 export default function PlayerEffects({ effects }: PropsType) {
-  const isUseEffect = useSelector(
-    (state: State) => state.effects.useEffect.isShown
+  const animatingEffectTrigger = useSelector(
+    (state: State) => state.stepAnimation.animatingEffectTrigger
   );
-  const counter = useSelector((state: State) => state.effects.counter);
-  const playerEffectsLang = useSelector((state: State) => state.lang.playerEffects);
-
-  useEffect(() => {
-    (async () => {
-      if (!isUseEffect) return;
-
-      console.log("show use effect");
-      await sleep(1000);
-
-      store.dispatch(finishEffect());
-    })();
-  }, [isUseEffect, counter]);
+  const playerEffectsLang = useSelector(
+    (state: State) => state.lang.playerEffects
+  );
 
   return (
     <div style={{ display: "flex" }}>
@@ -61,6 +48,14 @@ export default function PlayerEffects({ effects }: PropsType) {
           </span>
         </div>
       ))}
+      {animatingEffectTrigger && (
+        <div className={styles.effectTriggerOverlay} aria-hidden="true">
+          {animatingEffectTrigger.isRemove ? "−" : "+"}{" "}
+          {playerEffectsLang[animatingEffectTrigger.effect + "Effect"] ||
+            playerEffectsLang[animatingEffectTrigger.effect] ||
+            animatingEffectTrigger.effect}
+        </div>
+      )}
     </div>
   );
 }

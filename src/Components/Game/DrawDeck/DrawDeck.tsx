@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { State } from "../../../redux";
 import CompactCard from "../Card/CompactCard";
 import styles from "./DrawDeck.module.scss";
-import { CardPrimitive } from "../../../../types/general";
+import { CardPrimitive } from "../../../types/general";
 
 const ENTER_DURATION_MS = 350;
 const LIST_RESIZE_DURATION_MS = 300;

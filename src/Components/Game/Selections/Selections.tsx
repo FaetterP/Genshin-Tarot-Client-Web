@@ -5,14 +5,7 @@ import { useFormik } from "formik";
 import styles from "./Selections.module.scss";
 import { cards } from "../../../storage/cards/cards";
 import CompactCard from "../Card/CompactCard";
-
-type Request = {
-  action: "game.useCard" | "game.upgradeCard";
-  cardId: string;
-  enemies?: string[];
-  selectedPlayer?: string;
-  isUseAlternative?: boolean;
-};
+import { GameUpgradeCardRequest, GameUseCardRequest } from "../../../types/request";
 
 export default function Selections() {
   const {
@@ -36,7 +29,7 @@ export default function Selections() {
       isUseAlternative: false,
     },
     onSubmit: (values) => {
-      const data: Request = { action: "game.useCard", cardId: selectedCard };
+      const data: GameUseCardRequest = { action: "game.useCard", cardId: selectedCard };
       if (needEnemies) {
         data.enemies = enemies;
       }
@@ -46,7 +39,7 @@ export default function Selections() {
 
       data.isUseAlternative = values.isUseAlternative;
 
-      send(data);
+      send<GameUseCardRequest>(data);
     },
   });
 
@@ -62,7 +55,7 @@ export default function Selections() {
 
   function handleUpgrade() {
     if (!selectedCard) return;
-    send({ action: "game.upgradeCard", cardId: selectedCard });
+    send<GameUpgradeCardRequest>({ action: "game.upgradeCard", cardId: selectedCard });
   }
 
   if (!selectedCard) {

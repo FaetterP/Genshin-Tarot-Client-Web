@@ -4,22 +4,21 @@ import { State } from "../../../redux";
 import { characterSkillCards } from "../../../storage/characters/cards";
 import CompactCard from "../Card/CompactCard";
 import styles from "./CharacterLine.module.scss";
+import { CharactersAddCharacterRequest, CharactersRemoveCharacterRequest } from "../../../types/request";
 
 export default function CharacterLine({ character }: { character: string }) {
   function addCharacter() {
-    const data = {
+    send<CharactersAddCharacterRequest>({
       action: "characters.addCharacter",
       character,
-    };
-    send(data);
+    });
   }
 
   function removeCharacter() {
-    const data = {
+    send<CharactersRemoveCharacterRequest>({
       action: "characters.removeCharacter",
       character,
-    };
-    send(data);
+    });
   }
 
   function clickCharacter() {
@@ -40,10 +39,10 @@ export default function CharacterLine({ character }: { character: string }) {
   } = useSelector(
     (state: State) => state.lang.characters.bursts[character]
   ) || {
-    name: `${character}.burst`,
-    description: `${character}.description`,
-    cost: 0,
-  };
+      name: `${character}.burst`,
+      description: `${character}.description`,
+      cost: 0,
+    };
 
   const me = useSelector((state: State) => {
     return state.players.players.find(
@@ -66,9 +65,8 @@ export default function CharacterLine({ character }: { character: string }) {
 
   return (
     <div
-      className={`${styles.characterBlock} ${
-        isCharacterChosen ? styles.selected : ""
-      }`}
+      className={`${styles.characterBlock} ${isCharacterChosen ? styles.selected : ""
+        }`}
       onClick={clickCharacter}
     >
       <div className={styles.name}>{name}</div>

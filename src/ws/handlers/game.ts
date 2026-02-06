@@ -1,12 +1,7 @@
 import { send } from "..";
-import {
-  DetailedStep,
-  PlayerPrimitive,
-  ReportEffect,
-} from "../../../types/general";
+import { PlayerPrimitive } from "../../types/general";
 import { store } from "../../redux";
 import { clearUsedCard } from "../../redux/card";
-import { showEffects } from "../../redux/effects";
 import {
   setCycle,
   setLeyline,
@@ -16,15 +11,17 @@ import {
 } from "../../redux/players";
 import { startStepAnimation } from "../../redux/stepAnimation";
 import { setPage } from "../../redux/service";
+import { DetailedStep } from "../../types/detailedStep";
+import { TaskCompleteTaskRequest } from "../../types/request";
+import type { AwaitedResponse, GameEndTurnResponse, GameEndCycleResponse } from "../../types/response";
 
 async function startGame(payload: { taskId: string }) {
   const { taskId } = payload;
-  const data = {
+  store.dispatch(setPage({ page: "game" }));
+  send<TaskCompleteTaskRequest>({
     action: "task.completeTask",
     taskId,
-  };
-  store.dispatch(setPage({ page: "game" }));
-  send(data);
+  });
 }
 
 async function startCycle(payload: {
@@ -32,8 +29,7 @@ async function startCycle(payload: {
   you: PlayerPrimitive;
   otherPlayers: PlayerPrimitive[];
   leylines: string[];
-  report: ReportEffect[];
-  steps?: DetailedStep[];
+  steps: DetailedStep[];
 }) {
   if (payload.steps && payload.steps.length > 0) {
     store.dispatch(
@@ -44,7 +40,6 @@ async function startCycle(payload: {
           you: payload.you,
           otherPlayers: payload.otherPlayers,
           leylines: payload.leylines,
-          report: payload.report,
         },
       })
     );
@@ -52,8 +47,6 @@ async function startCycle(payload: {
   }
   store.dispatch(setCycle({ cycle: payload.cycle }));
   store.dispatch(setLeyline({ leylines: payload.leylines }));
-
-  store.dispatch(showEffects({ reports: payload.report }));
   store.dispatch(
     setPlayers({ you: payload.you, otherPlayers: payload.otherPlayers })
   );
@@ -110,26 +103,40 @@ async function upgradeCardHandler(payload: {
   );
 }
 
-async function endTurnReport(payload: {
-  taskId: string;
-  report: ReportEffect[];
-  steps?: DetailedStep[];
-}) {
-  if (payload.steps && payload.steps.length > 0) {
+async function endTurnHandler(payload: GameEndTurnResponse & { taskId?: string }) {
+  const { playerID, steps, taskId } = payload;
+  if (steps && steps.length > 0) {
     store.dispatch(
       startStepAnimation({
-        steps: payload.steps,
-        afterEndTurn: {
-          taskId: payload.taskId,
-          report: payload.report,
-        },
+        steps,
+        afterEndTurn: taskId != null ? { taskId } : {},
       })
     );
     return;
   }
-  store.dispatch(
-    showEffects({ reports: payload.report, taskId: payload.taskId })
-  );
+  if (taskId != null) {
+    send<TaskCompleteTaskRequest>({
+      action: "task.completeTask",
+      taskId,
+    });
+  }
+}
+
+async function endCycleHandler(payload: AwaitedResponse<GameEndCycleResponse>) {
+  const { steps, taskId } = payload;
+  if (steps && steps.length > 0) {
+    store.dispatch(
+      startStepAnimation({
+        steps,
+        afterEndCycle: { taskId },
+      })
+    );
+    return;
+  }
+  send<TaskCompleteTaskRequest>({
+    action: "task.completeTask",
+    taskId,
+  });
 }
 
 export default {
@@ -138,6 +145,7 @@ export default {
     startCycle,
     useCard: useCardHandler,
     upgradeCard: upgradeCardHandler,
-    endTurnReport,
+    endTurn: endTurnHandler,
+    endCycle: endCycleHandler,
   },
 };

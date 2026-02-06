@@ -1,4 +1,4 @@
-import { Lang } from "../../types/general";
+import { Lang } from "../types/general";
 
 export function getBrowserLanguage() {
   return (navigator.languages && navigator.languages[0]) || navigator.language;

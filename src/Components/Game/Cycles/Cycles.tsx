@@ -3,6 +3,7 @@ import { State } from "../../../redux";
 import { send } from "../../../ws";
 import Leyline from "./Leyline";
 import styles from "./Cycles.module.scss";
+import { GameEndTurnRequest } from "../../../types/request";
 
 
 export default function Cycles() {
@@ -15,7 +16,7 @@ export default function Cycles() {
   const percent = (displayCycle / 12) * 100;
 
   function click() {
-    send({ action: "game.endTurn" });
+    send<GameEndTurnRequest>({ action: "game.endTurn" });
   }
 
   return (

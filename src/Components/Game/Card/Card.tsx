@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { CardPrimitive } from "../../../../types/general";
+import { CardPrimitive } from "../../../types/general";
 import styles from "./Card.module.scss";
 import { selectCard } from "../../../redux/card";
 import { clearBurstSelection } from "../../../redux/burst";
@@ -12,18 +12,18 @@ type Props = CardPrimitive & {
 };
 
 export default function Card(props: Props) {
-  const { upgrading, ...card } = props;
+  const { upgrading, cardId, name } = props;
   const dispatch = useDispatch();
-  const canPlay = cards[props.name]?.canPlay === true;
+  const canPlay = cards[name]?.canPlay === true;
 
   function select() {
     if (upgrading || !canPlay) return;
     dispatch(clearBurstSelection());
-    dispatch(selectCard({ cardId: props.cardId, cardKey: props.name }));
+    dispatch(selectCard({ cardId, cardKey: name }));
   }
 
   const isSelected =
-    useSelector((state: State) => state.card.selectedCard) === props.cardId;
+    useSelector((state: State) => state.card.selectedCard) === cardId;
 
   if (upgrading) {
     return (
@@ -48,7 +48,7 @@ export default function Card(props: Props) {
       className={`${styles.canSelect} ${isSelected ? styles.selected : ""} ${!canPlay ? styles.cannotPlay : ""}`}
       onClick={select}
     >
-      <CardTexture name={props.name} />
+      <CardTexture name={name} />
     </div>
   );
 }

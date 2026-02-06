@@ -1,32 +1,10 @@
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { PlayerPrimitive } from "../../../../types/general";
+import { PlayerPrimitive } from "../../../types/general";
 import ChangeableStat from "../../ChangeableStat/ChangeableStat";
 import PlayerEffects from "./PlayerEffects";
 import styles from "./PlayerStats.module.scss";
-import { State, store } from "../../../redux";
-import { finishEffect } from "../../../redux/effects";
-import { sleep } from "../../../utils/sleep";
 
 export default function PlayerStats(props: PlayerPrimitive) {
-  const myId = useSelector((state: State) => state.players.me.playerId);
-  const resetStats = useSelector((state: State) => state.effects.resetStats);
-  const counter = useSelector((state: State) => state.effects.counter);
-
-  useEffect(() => {
-    (async () => {
-      if (!resetStats.isShown) return;
-      if (resetStats.player !== myId) {
-        store.dispatch(finishEffect());
-        return;
-      }
-
-      await sleep(1000);
-
-      store.dispatch(finishEffect());
-    })();
-  }, [resetStats.isShown, counter]);
-
   const normalMax = 3;
   const spentActionPoints = "◻".repeat(normalMax - props.actionPoints.normal);
   const actionPoints = "⬜".repeat(props.actionPoints.normal);

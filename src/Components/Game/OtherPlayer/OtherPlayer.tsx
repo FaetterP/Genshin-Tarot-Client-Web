@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { PlayerPrimitive } from "../../../../types/general";
+import { PlayerPrimitive } from "../../../types/general";
 import OtherEnemy from "./OtherEnemy";
 import styles from "./OtherPlayer.module.scss";
 import { State } from "../../../redux";
