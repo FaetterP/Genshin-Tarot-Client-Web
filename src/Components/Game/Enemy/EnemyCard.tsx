@@ -30,6 +30,9 @@ export default function EnemyCard(props: EnemyPrimitive) {
       </div>
       <div className={styles.description}>{description}</div>
       <div className={styles.status}>
+        {props.isStunned && (
+          <span className={styles.stunned} title="Оглушён">💫</span>
+        )}
         {props.elements[0] && (
           <div className={styles[toElementKey(props.elements[0])]}>
             {elementNames[toElementKey(props.elements[0])] ?? props.elements[0]}

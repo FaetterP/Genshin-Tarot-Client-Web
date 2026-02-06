@@ -119,6 +119,13 @@
 
     padding-top: 10px;
 
+    .stunned {
+      display: inline-block;
+      margin-right: 4px;
+      font-size: 22px;
+      filter: drop-shadow(0 0 4px rgba(255, 200, 100, 0.6));
+    }
+
     .Cryo {
       color: aqua;
     }
