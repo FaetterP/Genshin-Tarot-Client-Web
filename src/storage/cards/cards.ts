@@ -5,11 +5,14 @@ export const cards: Record<
     isUpgraded: boolean;
     canPlay: boolean;
     canUpgrade: boolean;
+    /** Если false, в выборе карты для эффекта (isNeedCardFrom) нельзя выбрать саму разыгрываемую карту. По умолчанию true. */
+    isCanSelectItself?: boolean;
     require?: {
       enemiesCount?: number;
       isRange?: boolean;
       isCanAlternative?: boolean;
       isNeedPlayer?: boolean;
+      isNeedCardFrom?: ("hand" | "discard" | "deck")[];
     };
   }
 > = {
@@ -37,8 +40,22 @@ export const cards: Record<
     canUpgrade: false,
     require: { enemiesCount: 1 },
   },
-  SolarIsotoma: { cost: 2, isUpgraded: false, canUpgrade: true, canPlay: true },
-  SolarIsotomaPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
+  SolarIsotoma: {
+    cost: 2,
+    isUpgraded: false,
+    canUpgrade: true,
+    canPlay: true,
+    isCanSelectItself: false,
+    require: { isNeedCardFrom: ["hand", "discard"] },
+  },
+  SolarIsotomaPlus: {
+    cost: 1,
+    isUpgraded: true,
+    canUpgrade: false,
+    canPlay: true,
+    isCanSelectItself: false,
+    require: { isNeedCardFrom: ["hand", "discard"] },
+  },
   Sharpshooter: {
     cost: 0,
     canPlay: true,

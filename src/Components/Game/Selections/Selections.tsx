@@ -1,21 +1,30 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useState, useRef, useEffect } from "react";
 import { State } from "../../../redux";
+import { setSelectedCardForEffect, type CardSource } from "../../../redux/card";
 import { send } from "../../../ws";
 import { useFormik } from "formik";
 import styles from "./Selections.module.scss";
 import { cards } from "../../../storage/cards/cards";
 import CompactCard from "../Card/CompactCard";
 import { GameUpgradeCardRequest, GameUseCardRequest } from "../../../types/request";
+import type { CardPrimitive } from "../../../types/general";
 
 export default function Selections() {
+  const dispatch = useDispatch();
   const {
     needEnemies,
     isCanAlternative,
     selectedCard,
+    selectedCardForEffect,
+    isNeedCardFrom,
     enemies,
     selectedPlayer,
   } = useSelector((state: State) => state.card);
+  const cardNames = useSelector((state: State) => state.lang.cards.names);
   const hand = useSelector((state: State) => state.players.me.hand);
+  const discard = useSelector((state: State) => state.players.me.discard);
+  const deck = useSelector((state: State) => state.players.me.deck);
   const selectedCardInHand = hand.find((c) => c.cardId === selectedCard);
   const canPlayCard =
     selectedCardInHand &&
@@ -25,10 +34,21 @@ export default function Selections() {
     cards[selectedCardInHand.name]?.canUpgrade === true;
 
   const isNeedPlayer = useSelector((state: State) => state.card.isNeedPlayer);
+  const isCanSelectItself = selectedCardInHand
+    ? (cards[selectedCardInHand.name]?.isCanSelectItself !== false)
+    : true;
+  const selectableCardsForEffect: { card: CardPrimitive; source: CardSource }[] = [
+    ...(isNeedCardFrom.includes("hand") ? hand.map((card) => ({ card, source: "hand" as CardSource })) : []),
+    ...(isNeedCardFrom.includes("discard") ? discard.map((card) => ({ card, source: "discard" as CardSource })) : []),
+    ...(isNeedCardFrom.includes("deck") ? deck.map((card) => ({ card, source: "deck" as CardSource })) : []),
+  ].filter(({ card }) => isCanSelectItself || card.cardId !== selectedCard);
+  const isSelectedCardForEffectValid =
+    !selectedCardForEffect || selectableCardsForEffect.some(({ card }) => card.cardId === selectedCardForEffect);
   const canSubmitCard =
     canPlayCard &&
     (!isNeedPlayer || !!selectedPlayer) &&
-    (!needEnemies || enemies.length >= needEnemies);
+    (!needEnemies || enemies.length >= needEnemies) &&
+    (!isNeedCardFrom?.length || isSelectedCardForEffectValid);
 
   const formik = useFormik({
     initialValues: {
@@ -41,6 +61,9 @@ export default function Selections() {
       }
       if (selectedPlayer) {
         data.selectedPlayer = selectedPlayer;
+      }
+      if (selectedCardForEffect) {
+        data.selectedCard = selectedCardForEffect;
       }
 
       data.isUseAlternative = values.isUseAlternative;
@@ -64,9 +87,30 @@ export default function Selections() {
     send<GameUpgradeCardRequest>({ action: "game.upgradeCard", cardId: selectedCard });
   }
 
+  const [cardDropdownOpen, setCardDropdownOpen] = useState(false);
+  const cardDropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!cardDropdownOpen) return;
+    function handleClickOutside(e: MouseEvent) {
+      if (cardDropdownRef.current && !cardDropdownRef.current.contains(e.target as Node)) {
+        setCardDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [cardDropdownOpen]);
+
   if (!selectedCard) {
     return <></>;
   }
+
+  const selectedCardLabel = selectedCardForEffect
+    ? selectableCardsForEffect.find(({ card }) => card.cardId === selectedCardForEffect)
+    : null;
+  const selectedCardDisplayName = selectedCardLabel
+    ? (cardNames[selectedCardLabel.card.name] || selectedCardLabel.card.name)
+    : "—";
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -83,6 +127,41 @@ export default function Selections() {
         </div>
       ) : (
         <></>
+      )}
+      {canPlayCard && isNeedCardFrom?.length > 0 && (
+        <div className={styles.cardSelectWrap} ref={cardDropdownRef}>
+          <label>Выберите карту:</label>
+          <div className={styles.cardSelectTrigger} onClick={() => setCardDropdownOpen((v) => !v)}>
+            {selectedCardDisplayName}
+          </div>
+          {cardDropdownOpen && (
+            <div className={styles.cardSelectList}>
+              <button
+                type="button"
+                className={styles.cardSelectOption}
+                onClick={() => {
+                  dispatch(setSelectedCardForEffect({ cardId: "" }));
+                  setCardDropdownOpen(false);
+                }}
+              >
+                —
+              </button>
+              {selectableCardsForEffect.map(({ card }) => (
+                <button
+                  key={card.cardId}
+                  type="button"
+                  className={styles.cardSelectOption}
+                  onClick={() => {
+                    dispatch(setSelectedCardForEffect({ cardId: card.cardId }));
+                    setCardDropdownOpen(false);
+                  }}
+                >
+                  {cardNames[card.name] || card.name}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       )}
       <div className={styles.buttons}>
         {canPlayCard && (

@@ -115,6 +115,12 @@
     z-index: 90;
   }
 
+  &.selectedForEffect {
+    outline: 3px solid rgba(195, 171, 145, 0.95);
+    box-shadow: 0 0 16px rgba(195, 171, 145, 0.5);
+    z-index: 89;
+  }
+
   &.upgrading {
     pointer-events: none;
     outline: none;

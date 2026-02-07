@@ -43,6 +43,12 @@
   &:hover {
     background: rgba(80, 120, 140, 0.4);
   }
+
+  &.cardSelectedForEffect {
+    outline: 2px solid rgba(100, 200, 220, 0.95);
+    box-shadow: 0 0 12px rgba(80, 180, 200, 0.45);
+    background: rgba(70, 130, 160, 0.45);
+  }
 }
 
 .cardEntering {

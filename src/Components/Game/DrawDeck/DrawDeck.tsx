@@ -11,6 +11,7 @@ const LIST_RESIZE_DURATION_MS = 300;
 
 export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
   const cardNames = useSelector((state: State) => state.lang.cards.names);
+  const selectedCardForEffect = useSelector((state: State) => state.card.selectedCardForEffect);
   const cardsLeavingDeckForDraw = useSelector(
     (state: State) => state.stepAnimation.cardsLeavingDeckForDraw
   );
@@ -108,7 +109,7 @@ export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
           {cards.map((card) => (
             <div
               key={card.cardId}
-              className={`${styles.card} ${enteringIds.has(card.cardId) ? styles.cardEntering : ""} ${leavingForDrawIds.has(card.cardId) ? styles.cardExiting : ""}`}
+              className={`${styles.card} ${enteringIds.has(card.cardId) ? styles.cardEntering : ""} ${leavingForDrawIds.has(card.cardId) ? styles.cardExiting : ""} ${selectedCardForEffect === card.cardId ? styles.cardSelectedForEffect : ""}`}
               onMouseEnter={() => handleMouseEnter(card)}
               onMouseLeave={() => setHoveredCard(null)}
             >

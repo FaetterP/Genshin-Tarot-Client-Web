@@ -39,7 +39,6 @@
     box-sizing: border-box;
   }
 
-  /* Наложение карт при большом количестве в руке */
   .cardsStacked > * {
     margin-left: -55px;
   }
@@ -50,6 +49,7 @@
 
   .selections {
     position: absolute;
+    z-index: 100;
   }
 
   .stats {

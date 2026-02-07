@@ -11,6 +11,7 @@ const LIST_RESIZE_DURATION_MS = 300;
 
 export default function DiscardDeck({ cards }: { cards: CardPrimitive[] }) {
   const cardNames = useSelector((state: State) => state.lang.cards.names);
+  const selectedCardForEffect = useSelector((state: State) => state.card.selectedCardForEffect);
   const panelRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const prevCardsRef = useRef<CardPrimitive[]>([]);
@@ -99,7 +100,7 @@ export default function DiscardDeck({ cards }: { cards: CardPrimitive[] }) {
           {cards.map((card) => (
             <div
               key={card.cardId}
-              className={`${styles.card} ${enteringIds.has(card.cardId) ? styles.cardEntering : ""}`}
+              className={`${styles.card} ${enteringIds.has(card.cardId) ? styles.cardEntering : ""} ${selectedCardForEffect === card.cardId ? styles.cardSelectedForEffect : ""}`}
               onMouseEnter={() => handleMouseEnter(card)}
               onMouseLeave={() => setHoveredCard(null)}
             >

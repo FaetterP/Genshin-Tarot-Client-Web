@@ -1,10 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { cards } from "../storage/cards/cards";
 
+export type CardSource = "hand" | "discard" | "deck";
+
 const initialState: {
   enemies: string[];
   selectedPlayer: string;
   selectedCard: string;
+  selectedCardForEffect: string;
+  isNeedCardFrom: CardSource[];
 
   needEnemies: number;
   isRange: boolean;
@@ -14,6 +18,8 @@ const initialState: {
   enemies: [],
   selectedPlayer: "",
   selectedCard: "",
+  selectedCardForEffect: "",
+  isNeedCardFrom: [],
 
   needEnemies: 0,
   isRange: false,
@@ -31,7 +37,7 @@ const charactersSlice = createSlice({
     ) {
       const { cardId, cardKey } = action.payload;
       state.selectedCard = cardId;
-      const { enemiesCount, isRange, isCanAlternative, isNeedPlayer } =
+      const { enemiesCount, isRange, isCanAlternative, isNeedPlayer, isNeedCardFrom } =
         cards[cardKey].require || {};
 
       if (enemiesCount) {
@@ -44,6 +50,8 @@ const charactersSlice = createSlice({
 
       state.isCanAlternative = isCanAlternative || false;
       state.isNeedPlayer = isNeedPlayer || false;
+      state.isNeedCardFrom = isNeedCardFrom ?? [];
+      state.selectedCardForEffect = "";
 
       state.enemies = [];
       state.selectedPlayer = "";
@@ -61,6 +69,9 @@ const charactersSlice = createSlice({
     setCardSelectedPlayer(state, action: PayloadAction<{ playerId: string }>) {
       state.selectedPlayer = action.payload.playerId;
     },
+    setSelectedCardForEffect(state, action: PayloadAction<{ cardId: string }>) {
+      state.selectedCardForEffect = action.payload.cardId;
+    },
     clearUsedCard(state, _action: PayloadAction<void>) {
       return initialState;
     }
@@ -68,5 +79,5 @@ const charactersSlice = createSlice({
 });
 
 export default charactersSlice.reducer;
-export const { selectCard, selectEnemy, setCardSelectedPlayer, clearUsedCard } =
+export const { selectCard, selectEnemy, setCardSelectedPlayer, setSelectedCardForEffect, clearUsedCard } =
   charactersSlice.actions;

@@ -24,6 +24,8 @@ export default function Card(props: Props) {
 
   const isSelected =
     useSelector((state: State) => state.card.selectedCard) === cardId;
+  const isSelectedForEffect =
+    useSelector((state: State) => state.card.selectedCardForEffect) === cardId;
 
   if (upgrading) {
     return (
@@ -45,7 +47,7 @@ export default function Card(props: Props) {
 
   return (
     <div
-      className={`${styles.canSelect} ${isSelected ? styles.selected : ""} ${!canPlay ? styles.cannotPlay : ""}`}
+      className={`${styles.canSelect} ${isSelected ? styles.selected : ""} ${isSelectedForEffect ? styles.selectedForEffect : ""} ${!canPlay ? styles.cannotPlay : ""}`}
       onClick={select}
     >
       <CardTexture name={name} />
