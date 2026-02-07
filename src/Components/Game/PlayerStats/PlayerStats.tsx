@@ -9,6 +9,7 @@ export default function PlayerStats(props: PlayerPrimitive) {
   const spentActionPoints = "◻".repeat(normalMax - props.actionPoints.normal);
   const actionPoints = "⬜".repeat(props.actionPoints.normal);
   const extraActionPoints = "🟧".repeat(props.actionPoints.extra);
+  const hasFreezeInHand = props.hand?.some((c) => c.name === "Freeze") ?? false;
 
   return (
     <>
@@ -24,6 +25,9 @@ export default function PlayerStats(props: PlayerPrimitive) {
         </div>
         <div className={styles.energy}>
           <ChangeableStat value={props.energy}>{props.energy}⚛</ChangeableStat>
+          {hasFreezeInHand && (
+            <div className={styles.energyIceShard} />
+          )}
         </div>
         <div className={styles.mora}>
           <ChangeableStat value={props.mora}>{props.mora}💰</ChangeableStat>
