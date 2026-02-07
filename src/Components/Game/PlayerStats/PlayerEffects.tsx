@@ -13,7 +13,7 @@ const effectsMap: Record<string, { display: string }> = {
   GuideOfAfterlife: { display: "🔥🦋" },
   GuobaFire: { display: "🐻🔥" },
   LayeredFrost: { display: "☃" },
-  LetTheShowBegin: { display: "💦🎶" },
+  LetTheShowBeginPlus: { display: "💦🎶+" },
   MirrorReflections: { display: "👉👈" },
   NiwabiFireDance: { display: "🔥🎶" },
   Overheat: { display: "⚡🔥" },
