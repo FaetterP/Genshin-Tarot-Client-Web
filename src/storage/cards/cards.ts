@@ -1,11 +1,13 @@
+import { ECardType } from "../../types/enums";
+
 export const cards: Record<
   string,
   {
     cost: number;
+    cardType: ECardType;
     isUpgraded: boolean;
     canPlay: boolean;
     canUpgrade: boolean;
-    /** Если false, в выборе карты для эффекта (isNeedCardFrom) нельзя выбрать саму разыгрываемую карту. По умолчанию true. */
     isCanSelectItself?: boolean;
     require?: {
       enemiesCount?: number;
@@ -18,6 +20,7 @@ export const cards: Record<
 > = {
   ForeignRockblade: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -25,16 +28,18 @@ export const cards: Record<
   },
   ForeignRockbladePlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1 },
   },
-  StarfellSword: { cost: 2, isUpgraded: false, canUpgrade: true, canPlay: true },
-  StarfellSwordPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
-  WeissBladework: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  StarfellSword: { cost: 2, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  StarfellSwordPlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
+  WeissBladework: { cost: 1, cardType: ECardType.Attack, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   WeissBladeworkPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -42,6 +47,7 @@ export const cards: Record<
   },
   SolarIsotoma: {
     cost: 2,
+    cardType: ECardType.Skill,
     isUpgraded: false,
     canUpgrade: true,
     canPlay: true,
@@ -50,6 +56,7 @@ export const cards: Record<
   },
   SolarIsotomaPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     isUpgraded: true,
     canUpgrade: false,
     canPlay: true,
@@ -58,6 +65,7 @@ export const cards: Record<
   },
   Sharpshooter: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -65,14 +73,16 @@ export const cards: Record<
   },
   SharpshooterPlus: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isRange: true },
   },
-  ExplosivePuppet: { cost: 2, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  ExplosivePuppet: { cost: 2, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   ExplosivePuppetPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -80,6 +90,7 @@ export const cards: Record<
   },
   WhisperOfWater: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -87,6 +98,7 @@ export const cards: Record<
   },
   WhisperOfWaterPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -94,33 +106,37 @@ export const cards: Record<
   },
   LetTheShowBegin: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
     require: { enemiesCount: 1, isNeedPlayer: true, isCanAlternative: true },
   },
-  LetTheShowBeginPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
+  LetTheShowBeginPlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   Oceanborn: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
     require: { enemiesCount: 1, isCanAlternative: true },
   },
-  OceanbornPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
-  Tidecaller: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
-  TidecallerPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
-  StrikeOfFortune: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  OceanbornPlus: { cost: 1, cardType: ECardType.Attack, isUpgraded: true, canUpgrade: false, canPlay: true },
+  Tidecaller: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  TidecallerPlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
+  StrikeOfFortune: { cost: 1, cardType: ECardType.Attack, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   StrikeOfFortunePlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1 },
   },
-  PassionOverload: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  PassionOverload: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   PassionOverloadPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -128,20 +144,22 @@ export const cards: Record<
   },
   Demonbane: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
     require: { enemiesCount: 1, isCanAlternative: true },
   },
   DemonbanePlus: {
-    cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true, require: {
+    cost: 1, cardType: ECardType.Attack, isUpgraded: true, canUpgrade: false, canPlay: true, require: {
       enemiesCount: 1
     }
   },
-  LayeredFrost: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
-  LayeredFrostPlus: { cost: 0, isUpgraded: true, canUpgrade: false, canPlay: true },
+  LayeredFrost: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  LayeredFrostPlus: { cost: 0, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   TemperedSword: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -149,6 +167,7 @@ export const cards: Record<
   },
   TemperedSwordPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -156,6 +175,7 @@ export const cards: Record<
   },
   SearingOnslaught: {
     cost: 2,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -163,6 +183,7 @@ export const cards: Record<
   },
   SearingOnslaughtPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -170,6 +191,7 @@ export const cards: Record<
   },
   KatzleinStyle: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -177,15 +199,17 @@ export const cards: Record<
   },
   KatzleinStylePlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isRange: true },
   },
-  IcyPaws: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { isCanAlternative: true } },
-  IcyPawsPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
+  IcyPaws: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true, require: { isCanAlternative: true } },
+  IcyPawsPlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   EdelBladework: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -193,14 +217,16 @@ export const cards: Record<
   },
   EdelBladeworkPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1 },
   },
-  IcetideVortex: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  IcetideVortex: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   IcetideVortexPlus: {
     cost: 0,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -208,6 +234,7 @@ export const cards: Record<
   },
   BoltsOfDownfall: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -215,14 +242,16 @@ export const cards: Record<
   },
   BoltsOfDownfallPlus: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isRange: true },
   },
-  Nightrider: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  Nightrider: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   NightriderPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -230,6 +259,7 @@ export const cards: Record<
   },
   LiutianArchery: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -237,14 +267,16 @@ export const cards: Record<
   },
   LiutianArcheryPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isRange: true, isCanAlternative: true },
   },
-  TrailOfTheQilin: { cost: 2, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  TrailOfTheQilin: { cost: 2, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   TrailOfTheQilinPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -252,6 +284,7 @@ export const cards: Record<
   },
   SpearOfWangsheng: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -259,6 +292,7 @@ export const cards: Record<
   },
   SpearOfWangshengPlus: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -266,6 +300,7 @@ export const cards: Record<
   },
   GuideOfAfterlife: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -273,6 +308,7 @@ export const cards: Record<
   },
   GuideOfAfterlifePlus: {
     cost: 0,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -280,6 +316,7 @@ export const cards: Record<
   },
   FavoniusBladework: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -287,6 +324,7 @@ export const cards: Record<
   },
   FavoniusBladeworkPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -294,6 +332,7 @@ export const cards: Record<
   },
   GaleBlade: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -301,6 +340,7 @@ export const cards: Record<
   },
   GaleBladePlus: {
     cost: 0,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -308,6 +348,7 @@ export const cards: Record<
   },
   CeremonialBladework: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -315,16 +356,18 @@ export const cards: Record<
   },
   CeremonialBladeworkPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1 },
   },
-  Frostgnaw: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
-  FrostgnawPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
-  GaryuuBladework: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  Frostgnaw: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  FrostgnawPlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
+  GaryuuBladework: { cost: 1, cardType: ECardType.Attack, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   GaryuuBladeworkPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -332,14 +375,16 @@ export const cards: Record<
   },
   Chihayaburu: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
     require: { enemiesCount: 2, isRange: true, isCanAlternative: true },
   },
-  ChihayaburuPlus: { cost: 0, isUpgraded: true, canUpgrade: false, canPlay: true },
+  ChihayaburuPlus: { cost: 0, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   YunlaiSwordsmanship: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -347,6 +392,7 @@ export const cards: Record<
   },
   YunlaiSwordsmanshipPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -354,6 +400,7 @@ export const cards: Record<
   },
   StellarRestoration: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -361,6 +408,7 @@ export const cards: Record<
   },
   StellarRestorationPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -368,6 +416,7 @@ export const cards: Record<
   },
   Kaboom: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -375,6 +424,7 @@ export const cards: Record<
   },
   KaboomPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -382,6 +432,7 @@ export const cards: Record<
   },
   JumpyDumpty: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -389,6 +440,7 @@ export const cards: Record<
   },
   JumpyDumptyPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -396,6 +448,7 @@ export const cards: Record<
   },
   LightningTouch: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -403,33 +456,37 @@ export const cards: Record<
   },
   LightningTouchPlus: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isRange: true },
   },
-  VioletArc: { cost: 2, isUpgraded: false, canUpgrade: true, canPlay: true },
-  VioletArcPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
-  ForeignIronwind: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  VioletArc: { cost: 2, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  VioletArcPlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
+  ForeignIronwind: { cost: 1, cardType: ECardType.Attack, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   ForeignIronwindPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1 },
   },
-  PalmVortex: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
-  PalmVortexPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
+  PalmVortex: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  PalmVortexPlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   RippleOfFate: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
     require: { enemiesCount: 1, isRange: true },
   },
-  RippleOfFatePlus: { cost: 0, isUpgraded: true, canUpgrade: false, canPlay: true },
+  RippleOfFatePlus: { cost: 0, cardType: ECardType.Attack, isUpgraded: true, canUpgrade: false, canPlay: true },
   MirrorReflections: {
     cost: 2,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -437,6 +494,7 @@ export const cards: Record<
   },
   MirrorReflectionsPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -444,6 +502,7 @@ export const cards: Record<
   },
   SparklingScatter: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -451,14 +510,16 @@ export const cards: Record<
   },
   SparklingScatterPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 2, isRange: true },
   },
-  JadeScreen: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { isNeedPlayer: true } },
+  JadeScreen: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true, require: { isNeedPlayer: true } },
   JadeScreenPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -466,17 +527,19 @@ export const cards: Record<
   },
   MaidsBladework: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
     require: { enemiesCount: 1, isCanAlternative: true },
   },
-  MaidsBladeworkPlus: { cost: 0, isUpgraded: true, canUpgrade: false, canPlay: true },
-  Breastplate: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
-  BreastplatePlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
-  AncientSwordArt: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  MaidsBladeworkPlus: { cost: 0, cardType: ECardType.Attack, isUpgraded: true, canUpgrade: false, canPlay: true },
+  Breastplate: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  BreastplatePlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
+  AncientSwordArt: { cost: 1, cardType: ECardType.Attack, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   AncientSwordArtPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -484,6 +547,7 @@ export const cards: Record<
   },
   HeraldOfFrost: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -491,6 +555,7 @@ export const cards: Record<
   },
   HeraldOfFrostPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -498,15 +563,17 @@ export const cards: Record<
   },
   Origin: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
     require: { enemiesCount: 1, isCanAlternative: true },
   },
-  OriginPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true, require: { enemiesCount: 1 } },
-  BalefulOmen: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { isNeedPlayer: true } },
+  OriginPlus: { cost: 1, cardType: ECardType.Attack, isUpgraded: true, canUpgrade: false, canPlay: true, require: { enemiesCount: 1 } },
+  BalefulOmen: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true, require: { isNeedPlayer: true } },
   BalefulOmenPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -514,6 +581,7 @@ export const cards: Record<
   },
   SteelFang: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -521,15 +589,17 @@ export const cards: Record<
   },
   SteelFangPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isCanAlternative: true },
   },
-  ClawAndThunder: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
-  ClawAndThunderPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
+  ClawAndThunder: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  ClawAndThunderPlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   SpearOfTheChurch: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -537,6 +607,7 @@ export const cards: Record<
   },
   SpearOfTheChurchPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -544,6 +615,7 @@ export const cards: Record<
   },
   RavagingConfession: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -551,6 +623,7 @@ export const cards: Record<
   },
   RavagingConfessionPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -558,6 +631,7 @@ export const cards: Record<
   },
   WindSpiritCreation: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -565,6 +639,7 @@ export const cards: Record<
   },
   WindSpiritCreationPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -572,14 +647,16 @@ export const cards: Record<
   },
   AnemoHypostatis: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
     require: { enemiesCount: 1, isRange: true },
   },
-  AnemoHypostatisPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
+  AnemoHypostatisPlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   CuttingTorrent: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -587,15 +664,17 @@ export const cards: Record<
   },
   CuttingTorrentPlus: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isRange: true },
   },
-  RagingTide: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
-  RagingTidePlus: { cost: 0, isUpgraded: true, canUpgrade: false, canPlay: true },
+  RagingTide: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  RagingTidePlus: { cost: 0, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   DivineArchery: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -603,14 +682,16 @@ export const cards: Record<
   },
   DivineArcheryPlus: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isRange: true, isCanAlternative: true },
   },
-  SkywardSonnet: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
+  SkywardSonnet: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
   SkywardSonnetPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -618,6 +699,7 @@ export const cards: Record<
   },
   DoughFu: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -625,15 +707,17 @@ export const cards: Record<
   },
   DoughFuPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isCanAlternative: true },
   },
-  GuobaFire: { cost: 2, isUpgraded: false, canUpgrade: true, canPlay: true },
-  GuobaFirePlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
+  GuobaFire: { cost: 2, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  GuobaFirePlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   WhirlwindThrust: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -641,17 +725,19 @@ export const cards: Record<
   },
   WhirlwindThrustPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isCanAlternative: true },
   },
-  LemniscaticWind: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
-  LemniscaticWindPlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
-  GuhuaStyle: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
-  GuhuaStylePlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true, require: { enemiesCount: 1 } },
+  LemniscaticWind: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  LemniscaticWindPlus: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
+  GuhuaStyle: { cost: 1, cardType: ECardType.Attack, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  GuhuaStylePlus: { cost: 1, cardType: ECardType.Attack, isUpgraded: true, canUpgrade: false, canPlay: true, require: { enemiesCount: 1 } },
   FatalRainscreen: {
     cost: 2,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -659,6 +745,7 @@ export const cards: Record<
   },
   FatalRainscreenPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -666,16 +753,18 @@ export const cards: Record<
   },
   DanceOfFire: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
     require: { enemiesCount: 1, isCanAlternative: true },
   },
-  DanceOfFirePlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
-  SweepingFervor: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
-  SweepingFervorPlus: { cost: 0, isUpgraded: true, canUpgrade: false, canPlay: true },
+  DanceOfFirePlus: { cost: 1, cardType: ECardType.Attack, isUpgraded: true, canUpgrade: false, canPlay: true },
+  SweepingFervor: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  SweepingFervorPlus: { cost: 0, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   SealOfApproval: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -683,14 +772,16 @@ export const cards: Record<
   },
   SealOfApprovalPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 1, isRange: true },
   },
-  SignedEdict: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
+  SignedEdict: { cost: 1, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true, require: { enemiesCount: 1 } },
   SignedEdictPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -698,6 +789,7 @@ export const cards: Record<
   },
   FireworkFlareUp: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -705,15 +797,17 @@ export const cards: Record<
   },
   FireworkFlareUpPlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { enemiesCount: 3, isRange: true },
   },
-  NiwabiFireDance: { cost: 0, isUpgraded: false, canUpgrade: true, canPlay: true },
-  NiwabiFireDancePlus: { cost: 0, isUpgraded: true, canUpgrade: false, canPlay: true },
+  NiwabiFireDance: { cost: 0, cardType: ECardType.Skill, isUpgraded: false, canUpgrade: true, canPlay: true },
+  NiwabiFireDancePlus: { cost: 0, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   RainOfStone: {
     cost: 0,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -721,6 +815,7 @@ export const cards: Record<
   },
   RainOfStonePlus: {
     cost: 1,
+    cardType: ECardType.Attack,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
@@ -728,6 +823,7 @@ export const cards: Record<
   },
   DominusLapidis: {
     cost: 2,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
@@ -735,13 +831,14 @@ export const cards: Record<
   },
   DominusLapidisPlus: {
     cost: 1,
+    cardType: ECardType.Skill,
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
     require: { isNeedPlayer: true },
   },
-  Dash: { cost: 0, isUpgraded: false, canUpgrade: false, canPlay: true },
-  Overheat: { cost: 0, isUpgraded: false, canUpgrade: false, canPlay: true },
-  Burn: { cost: 0, isUpgraded: false, canPlay: false, canUpgrade: false },
-  Freeze: { cost: 1, isUpgraded: false, canUpgrade: false, canPlay: true },
+  Dash: { cost: 0, cardType: ECardType.Other, isUpgraded: false, canUpgrade: false, canPlay: true },
+  Overheat: { cost: 0, cardType: ECardType.Other, isUpgraded: false, canUpgrade: false, canPlay: true },
+  Burn: { cost: 0, cardType: ECardType.Other, isUpgraded: false, canPlay: false, canUpgrade: false },
+  Freeze: { cost: 1, cardType: ECardType.Other, isUpgraded: false, canUpgrade: false, canPlay: true },
 };

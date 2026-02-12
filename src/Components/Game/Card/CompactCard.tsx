@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { State } from "../../../redux";
 import { cards } from "../../../storage/cards/cards";
+import { ECardType } from "../../../types/enums";
 import styles from "./CompactCard.module.scss";
 
 type PropsType = {
@@ -8,10 +9,13 @@ type PropsType = {
 };
 
 export default function CompactCard(props: PropsType) {
-  const { cost, isUpgraded } = cards[props.name] || {
+  const { cost, isUpgraded, cardType } = cards[props.name] || {
     cost: -1,
     isUpgraded: false,
+    cardType: ECardType.Skill,
   };
+  const cardTypeIcon =
+    cardType === ECardType.Attack ? "🗡️" : cardType === ECardType.Skill ? "✨" : "";
   const name =
     useSelector((state: State) => state.lang.cards.names[props.name]) ||
     `${props.name}.name`;
@@ -38,7 +42,10 @@ export default function CompactCard(props: PropsType) {
 
   return (
     <div className={cardClass}>
-      <div className={styles.cost}>{costText}</div>
+      <div className={styles.costRow}>
+        <span className={styles.cardTypeIcon}>{cardTypeIcon}</span>
+        <div className={styles.cost}>{costText}</div>
+      </div>
       <div className={isUpgraded ? styles.upgradedName : styles.name}>{name}</div>
       <div className={styles.description}>{description}</div>
     </div>

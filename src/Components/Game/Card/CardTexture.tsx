@@ -2,16 +2,20 @@ import { useSelector } from "react-redux";
 import { State } from "../../../redux";
 import styles from "./Card.module.scss";
 import { cards } from "../../../storage/cards/cards";
+import { ECardType } from "../../../types/enums";
 
 type PropsType = {
   name: string;
 };
 
 export default function CardTexture(props: PropsType) {
-  const { cost, isUpgraded } = cards[props.name] || {
+  const { cost, isUpgraded, cardType } = cards[props.name] || {
     cost: -1,
     isUpgraded: false,
+    cardType: ECardType.Skill,
   };
+  const cardTypeIcon =
+    cardType === ECardType.Attack ? "🗡️" : cardType === ECardType.Skill ? "✨" : "";
   const name =
     useSelector((state: State) => state.lang.cards.names[props.name]) ||
     `${props.name}.name`;
@@ -38,7 +42,10 @@ export default function CardTexture(props: PropsType) {
 
   return (
     <div className={blockClass}>
-      <div className={styles.cost}>{costText}</div>
+      <div className={styles.costRow}>
+        <span className={styles.cardTypeIcon}>{cardTypeIcon}</span>
+        <div className={styles.cost}>{costText}</div>
+      </div>
       <div className={styles[isUpgraded ? "upgradedName" : "name"]}>{name}</div>
       <div className={styles.description}>{description}</div>
     </div>

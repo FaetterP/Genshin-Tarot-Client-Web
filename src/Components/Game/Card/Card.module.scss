@@ -31,12 +31,23 @@
     font-style: italic;
   }
 
-  .cost {
-    font-size: 40px;
-
+  .costRow {
     position: absolute;
     top: 0;
+    left: 0;
     right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .cardTypeIcon {
+    font-size: 28px;
+    line-height: 1;
+  }
+
+  .cost {
+    font-size: 40px;
   }
 }
 
@@ -59,7 +70,8 @@
     color: #333;
   }
 
-  .cost {
+  .costRow .cost,
+  .costRow .cardTypeIcon {
     color: #2c2c2c;
   }
 }
@@ -84,7 +96,8 @@
     color: #e0e0e0;
   }
 
-  .cost {
+  .costRow .cost,
+  .costRow .cardTypeIcon {
     color: #e8e8e8;
   }
 }
