@@ -51,8 +51,7 @@ export function ChooseCharacters() {
   }
 
   const startText =
-    useSelector((state: State) => state.lang.service.startGame) ||
-    "service.startGame";
+    useSelector((state: State) => state.lang.service.startGame) || "service.startGame";
 
   return (
     <div className={styles.background}>

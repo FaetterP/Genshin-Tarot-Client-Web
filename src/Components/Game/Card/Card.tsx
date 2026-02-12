@@ -22,17 +22,13 @@ export default function Card(props: Props) {
     dispatch(selectCard({ cardId, cardKey: name }));
   }
 
-  const isSelected =
-    useSelector((state: State) => state.card.selectedCard) === cardId;
+  const isSelected = useSelector((state: State) => state.card.selectedCard) === cardId;
   const isSelectedForEffect =
     useSelector((state: State) => state.card.selectedCardForEffect) === cardId;
 
   if (upgrading) {
     return (
-      <div
-        className={`${styles.canSelect} ${styles.upgrading}`}
-        aria-hidden
-      >
+      <div className={`${styles.canSelect} ${styles.upgrading}`} aria-hidden>
         <div className={styles.upgradingInner}>
           <div className={styles.upgradingOld}>
             <CardTexture name={upgrading.oldCard.name} />

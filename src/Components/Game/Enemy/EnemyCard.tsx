@@ -9,13 +9,11 @@ import EnemyEffects from "./EnemyEffects";
 
 export default function EnemyCard(props: EnemyPrimitive) {
   const name =
-    useSelector((state: State) => state.lang.enemies.names[props.name]) ||
-    `${props.name}.name`;
+    useSelector((state: State) => state.lang.enemies.names[props.name]) || `${props.name}.name`;
   const elementNames = useSelector((state: State) => state.lang.elements);
   const description =
-    useSelector(
-      (state: State) => state.lang.enemies.descriptions[props.name]
-    ) || `${props.name}.description`;
+    useSelector((state: State) => state.lang.enemies.descriptions[props.name]) ||
+    `${props.name}.description`;
   const { mora, attack } = enemies[props.name];
 
   return (
@@ -32,7 +30,9 @@ export default function EnemyCard(props: EnemyPrimitive) {
       <div className={styles.description}>{description}</div>
       <div className={styles.status}>
         {props.isStunned && (
-          <span className={styles.stunned} title="Оглушён">💫</span>
+          <span className={styles.stunned} title="Оглушён">
+            💫
+          </span>
         )}
         {props.elements[0] && (
           <div className={styles[toElementKey(props.elements[0])]}>
@@ -42,5 +42,5 @@ export default function EnemyCard(props: EnemyPrimitive) {
       </div>
       {props.effects?.length > 0 && <EnemyEffects effects={props.effects} />}
     </div>
-  )
+  );
 }

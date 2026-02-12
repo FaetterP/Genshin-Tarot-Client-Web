@@ -22,9 +22,7 @@ export default function ChangeableStat({
 }: ChangeableStatProps) {
   const prevValueRef = useRef<number | undefined>(undefined);
   const keyRef = useRef(0);
-  const [popup, setPopup] = useState<{ delta: number; key: number } | null>(
-    null
-  );
+  const [popup, setPopup] = useState<{ delta: number; key: number } | null>(null);
 
   useEffect(() => {
     if (prevValueRef.current === undefined) {

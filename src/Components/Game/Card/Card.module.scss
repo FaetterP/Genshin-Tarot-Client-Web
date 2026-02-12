@@ -106,7 +106,9 @@
   margin: -140px 10px;
   position: relative;
   z-index: 1;
-  transition: transform 0.25s ease, z-index 0s;
+  transition:
+    transform 0.25s ease,
+    z-index 0s;
 
   &:hover {
     transform: translate(0, -140px);
@@ -181,7 +183,8 @@
 
 /* Новая карта: появляется когда старая исчезла; две точки — белый (75%) → нормальный (100%) */
 @keyframes upgradingNew {
-  0%, 74% {
+  0%,
+  74% {
     opacity: 0;
   }
   75% {

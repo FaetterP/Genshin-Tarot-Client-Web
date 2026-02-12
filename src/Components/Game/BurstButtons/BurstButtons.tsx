@@ -13,9 +13,7 @@ export default function BurstButtons() {
   const characters = me?.characters ?? [];
   const energy = me?.energy ?? 0;
   const burstData = useSelector((state: State) => state.lang.characters.bursts);
-  const characterNames = useSelector(
-    (state: State) => state.lang.characters.names
-  );
+  const characterNames = useSelector((state: State) => state.lang.characters.names);
 
   function handleBurstClick(character: string) {
     const cost = burstData[character]?.cost ?? 0;

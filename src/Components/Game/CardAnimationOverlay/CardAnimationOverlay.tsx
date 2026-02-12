@@ -16,16 +16,12 @@ function FullSizeCardTexture({ name }: { name: string }) {
 
 export default function CardAnimationOverlay() {
   const animatingDiscardCards = useSelector(
-    (state: State) => state.stepAnimation.animatingDiscardCards
+    (state: State) => state.stepAnimation.animatingDiscardCards,
   );
-  const animatingDrawCards = useSelector(
-    (state: State) => state.stepAnimation.animatingDrawCards
-  );
-  const animatingAddCard = useSelector(
-    (state: State) => state.stepAnimation.animatingAddCard
-  );
+  const animatingDrawCards = useSelector((state: State) => state.stepAnimation.animatingDrawCards);
+  const animatingAddCard = useSelector((state: State) => state.stepAnimation.animatingAddCard);
   const animatingUpgradeCard = useSelector(
-    (state: State) => state.stepAnimation.animatingUpgradeCard
+    (state: State) => state.stepAnimation.animatingUpgradeCard,
   );
 
   const hasAnimation =

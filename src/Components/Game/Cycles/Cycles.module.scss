@@ -80,7 +80,10 @@
   color: #e2dfd6;
   font-weight: 600;
   cursor: pointer;
-  transition: background 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition:
+    background 0.2s,
+    border-color 0.2s,
+    box-shadow 0.2s;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 
   &:hover {

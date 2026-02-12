@@ -59,13 +59,11 @@ const DEFAULT_STEP_MS = 200;
 async function runStepAnimations(
   steps: DetailedStep[],
   dispatch: ReturnType<typeof useDispatch>,
-  myPlayerId: string
+  myPlayerId: string,
 ): Promise<void> {
   const discardCards: CardPrimitive[] = [];
   const drawCards: CardPrimitive[] = [];
-  const hasUpgradeForMe = steps.some(
-    (s) => s.type === "upgrade_card" && s.playerId === myPlayerId
-  );
+  const hasUpgradeForMe = steps.some((s) => s.type === "upgrade_card" && s.playerId === myPlayerId);
 
   for (const step of steps) {
     switch (step.type) {
@@ -109,26 +107,18 @@ async function runStepAnimations(
           dispatch(clearPiercingEnemy({ enemyId: step.enemyId }));
         }
         if (step.element) {
-          dispatch(
-            setElementOnEnemy({ enemyId: step.enemyId, element: step.element })
-          );
+          dispatch(setElementOnEnemy({ enemyId: step.enemyId, element: step.element }));
           await sleep(ELEMENT_EFFECT_MS);
           dispatch(setElementOnEnemy(null));
           dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element }));
         }
-        if (
-          !step.isPiercing &&
-          step.damage <= 0 &&
-          !step.element
-        ) {
+        if (!step.isPiercing && step.damage <= 0 && !step.element) {
           await sleep(DEFAULT_STEP_MS);
         }
         break;
       }
       case "enemy_get_element": {
-        dispatch(
-          setElementOnEnemy({ enemyId: step.enemyId, element: step.element })
-        );
+        dispatch(setElementOnEnemy({ enemyId: step.enemyId, element: step.element }));
         await sleep(ELEMENT_EFFECT_MS);
         dispatch(setElementOnEnemy(null));
         dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element }));
@@ -142,7 +132,7 @@ async function runStepAnimations(
             enemyId: step.enemyId,
             element1: step.element1,
             element2: step.element2,
-          })
+          }),
         );
         await sleep(REACTION_EFFECT_MS);
         dispatch(setReactionOnEnemy(null));
@@ -168,7 +158,7 @@ async function runStepAnimations(
               playerId: step.playerId,
               oldCard: step.oldCard,
               newCard: step.newCard,
-            })
+            }),
           );
           await sleep(UPGRADE_CARD_MS);
           dispatch(setAnimatingUpgradeCard(null));
@@ -199,7 +189,7 @@ async function runStepAnimations(
             effect: step.effect,
             isRemove: step.isRemove,
             playerId: step.playerId,
-          })
+          }),
         );
         await sleep(EFFECT_TRIGGER_MS);
         dispatch(setAnimatingEffectTrigger(null));
@@ -211,7 +201,7 @@ async function runStepAnimations(
             enemyId: step.enemyId,
             playerId: step.playerId,
             damage: step.damage,
-          })
+          }),
         );
         await sleep(ENEMY_ATTACK_MS);
         dispatch(setAnimatingEnemyAttack(null));
@@ -227,9 +217,7 @@ async function runStepAnimations(
     const state = store.getState();
     const me = state.players.me;
     const discardIds = new Set(discardCards.map((c) => c.cardId));
-    dispatch(
-      setHand({ cards: me.hand.filter((c) => !discardIds.has(c.cardId)) })
-    );
+    dispatch(setHand({ cards: me.hand.filter((c) => !discardIds.has(c.cardId)) }));
     dispatch(setAnimatingDiscardCards(discardCards));
     await sleep(CARD_ANIMATION_MS);
     dispatch(setAnimatingDiscardCards(null));
@@ -246,20 +234,16 @@ async function runStepAnimations(
 export default function StepAnimationRunner() {
   const dispatch = useDispatch();
   const steps = useSelector((state: State) => state.stepAnimation.steps);
-  const finalPayload = useSelector(
-    (state: State) => state.stepAnimation.finalPayload
-  );
-  const afterCyclePayload = useSelector(
-    (state: State) => state.stepAnimation.afterCyclePayload
-  );
+  const finalPayload = useSelector((state: State) => state.stepAnimation.finalPayload);
+  const afterCyclePayload = useSelector((state: State) => state.stepAnimation.afterCyclePayload);
   const afterEndTurnPayload = useSelector(
-    (state: State) => state.stepAnimation.afterEndTurnPayload
+    (state: State) => state.stepAnimation.afterEndTurnPayload,
   );
   const afterEndCyclePayload = useSelector(
-    (state: State) => state.stepAnimation.afterEndCyclePayload
+    (state: State) => state.stepAnimation.afterEndCyclePayload,
   );
   const afterUpgradePayload = useSelector(
-    (state: State) => state.stepAnimation.afterUpgradePayload
+    (state: State) => state.stepAnimation.afterUpgradePayload,
   );
   const runningRef = useRef(false);
 
@@ -287,7 +271,7 @@ export default function StepAnimationRunner() {
             player: finalPayload.player,
             card: finalPayload.card,
             isMe: finalPayload.isMe,
-          })
+          }),
         );
         store.dispatch(clearUsedCard(undefined));
       } else if (afterCyclePayload) {
@@ -297,7 +281,7 @@ export default function StepAnimationRunner() {
           setPlayers({
             you: afterCyclePayload.you,
             otherPlayers: afterCyclePayload.otherPlayers,
-          })
+          }),
         );
       } else if (afterEndTurnPayload) {
         if (afterEndTurnPayload.taskId) {

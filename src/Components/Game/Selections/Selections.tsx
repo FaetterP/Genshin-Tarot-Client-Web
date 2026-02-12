@@ -26,16 +26,12 @@ export default function Selections() {
   const discard = useSelector((state: State) => state.players.me.discard);
   const deck = useSelector((state: State) => state.players.me.deck);
   const selectedCardInHand = hand.find((c) => c.cardId === selectedCard);
-  const canPlayCard =
-    selectedCardInHand &&
-    cards[selectedCardInHand.name]?.canPlay === true;
-  const canUpgrade =
-    selectedCardInHand &&
-    cards[selectedCardInHand.name]?.canUpgrade === true;
+  const canPlayCard = selectedCardInHand && cards[selectedCardInHand.name]?.canPlay === true;
+  const canUpgrade = selectedCardInHand && cards[selectedCardInHand.name]?.canUpgrade === true;
 
   const isNeedPlayer = useSelector((state: State) => state.card.isNeedPlayer);
   const isCanSelectItself = selectedCardInHand
-    ? (cards[selectedCardInHand.name]?.isCanSelectItself !== false)
+    ? cards[selectedCardInHand.name]?.isCanSelectItself !== false
     : true;
   const deckForSelect = isNeedCardFrom.includes("deck")
     ? [...deck].sort((a, b) => {
@@ -45,12 +41,19 @@ export default function Selections() {
       })
     : [];
   const selectableCardsForEffect: { card: CardPrimitive; source: CardSource }[] = [
-    ...(isNeedCardFrom.includes("hand") ? hand.map((card) => ({ card, source: "hand" as CardSource })) : []),
-    ...(isNeedCardFrom.includes("discard") ? discard.map((card) => ({ card, source: "discard" as CardSource })) : []),
-    ...(isNeedCardFrom.includes("deck") ? deckForSelect.map((card) => ({ card, source: "deck" as CardSource })) : []),
+    ...(isNeedCardFrom.includes("hand")
+      ? hand.map((card) => ({ card, source: "hand" as CardSource }))
+      : []),
+    ...(isNeedCardFrom.includes("discard")
+      ? discard.map((card) => ({ card, source: "discard" as CardSource }))
+      : []),
+    ...(isNeedCardFrom.includes("deck")
+      ? deckForSelect.map((card) => ({ card, source: "deck" as CardSource }))
+      : []),
   ].filter(({ card }) => isCanSelectItself || card.cardId !== selectedCard);
   const isSelectedCardForEffectValid =
-    !selectedCardForEffect || selectableCardsForEffect.some(({ card }) => card.cardId === selectedCardForEffect);
+    !selectedCardForEffect ||
+    selectableCardsForEffect.some(({ card }) => card.cardId === selectedCardForEffect);
   const canSubmitCard =
     canPlayCard &&
     (!isNeedPlayer || !!selectedPlayer) &&
@@ -79,15 +82,11 @@ export default function Selections() {
     },
   });
 
-  const useAltText =
-    useSelector((state: State) => state.lang.service.useAlt) ||
-    "service.useAlt";
+  const useAltText = useSelector((state: State) => state.lang.service.useAlt) || "service.useAlt";
   const useCardText =
-    useSelector((state: State) => state.lang.service.useCard) ||
-    "service.useCard";
+    useSelector((state: State) => state.lang.service.useCard) || "service.useCard";
   const upgradeCardText =
-    useSelector((state: State) => state.lang.service.upgradeCard) ||
-    "service.upgradeCard";
+    useSelector((state: State) => state.lang.service.upgradeCard) || "service.upgradeCard";
 
   function handleUpgrade() {
     if (!selectedCard) return;
@@ -184,11 +183,7 @@ export default function Selections() {
       )}
       <div className={styles.buttons}>
         {canPlayCard && (
-          <button
-            type="submit"
-            className="generalButton"
-            disabled={!canSubmitCard}
-          >
+          <button type="submit" className="generalButton" disabled={!canSubmitCard}>
             {useCardText}
           </button>
         )}
@@ -203,11 +198,7 @@ export default function Selections() {
                 <CompactCard name={`${selectedCardInHand.name}Plus`} />
               </div>
             </div>
-            <button
-              type="button"
-              className="generalButton"
-              onClick={handleUpgrade}
-            >
+            <button type="button" className="generalButton" onClick={handleUpgrade}>
               {upgradeCardText}
             </button>
           </div>

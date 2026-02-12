@@ -131,10 +131,7 @@ const stepAnimationSlice = createSlice({
   name: "stepAnimation",
   initialState,
   reducers: {
-    startStepAnimation(
-      state,
-      action: PayloadAction<StepAnimationPayload>
-    ) {
+    startStepAnimation(state, action: PayloadAction<StepAnimationPayload>) {
       const payload = action.payload;
       const { steps } = payload;
 
@@ -192,10 +189,7 @@ const stepAnimationSlice = createSlice({
       }
     },
 
-    setAnimatingUpgradeCard(
-      state,
-      action: PayloadAction<AnimatingUpgradeCard | null>
-    ) {
+    setAnimatingUpgradeCard(state, action: PayloadAction<AnimatingUpgradeCard | null>) {
       state.animatingUpgradeCard = action.payload;
     },
 
@@ -204,9 +198,7 @@ const stepAnimationSlice = createSlice({
     },
 
     removeDyingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
-      state.dyingEnemyIds = state.dyingEnemyIds.filter(
-        (id) => id !== action.payload.enemyId
-      );
+      state.dyingEnemyIds = state.dyingEnemyIds.filter((id) => id !== action.payload.enemyId);
     },
 
     setAppearingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
@@ -215,14 +207,11 @@ const stepAnimationSlice = createSlice({
 
     removeAppearingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
       state.appearingEnemyIds = state.appearingEnemyIds.filter(
-        (id) => id !== action.payload.enemyId
+        (id) => id !== action.payload.enemyId,
       );
     },
 
-    setAnimatingDiscardCards(
-      state,
-      action: PayloadAction<CardPrimitive[] | null>
-    ) {
+    setAnimatingDiscardCards(state, action: PayloadAction<CardPrimitive[] | null>) {
       state.animatingDiscardCards = action.payload;
     },
 
@@ -230,10 +219,7 @@ const stepAnimationSlice = createSlice({
       state.animatingDrawCards = action.payload;
     },
 
-    setCardsLeavingDeckForDraw(
-      state,
-      action: PayloadAction<CardPrimitive[] | null>
-    ) {
+    setCardsLeavingDeckForDraw(state, action: PayloadAction<CardPrimitive[] | null>) {
       state.cardsLeavingDeckForDraw = action.payload;
     },
 
@@ -242,7 +228,7 @@ const stepAnimationSlice = createSlice({
       action: PayloadAction<{
         card: CardPrimitive;
         to: AddCardDestination;
-      } | null>
+      } | null>,
     ) {
       state.animatingAddCard = action.payload;
     },
@@ -252,9 +238,7 @@ const stepAnimationSlice = createSlice({
     },
 
     clearPiercingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
-      state.piercingEnemyIds = state.piercingEnemyIds.filter(
-        (id) => id !== action.payload.enemyId
-      );
+      state.piercingEnemyIds = state.piercingEnemyIds.filter((id) => id !== action.payload.enemyId);
     },
 
     setBlockingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
@@ -262,9 +246,7 @@ const stepAnimationSlice = createSlice({
     },
 
     clearBlockingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
-      state.blockingEnemyIds = state.blockingEnemyIds.filter(
-        (id) => id !== action.payload.enemyId
-      );
+      state.blockingEnemyIds = state.blockingEnemyIds.filter((id) => id !== action.payload.enemyId);
     },
 
     setElementOnEnemy(state, action: PayloadAction<ElementOnEnemy | null>) {
@@ -275,29 +257,19 @@ const stepAnimationSlice = createSlice({
       state.reactionOnEnemy = action.payload;
     },
 
-    setEnergyFreezed(
-      state,
-      action: PayloadAction<{ playerId: string } | null>
-    ) {
-      state.energyFreezedPlayerId =
-        action.payload === null ? null : action.payload.playerId;
+    setEnergyFreezed(state, action: PayloadAction<{ playerId: string } | null>) {
+      state.energyFreezedPlayerId = action.payload === null ? null : action.payload.playerId;
     },
 
     setAnimatingLeyline(state, action: PayloadAction<string | null>) {
       state.animatingLeyline = action.payload;
     },
 
-    setAnimatingEffectTrigger(
-      state,
-      action: PayloadAction<AnimatingEffectTrigger | null>
-    ) {
+    setAnimatingEffectTrigger(state, action: PayloadAction<AnimatingEffectTrigger | null>) {
       state.animatingEffectTrigger = action.payload;
     },
 
-    setAnimatingEnemyAttack(
-      state,
-      action: PayloadAction<AnimatingEnemyAttack | null>
-    ) {
+    setAnimatingEnemyAttack(state, action: PayloadAction<AnimatingEnemyAttack | null>) {
       state.animatingEnemyAttack = action.payload;
     },
 

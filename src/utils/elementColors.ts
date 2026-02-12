@@ -16,7 +16,7 @@ export function toElementKey(element: string): string {
 export function getElementStyleClass(
   element: string,
   prefix: "element_" | "elementGlow_",
-  styles: Record<string, string>
+  styles: Record<string, string>,
 ): string {
   if (!element || element.length === 0) return "";
   const key = `${prefix}${toElementKey(element)}`;
@@ -25,7 +25,7 @@ export function getElementStyleClass(
 
 export function getReactionStyle(
   element1: string,
-  element2: string
+  element2: string,
 ): Record<string, string> | undefined {
   const e1 = toElementKey(element1);
   const e2 = toElementKey(element2);
@@ -40,7 +40,7 @@ export function getReactionStyle(
 export function getReactionDecorClass(
   element1: string,
   element2: string,
-  styles: Record<string, string>
+  styles: Record<string, string>,
 ): string {
   const e1 = toElementKey(element1);
   const e2 = toElementKey(element2);

@@ -13,7 +13,11 @@ import { startStepAnimation } from "../../redux/stepAnimation";
 import { setPage } from "../../redux/service";
 import { DetailedStep } from "../../types/detailedStep";
 import { TaskCompleteTaskRequest } from "../../types/request";
-import type { AwaitedResponse, GameEndTurnResponse, GameEndCycleResponse } from "../../types/response";
+import type {
+  AwaitedResponse,
+  GameEndTurnResponse,
+  GameEndCycleResponse,
+} from "../../types/response";
 
 async function startGame(payload: { taskId: string }) {
   const { taskId } = payload;
@@ -41,15 +45,13 @@ async function startCycle(payload: {
           otherPlayers: payload.otherPlayers,
           leylines: payload.leylines,
         },
-      })
+      }),
     );
     return;
   }
   store.dispatch(setCycle({ cycle: payload.cycle }));
   store.dispatch(setLeyline({ leylines: payload.leylines }));
-  store.dispatch(
-    setPlayers({ you: payload.you, otherPlayers: payload.otherPlayers })
-  );
+  store.dispatch(setPlayers({ you: payload.you, otherPlayers: payload.otherPlayers }));
 }
 
 async function useCardHandler(payload: {
@@ -66,7 +68,7 @@ async function useCardHandler(payload: {
         player: payload.player,
         card: payload.card,
         isMe,
-      })
+      }),
     );
     store.dispatch(clearUsedCard(undefined));
     return;
@@ -78,7 +80,7 @@ async function useCardHandler(payload: {
       player: payload.player,
       card: payload.card,
       isMe,
-    })
+    }),
   );
 }
 
@@ -99,7 +101,7 @@ async function upgradeCardHandler(payload: {
     startStepAnimation({
       steps,
       afterUpgrade: { player },
-    })
+    }),
   );
 }
 
@@ -110,7 +112,7 @@ async function endTurnHandler(payload: GameEndTurnResponse & { taskId?: string }
       startStepAnimation({
         steps,
         afterEndTurn: taskId != null ? { taskId } : {},
-      })
+      }),
     );
     return;
   }
@@ -129,7 +131,7 @@ async function endCycleHandler(payload: AwaitedResponse<GameEndCycleResponse>) {
       startStepAnimation({
         steps,
         afterEndCycle: { taskId },
-      })
+      }),
     );
     return;
   }

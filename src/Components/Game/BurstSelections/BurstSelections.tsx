@@ -18,19 +18,13 @@ export default function BurstSelections() {
   const dispatch = useDispatch();
   const burstCharacter = useSelector((state: State) => state.burst.character);
   const burstEnemies = useSelector((state: State) => state.burst.enemies);
-  const burstSelectedPlayer = useSelector(
-    (state: State) => state.burst.selectedPlayer
-  );
+  const burstSelectedPlayer = useSelector((state: State) => state.burst.selectedPlayer);
   const burstDivide = useSelector((state: State) => state.burst.divide);
-  const burstSelectedChar = useSelector(
-    (state: State) => state.burst.selectedCharacter
-  );
+  const burstSelectedChar = useSelector((state: State) => state.burst.selectedCharacter);
   const me = useSelector((state: State) => state.players.me);
   const otherPlayers = useSelector((state: State) => state.players.other);
   const lang = useSelector((state: State) => state.lang);
-  const allPlayersForDivide = me?.playerId
-    ? [me, ...otherPlayers]
-    : otherPlayers;
+  const allPlayersForDivide = me?.playerId ? [me, ...otherPlayers] : otherPlayers;
   const characterNames = lang.characters.names;
 
   if (!burstCharacter) return null;
@@ -50,8 +44,7 @@ export default function BurstSelections() {
   const divideOk = !needDivide || (burstDivide.length > 0 && burstDivide.every((d) => d.count > 0));
   const characterOk = !needCharacter || !!burstSelectedChar;
 
-  const canConfirm =
-    enemiesOk && playerOk && (needDivide ? divideOk : true) && characterOk;
+  const canConfirm = enemiesOk && playerOk && (needDivide ? divideOk : true) && characterOk;
 
   function handleConfirm() {
     if (!canConfirm || !burstCharacter) return;
@@ -59,16 +52,12 @@ export default function BurstSelections() {
       action: "game.useBurst",
       character: burstCharacter,
     };
-    if (needPlayer && burstSelectedPlayer)
-      body.selectedPlayer = burstSelectedPlayer;
+    if (needPlayer && burstSelectedPlayer) body.selectedPlayer = burstSelectedPlayer;
 
-    if (needEnemies === 1 && burstEnemies.length === 1)
-      body.selectedEnemy = burstEnemies[0];
-    else if (burstEnemies.length > 0)
-      body.selectedEnemies = [...burstEnemies];
+    if (needEnemies === 1 && burstEnemies.length === 1) body.selectedEnemy = burstEnemies[0];
+    else if (burstEnemies.length > 0) body.selectedEnemies = [...burstEnemies];
 
-    if (needDivide && burstDivide.length > 0)
-      body.divide = burstDivide.filter((d) => d.count > 0);
+    if (needDivide && burstDivide.length > 0) body.divide = burstDivide.filter((d) => d.count > 0);
     if (needCharacter && burstSelectedChar) {
       body.selectedCharacter = burstSelectedChar;
     }
@@ -101,11 +90,7 @@ export default function BurstSelections() {
             Персонаж:{" "}
             <select
               value={burstSelectedChar}
-              onChange={(e) =>
-                dispatch(
-                  setBurstSelectedCharacter({ character: e.target.value })
-                )
-              }
+              onChange={(e) => dispatch(setBurstSelectedCharacter({ character: e.target.value }))}
             >
               <option value="">—</option>
               {allCharacterKeys.map((key) => (
@@ -133,9 +118,7 @@ export default function BurstSelections() {
                   value={count}
                   onChange={(e) => {
                     const n = parseInt(e.target.value, 10) || 0;
-                    const next = burstDivide.filter(
-                      (d) => d.playerId !== p.playerId
-                    );
+                    const next = burstDivide.filter((d) => d.playerId !== p.playerId);
                     if (n > 0) next.push({ playerId: p.playerId, count: n });
                     dispatch(setBurstDivide({ divide: next }));
                   }}

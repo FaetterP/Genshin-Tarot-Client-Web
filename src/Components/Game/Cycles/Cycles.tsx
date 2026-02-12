@@ -5,7 +5,6 @@ import Leyline from "./Leyline";
 import styles from "./Cycles.module.scss";
 import { GameEndTurnRequest } from "../../../types/request";
 
-
 export default function Cycles() {
   const currentCycle = useSelector((state: State) => state.players.cycle);
   const leylines = useSelector((state: State) => state.players.leylines);
@@ -32,9 +31,7 @@ export default function Cycles() {
             <circle className={styles.cycleProgressbarTrack} cx="28" cy="28" r="25" />
             <circle className={styles.cycleProgressbarThumb} cx="28" cy="28" r="25" />
           </svg>
-          <div className={styles.cycleNumber}>
-            {currentCycle < 0 ? "—" : currentCycle}
-          </div>
+          <div className={styles.cycleNumber}>{currentCycle < 0 ? "—" : currentCycle}</div>
         </div>
         <button onClick={click} className={styles.endTurnButton}>
           {endTurnText}

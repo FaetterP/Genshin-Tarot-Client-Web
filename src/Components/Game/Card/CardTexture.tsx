@@ -17,8 +17,7 @@ export default function CardTexture(props: PropsType) {
   const cardTypeIcon =
     cardType === ECardType.Attack ? "🗡️" : cardType === ECardType.Skill ? "✨" : "";
   const name =
-    useSelector((state: State) => state.lang.cards.names[props.name]) ||
-    `${props.name}.name`;
+    useSelector((state: State) => state.lang.cards.names[props.name]) || `${props.name}.name`;
 
   const description =
     useSelector((state: State) => state.lang.cards.descriptions[props.name]) ||

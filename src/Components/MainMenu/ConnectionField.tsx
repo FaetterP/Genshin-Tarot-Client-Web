@@ -17,21 +17,15 @@ export function ConnectionField() {
   });
 
   const enterUrlText =
-    useSelector((state: State) => state.lang.service.enterUrl) ||
-    "service.enterUrl";
+    useSelector((state: State) => state.lang.service.enterUrl) || "service.enterUrl";
   const connectText =
-    useSelector((state: State) => state.lang.service.connect) ||
-    "service.connect";
+    useSelector((state: State) => state.lang.service.connect) || "service.connect";
 
   return (
     <div>
       <form onSubmit={formik.handleSubmit}>
         <h1>{enterUrlText}</h1>
-        <input
-          name="url"
-          onChange={formik.handleChange}
-          value={formik.values.url}
-        />
+        <input name="url" onChange={formik.handleChange} value={formik.values.url} />
         <button type="submit">{connectText}</button>
       </form>
     </div>

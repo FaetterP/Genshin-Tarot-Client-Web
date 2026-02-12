@@ -6,7 +6,10 @@
   border-left: 3px solid rgba(120, 120, 130, 0.6);
   color: rgba(255, 255, 255, 0.92);
   font-size: 13px;
-  transition: background 0.2s, box-shadow 0.2s, border-color 0.2s;
+  transition:
+    background 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
   min-width: 0;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -21,7 +24,10 @@
 
   &.canSelectPlayer {
     cursor: pointer;
-    transition: box-shadow 0.15s, outline 0.15s, background 0.2s;
+    transition:
+      box-shadow 0.15s,
+      outline 0.15s,
+      background 0.2s;
 
     &:hover {
       box-shadow: 0 0 0 2px rgba(180, 170, 150, 0.5);

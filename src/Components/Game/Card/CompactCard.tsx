@@ -17,8 +17,7 @@ export default function CompactCard(props: PropsType) {
   const cardTypeIcon =
     cardType === ECardType.Attack ? "🗡️" : cardType === ECardType.Skill ? "✨" : "";
   const name =
-    useSelector((state: State) => state.lang.cards.names[props.name]) ||
-    `${props.name}.name`;
+    useSelector((state: State) => state.lang.cards.names[props.name]) || `${props.name}.name`;
 
   const description =
     useSelector((state: State) => state.lang.cards.descriptions[props.name]) ||
@@ -26,11 +25,7 @@ export default function CompactCard(props: PropsType) {
 
   const reactionLight = props.name === "Dash" || props.name === "Overheat";
   const reactionDark = props.name === "Burn" || props.name === "Freeze";
-  const cardClass = reactionLight
-    ? styles.cardLight
-    : reactionDark
-      ? styles.cardDark
-      : styles.card;
+  const cardClass = reactionLight ? styles.cardLight : reactionDark ? styles.cardDark : styles.card;
 
   let costText = "";
   for (let i = 0; i < 3 - cost; i++) {

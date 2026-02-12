@@ -45,10 +45,7 @@ const burstSlice = createSlice({
     setBurstDivide(state, action: PayloadAction<{ divide: BurstDivideItem[] }>) {
       state.divide = action.payload.divide;
     },
-    setBurstSelectedCharacter(
-      state,
-      action: PayloadAction<{ character: string }>
-    ) {
+    setBurstSelectedCharacter(state, action: PayloadAction<{ character: string }>) {
       state.selectedCharacter = action.payload.character;
     },
     clearBurstSelection(state) {

@@ -1,9 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import {
-  CardPrimitive,
-  EnemyPrimitive,
-  PlayerPrimitive,
-} from "../types/general";
+import { CardPrimitive, EnemyPrimitive, PlayerPrimitive } from "../types/general";
 
 const initialState: {
   me: PlayerPrimitive;
@@ -56,28 +52,16 @@ const charactersSlice = createSlice({
       });
     },
 
-    addCharacterAction(
-      state,
-      action: PayloadAction<{ character: string; playerId: string }>
-    ) {
+    addCharacterAction(state, action: PayloadAction<{ character: string; playerId: string }>) {
       const { character, playerId } = action.payload;
-      const player = state.players.find(
-        (player) => player.playerId === playerId
-      )!;
+      const player = state.players.find((player) => player.playerId === playerId)!;
       player.characters.push(character);
     },
 
-    removeCharacterAction(
-      state,
-      action: PayloadAction<{ character: string; playerId: string }>
-    ) {
+    removeCharacterAction(state, action: PayloadAction<{ character: string; playerId: string }>) {
       const { character, playerId } = action.payload;
-      const player = state.players.find(
-        (player) => player.playerId === playerId
-      )!;
-      player.characters = player.characters.filter(
-        (char) => char !== character
-      );
+      const player = state.players.find((player) => player.playerId === playerId)!;
+      player.characters = player.characters.filter((char) => char !== character);
     },
 
     setPlayers(
@@ -85,7 +69,7 @@ const charactersSlice = createSlice({
       action: PayloadAction<{
         you: PlayerPrimitive;
         otherPlayers: PlayerPrimitive[];
-      }>
+      }>,
     ) {
       const { you, otherPlayers } = action.payload;
       state.me = you;
@@ -110,30 +94,23 @@ const charactersSlice = createSlice({
         player: PlayerPrimitive;
         card: string;
         isMe: boolean;
-      }>
+      }>,
     ) {
       const { isMe, player } = action.payload;
       if (isMe) {
         state.me = player;
       } else {
-        const index = state.other.findIndex(
-          (pl) => pl.playerId === player.playerId
-        );
+        const index = state.other.findIndex((pl) => pl.playerId === player.playerId);
         state.other[index] = player;
       }
     },
 
-    applyPlayerUpdate(
-      state,
-      action: PayloadAction<{ player: PlayerPrimitive }>
-    ) {
+    applyPlayerUpdate(state, action: PayloadAction<{ player: PlayerPrimitive }>) {
       const { player } = action.payload;
       if (state.me.playerId === player.playerId) {
         state.me = player;
       } else {
-        const index = state.other.findIndex(
-          (pl) => pl.playerId === player.playerId
-        );
+        const index = state.other.findIndex((pl) => pl.playerId === player.playerId);
         if (index >= 0) state.other[index] = player;
       }
     },
@@ -154,10 +131,7 @@ const charactersSlice = createSlice({
       }
     },
 
-    addEnemy(
-      state,
-      action: PayloadAction<{ playerId: string; enemy: EnemyPrimitive }>
-    ) {
+    addEnemy(state, action: PayloadAction<{ playerId: string; enemy: EnemyPrimitive }>) {
       const { playerId, enemy } = action.payload;
       if (state.me.playerId === playerId) {
         state.me.enemies.push(enemy);
@@ -167,10 +141,7 @@ const charactersSlice = createSlice({
       if (player) player.enemies.push(enemy);
     },
 
-    addElementToEnemy(
-      state,
-      action: PayloadAction<{ enemyId: string; element: string }>
-    ) {
+    addElementToEnemy(state, action: PayloadAction<{ enemyId: string; element: string }>) {
       const { enemyId, element } = action.payload;
       const addTo = (enemy: EnemyPrimitive) => {
         if (enemy.id === enemyId && !enemy.elements.includes(element)) {

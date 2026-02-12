@@ -23,7 +23,9 @@
   border: 1px solid rgba(195, 171, 145, 0.25);
   border-radius: 10px;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
 
   &:hover:not(.disabled) {
     border-color: rgba(195, 171, 145, 0.5);
@@ -50,7 +52,9 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.2s ease, visibility 0.2s ease;
+  transition:
+    opacity 0.2s ease,
+    visibility 0.2s ease;
   z-index: 100;
   text-align: left;
 

@@ -28,11 +28,9 @@ const effectsMap: Record<string, { display: string }> = {
 
 export default function PlayerEffects({ effects }: PropsType) {
   const animatingEffectTrigger = useSelector(
-    (state: State) => state.stepAnimation.animatingEffectTrigger
+    (state: State) => state.stepAnimation.animatingEffectTrigger,
   );
-  const playerEffectsLang = useSelector(
-    (state: State) => state.lang.playerEffects
-  );
+  const playerEffectsLang = useSelector((state: State) => state.lang.playerEffects);
 
   return (
     <div style={{ display: "flex" }}>
@@ -40,9 +38,7 @@ export default function PlayerEffects({ effects }: PropsType) {
         <div key={effect} className={styles.effect}>
           {effectsMap[effect].display}
           <span className={styles.tooltip}>
-            {playerEffectsLang[effect + "Effect"] ||
-              playerEffectsLang[effect] ||
-              effect}
+            {playerEffectsLang[effect + "Effect"] || playerEffectsLang[effect] || effect}
           </span>
         </div>
       ))}

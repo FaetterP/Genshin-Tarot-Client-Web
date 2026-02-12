@@ -16,20 +16,11 @@ import { rusNames as rusNamesEnemies } from "../storage/enemies/names";
 import { rusCards } from "../storage/cards/names";
 import { rusDescriptions as rusBursts } from "../storage/characters/bursts";
 import { rusNames as rusNamesCharacters } from "../storage/characters/names";
-import {
-  engText as engTextService,
-  rusText as rusTextService,
-} from "../storage/texts";
+import { engText as engTextService, rusText as rusTextService } from "../storage/texts";
 import { engLeylines, rusLeylines } from "../storage/leylines";
 import { engElements, rusElements } from "../storage/elements";
-import {
-  engPlayerEffects,
-  rusPlayerEffects,
-} from "../storage/playerEffects";
-import {
-  engEnemyEffects,
-  rusEnemyEffects,
-} from "../storage/enemyEffects";
+import { engPlayerEffects, rusPlayerEffects } from "../storage/playerEffects";
+import { engEnemyEffects, rusEnemyEffects } from "../storage/enemyEffects";
 
 type LangType = {
   elements: Record<string, string>;

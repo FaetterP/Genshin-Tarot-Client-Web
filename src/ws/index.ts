@@ -15,9 +15,7 @@ export function connectToWS(url: string) {
   };
 
   ws.onclose = function (event) {
-    console.log(
-      `Соединение закрыто. Код: ${event.code} причина: ${event.reason}.`
-    );
+    console.log(`Соединение закрыто. Код: ${event.code} причина: ${event.reason}.`);
     store.dispatch(setPage({ page: "menu" }));
   };
 

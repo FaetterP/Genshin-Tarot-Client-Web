@@ -16,38 +16,23 @@ import EnemyEffects from "../Enemy/EnemyEffects";
 
 export default function OtherEnemy(props: EnemyPrimitive) {
   const name =
-    useSelector((state: State) => state.lang.enemies.names[props.name]) ||
-    `${props.name}.name`;
+    useSelector((state: State) => state.lang.enemies.names[props.name]) || `${props.name}.name`;
 
-  const dyingEnemyIds = useSelector(
-    (state: State) => state.stepAnimation.dyingEnemyIds
-  );
-  const piercingEnemyIds = useSelector(
-    (state: State) => state.stepAnimation.piercingEnemyIds
-  );
-  const blockingEnemyIds = useSelector(
-    (state: State) => state.stepAnimation.blockingEnemyIds
-  );
-  const elementOnEnemy = useSelector(
-    (state: State) => state.stepAnimation.elementOnEnemy
-  );
-  const reactionOnEnemy = useSelector(
-    (state: State) => state.stepAnimation.reactionOnEnemy
-  );
+  const dyingEnemyIds = useSelector((state: State) => state.stepAnimation.dyingEnemyIds);
+  const piercingEnemyIds = useSelector((state: State) => state.stepAnimation.piercingEnemyIds);
+  const blockingEnemyIds = useSelector((state: State) => state.stepAnimation.blockingEnemyIds);
+  const elementOnEnemy = useSelector((state: State) => state.stepAnimation.elementOnEnemy);
+  const reactionOnEnemy = useSelector((state: State) => state.stepAnimation.reactionOnEnemy);
   const burstCharacter = useSelector((state: State) => state.burst.character);
   const burstRequire = burstCharacter ? burstsRequire[burstCharacter] : null;
   const isBurstEnemyMode =
-    !!burstCharacter &&
-    (burstRequire?.needEnemies ?? 0) > 0 &&
-    !!burstRequire?.isRange;
+    !!burstCharacter && (burstRequire?.needEnemies ?? 0) > 0 && !!burstRequire?.isRange;
 
   const cardNeedEnemies = useSelector((state: State) => state.card.needEnemies);
   const cardIsRange = !!useSelector((state: State) => state.card.isRange);
   const cardEnemies = useSelector((state: State) => state.card.enemies);
   const burstEnemies = useSelector((state: State) => state.burst.enemies);
-  const needEnemies = isBurstEnemyMode
-    ? (burstRequire?.needEnemies ?? 0)
-    : cardNeedEnemies;
+  const needEnemies = isBurstEnemyMode ? (burstRequire?.needEnemies ?? 0) : cardNeedEnemies;
   const isRange = isBurstEnemyMode || cardIsRange;
   const selectedCount = isBurstEnemyMode ? burstEnemies.length : cardEnemies.length;
   const selectedList = isBurstEnemyMode ? burstEnemies : cardEnemies;
@@ -57,10 +42,8 @@ export default function OtherEnemy(props: EnemyPrimitive) {
   const isDying = dyingEnemyIds.includes(props.id);
   const isPiercingHit = piercingEnemyIds.includes(props.id);
   const isBlockingHit = blockingEnemyIds.includes(props.id);
-  const isElementEffect =
-    elementOnEnemy?.enemyId === props.id ? elementOnEnemy.element : null;
-  const isReactionEffect =
-    reactionOnEnemy?.enemyId === props.id ? reactionOnEnemy : null;
+  const isElementEffect = elementOnEnemy?.enemyId === props.id ? elementOnEnemy.element : null;
+  const isReactionEffect = reactionOnEnemy?.enemyId === props.id ? reactionOnEnemy : null;
 
   const elementEffectClass = isElementEffect
     ? getElementStyleClass(isElementEffect, "element_", enemyEffectStyles)
@@ -79,7 +62,7 @@ export default function OtherEnemy(props: EnemyPrimitive) {
       ? getReactionDecorClass(
           isReactionEffect.element1,
           isReactionEffect.element2,
-          enemyEffectStyles
+          enemyEffectStyles,
         )
       : "";
 
@@ -101,21 +84,9 @@ export default function OtherEnemy(props: EnemyPrimitive) {
     >
       {name}
       {` ${props.hp}♥`}
-      {props.effects?.length > 0 && (
-        <EnemyEffects effects={props.effects} />
-      )}
-      {isPiercingHit && (
-        <div
-          className={enemyEffectStyles.piercingOverlay}
-          aria-hidden="true"
-        />
-      )}
-      {isBlockingHit && (
-        <div
-          className={enemyEffectStyles.blockOverlay}
-          aria-hidden="true"
-        />
-      )}
+      {props.effects?.length > 0 && <EnemyEffects effects={props.effects} />}
+      {isPiercingHit && <div className={enemyEffectStyles.piercingOverlay} aria-hidden="true" />}
+      {isBlockingHit && <div className={enemyEffectStyles.blockOverlay} aria-hidden="true" />}
       {isElementEffect && (
         <div
           className={`${enemyEffectStyles.elementEffect} ${elementEffectClass}`}

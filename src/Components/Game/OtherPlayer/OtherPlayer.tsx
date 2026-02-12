@@ -17,17 +17,11 @@ export default function OtherPlayer(props: OtherPlayerProps) {
   const cardNeedPlayer = useSelector((state: State) => state.card.isNeedPlayer);
   const burstNeedPlayer = !!burstRequire?.needPlayer;
   const needPlayer = burstNeedPlayer || cardNeedPlayer;
-  const burstSelectedPlayer = useSelector(
-    (state: State) => state.burst.selectedPlayer
-  );
-  const cardSelectedPlayer = useSelector(
-    (state: State) => state.card.selectedPlayer
-  );
+  const burstSelectedPlayer = useSelector((state: State) => state.burst.selectedPlayer);
+  const cardSelectedPlayer = useSelector((state: State) => state.card.selectedPlayer);
   const selectedPlayer = burstNeedPlayer ? burstSelectedPlayer : cardSelectedPlayer;
   const isSelected = selectedPlayer === props.playerId;
-  const meLabel = useSelector(
-    (state: State) => state.lang.service?.meLabel ?? "Me"
-  );
+  const meLabel = useSelector((state: State) => state.lang.service?.meLabel ?? "Me");
 
   const handleClick = () => {
     if (!needPlayer) return;

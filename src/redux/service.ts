@@ -18,10 +18,7 @@ const wsSlice = createSlice({
       state.myPlayerId = action.payload.playerId;
     },
 
-    setPage(
-      state,
-      action: PayloadAction<{ page: "menu" | "characters" | "game" }>
-    ) {
+    setPage(state, action: PayloadAction<{ page: "menu" | "characters" | "game" }>) {
       state.page = action.payload.page;
     },
 

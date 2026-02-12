@@ -488,16 +488,7 @@
     height: 80px;
     margin-left: -40px;
     margin-top: -40px;
-    clip-path: polygon(
-      50% 2%,
-      88% 22%,
-      98% 55%,
-      82% 95%,
-      48% 92%,
-      12% 98%,
-      0% 58%,
-      18% 18%
-    );
+    clip-path: polygon(50% 2%, 88% 22%, 98% 55%, 82% 95%, 48% 92%, 12% 98%, 0% 58%, 18% 18%);
     border: 5px solid rgba(180, 145, 90, 0.9);
     background: transparent;
     transform: scale(0.35);
@@ -515,16 +506,7 @@
     height: 120px;
     margin-left: -60px;
     margin-top: -60px;
-    clip-path: polygon(
-      50% 0%,
-      95% 28%,
-      100% 50%,
-      90% 88%,
-      55% 100%,
-      15% 85%,
-      0% 50%,
-      22% 12%
-    );
+    clip-path: polygon(50% 0%, 95% 28%, 100% 50%, 90% 88%, 55% 100%, 15% 85%, 0% 50%, 22% 12%);
     background: linear-gradient(
       135deg,
       rgba(200, 165, 110, 0.55) 0%,
@@ -715,7 +697,9 @@
     background-size: 100% 64px;
     transform-origin: top center;
     transform: scaleY(0);
-    animation: hydroFlowDown 1s 0.06s ease-out forwards, hydroWave 0.48s linear 2 0.06s forwards;
+    animation:
+      hydroFlowDown 1s 0.06s ease-out forwards,
+      hydroWave 0.48s linear 2 0.06s forwards;
   }
 }
 
@@ -860,7 +844,8 @@
     transform: rotate(-45deg) translateX(-120%);
     transform-origin: center center;
     animation: electroBoltDiagonal 1s ease-out forwards;
-    filter: drop-shadow(0 0 28px rgba(200, 120, 255, 0.95)) drop-shadow(0 0 14px rgba(230, 170, 255, 0.8));
+    filter: drop-shadow(0 0 28px rgba(200, 120, 255, 0.95))
+      drop-shadow(0 0 14px rgba(230, 170, 255, 0.8));
   }
 }
 
@@ -983,9 +968,7 @@
   font-size: 36px;
   transform: translate(-50%, -50%) scale(0);
   animation: reactionIcon 1.4s ease-out forwards;
-  filter:
-    drop-shadow(0 0 8px var(--reaction-color1))
-    drop-shadow(0 0 12px var(--reaction-color2));
+  filter: drop-shadow(0 0 8px var(--reaction-color1)) drop-shadow(0 0 12px var(--reaction-color2));
 }
 
 /* Декоративные частицы — свечение в два цвета реакции */
@@ -1054,9 +1037,7 @@
     0 0 15px 2px var(--reaction-color1);
 }
 .reactionEffect.reaction_Dendro_Electro::after {
-  filter:
-    drop-shadow(0 0 6px var(--reaction-color1))
-    drop-shadow(0 0 14px var(--reaction-color2))
+  filter: drop-shadow(0 0 6px var(--reaction-color1)) drop-shadow(0 0 14px var(--reaction-color2))
     drop-shadow(0 0 4px rgba(255, 255, 255, 0.6));
 }
 .reactionEffect.reaction_Dendro_Hydro::before {
@@ -1075,9 +1056,7 @@
     0 0 18px 0 var(--reaction-color2);
 }
 .reactionEffect.reaction_Electro_Hydro::after {
-  filter:
-    drop-shadow(0 0 10px var(--reaction-color1))
-    drop-shadow(0 0 14px var(--reaction-color2));
+  filter: drop-shadow(0 0 10px var(--reaction-color1)) drop-shadow(0 0 14px var(--reaction-color2));
 }
 .reactionEffect.reaction_Electro_Pyro {
   box-shadow:

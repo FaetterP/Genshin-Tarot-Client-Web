@@ -122,7 +122,7 @@ export default function DiscardDeck({ cards }: { cards: CardPrimitive[] }) {
           >
             <CompactCard name={hoveredCard.name} />
           </div>,
-          document.body
+          document.body,
         )}
     </>
   );

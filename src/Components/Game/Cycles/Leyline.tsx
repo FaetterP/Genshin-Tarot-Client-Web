@@ -4,8 +4,7 @@ import styles from "./Leyline.module.scss";
 
 export default function Leyline(props: { name: string }) {
   const nameText =
-    useSelector((state: State) => state.lang.leylines[props.name]) ||
-    `${props.name}.name`;
+    useSelector((state: State) => state.lang.leylines[props.name]) || `${props.name}.name`;
   const descriptionText =
     useSelector((state: State) => state.lang.leylines[props.name + "Effect"]) ||
     `${props.name}.description`;

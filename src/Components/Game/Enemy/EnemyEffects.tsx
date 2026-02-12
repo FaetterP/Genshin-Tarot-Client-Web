@@ -12,9 +12,7 @@ const effectsMap: Record<string, { display: string }> = {
 };
 
 export default function EnemyEffects({ effects }: PropsType) {
-  const enemyEffectsLang = useSelector(
-    (state: State) => state.lang.enemyEffects
-  );
+  const enemyEffectsLang = useSelector((state: State) => state.lang.enemyEffects);
 
   if (!effects.length) return null;
 
@@ -24,9 +22,7 @@ export default function EnemyEffects({ effects }: PropsType) {
         <div key={effect} className={styles.effect}>
           {effectsMap[effect]?.display ?? effect}
           <span className={styles.tooltip}>
-            {enemyEffectsLang[effect + "Effect"] ||
-              enemyEffectsLang[effect] ||
-              effect}
+            {enemyEffectsLang[effect + "Effect"] || enemyEffectsLang[effect] || effect}
           </span>
         </div>
       ))}

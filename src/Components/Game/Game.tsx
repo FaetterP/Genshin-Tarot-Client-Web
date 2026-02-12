@@ -19,9 +19,7 @@ import DrawDeck from "./DrawDeck/DrawDeck";
 export default function Game() {
   const me = useSelector((state: State) => state.players.me);
   const other = useSelector((state: State) => state.players.other);
-  const playersLabel = useSelector(
-    (state: State) => state.lang.service?.players ?? "Players"
-  );
+  const playersLabel = useSelector((state: State) => state.lang.service?.players ?? "Players");
   const allPlayers = me?.playerId ? [me, ...other] : other;
 
   return (

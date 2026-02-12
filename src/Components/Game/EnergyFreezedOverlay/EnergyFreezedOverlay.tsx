@@ -4,11 +4,9 @@ import styles from "./EnergyFreezedOverlay.module.scss";
 
 export default function EnergyFreezedOverlay() {
   const energyFreezedPlayerId = useSelector(
-    (state: State) => state.stepAnimation.energyFreezedPlayerId
+    (state: State) => state.stepAnimation.energyFreezedPlayerId,
   );
-  const myPlayerId = useSelector(
-    (state: State) => state.service.myPlayerId
-  );
+  const myPlayerId = useSelector((state: State) => state.service.myPlayerId);
 
   if (energyFreezedPlayerId !== myPlayerId || !energyFreezedPlayerId) {
     return null;

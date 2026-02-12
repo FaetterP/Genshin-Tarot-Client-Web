@@ -4,7 +4,10 @@ import { State } from "../../../redux";
 import { characterSkillCards } from "../../../storage/characters/cards";
 import CompactCard from "../Card/CompactCard";
 import styles from "./CharacterLine.module.scss";
-import { CharactersAddCharacterRequest, CharactersRemoveCharacterRequest } from "../../../types/request";
+import {
+  CharactersAddCharacterRequest,
+  CharactersRemoveCharacterRequest,
+} from "../../../types/request";
 
 export default function CharacterLine({ character }: { character: string }) {
   function addCharacter() {
@@ -30,24 +33,19 @@ export default function CharacterLine({ character }: { character: string }) {
   }
 
   const name =
-    useSelector((state: State) => state.lang.characters.names[character]) ||
-    `${character}.name`;
+    useSelector((state: State) => state.lang.characters.names[character]) || `${character}.name`;
   const {
     name: burstName,
     description,
     cost,
-  } = useSelector(
-    (state: State) => state.lang.characters.bursts[character]
-  ) || {
-      name: `${character}.burst`,
-      description: `${character}.description`,
-      cost: 0,
-    };
+  } = useSelector((state: State) => state.lang.characters.bursts[character]) || {
+    name: `${character}.burst`,
+    description: `${character}.description`,
+    cost: 0,
+  };
 
   const me = useSelector((state: State) => {
-    return state.players.players.find(
-      (player) => player.playerId === state.service.myPlayerId
-    )!;
+    return state.players.players.find((player) => player.playerId === state.service.myPlayerId)!;
   });
   if (!me) return <></>;
 
@@ -65,8 +63,7 @@ export default function CharacterLine({ character }: { character: string }) {
 
   return (
     <div
-      className={`${styles.characterBlock} ${isCharacterChosen ? styles.selected : ""
-        }`}
+      className={`${styles.characterBlock} ${isCharacterChosen ? styles.selected : ""}`}
       onClick={clickCharacter}
     >
       <div className={styles.name}>{name}</div>

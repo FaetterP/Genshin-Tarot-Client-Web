@@ -13,7 +13,7 @@ export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
   const cardNames = useSelector((state: State) => state.lang.cards.names);
   const selectedCardForEffect = useSelector((state: State) => state.card.selectedCardForEffect);
   const cardsLeavingDeckForDraw = useSelector(
-    (state: State) => state.stepAnimation.cardsLeavingDeckForDraw
+    (state: State) => state.stepAnimation.cardsLeavingDeckForDraw,
   );
   const panelRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -27,9 +27,7 @@ export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
   const [exitingCards, setExitingCards] = useState<CardPrimitive[]>([]);
   const [enteringIds, setEnteringIds] = useState<Set<string>>(new Set());
 
-  const leavingForDrawIds = new Set(
-    (cardsLeavingDeckForDraw ?? []).map((c) => c.cardId)
-  );
+  const leavingForDrawIds = new Set((cardsLeavingDeckForDraw ?? []).map((c) => c.cardId));
 
   const sortedCards = [...cards].sort((a, b) => {
     const aPos = a.deckPosition ?? Infinity;
@@ -43,7 +41,7 @@ export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
     const currentIds = new Set(cards.map((c) => c.cardId));
     const added = cards.filter((c) => !prevIds.has(c.cardId));
     const removed = prev.filter(
-      (c) => !currentIds.has(c.cardId) && !leavingForDrawIds.has(c.cardId)
+      (c) => !currentIds.has(c.cardId) && !leavingForDrawIds.has(c.cardId),
     );
     if (added.length > 0 && prev.length > 0) {
       setEnteringIds((s) => new Set([...Array.from(s), ...added.map((c) => c.cardId)]));
@@ -144,7 +142,7 @@ export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
           >
             <CompactCard name={hoveredCard.name} />
           </div>,
-          document.body
+          document.body,
         )}
     </>
   );

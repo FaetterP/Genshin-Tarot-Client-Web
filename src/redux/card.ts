@@ -31,10 +31,7 @@ const charactersSlice = createSlice({
   name: "card",
   initialState,
   reducers: {
-    selectCard(
-      state,
-      action: PayloadAction<{ cardId: string; cardKey: string }>
-    ) {
+    selectCard(state, action: PayloadAction<{ cardId: string; cardKey: string }>) {
       const { cardId, cardKey } = action.payload;
       state.selectedCard = cardId;
       const { enemiesCount, isRange, isCanAlternative, isNeedPlayer, isNeedCardFrom } =
@@ -74,10 +71,15 @@ const charactersSlice = createSlice({
     },
     clearUsedCard(state, _action: PayloadAction<void>) {
       return initialState;
-    }
+    },
   },
 });
 
 export default charactersSlice.reducer;
-export const { selectCard, selectEnemy, setCardSelectedPlayer, setSelectedCardForEffect, clearUsedCard } =
-  charactersSlice.actions;
+export const {
+  selectCard,
+  selectEnemy,
+  setCardSelectedPlayer,
+  setSelectedCardForEffect,
+  clearUsedCard,
+} = charactersSlice.actions;

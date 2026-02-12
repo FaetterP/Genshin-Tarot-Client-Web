@@ -19,15 +19,11 @@ export default function PlayerStats(props: PlayerPrimitive) {
           <ChangeableStat value={props.hp}>{props.hp}♥</ChangeableStat>
         </div>
         <div className={styles.shields}>
-          <ChangeableStat value={props.shields}>
-            {props.shields}🛡
-          </ChangeableStat>
+          <ChangeableStat value={props.shields}>{props.shields}🛡</ChangeableStat>
         </div>
         <div className={styles.energy}>
           <ChangeableStat value={props.energy}>{props.energy}⚛</ChangeableStat>
-          {hasFreezeInHand && (
-            <div className={styles.energyIceShard} />
-          )}
+          {hasFreezeInHand && <div className={styles.energyIceShard} />}
         </div>
         <div className={styles.mora}>
           <ChangeableStat value={props.mora}>{props.mora}💰</ChangeableStat>
