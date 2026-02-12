@@ -37,10 +37,17 @@ export default function Selections() {
   const isCanSelectItself = selectedCardInHand
     ? (cards[selectedCardInHand.name]?.isCanSelectItself !== false)
     : true;
+  const deckForSelect = isNeedCardFrom.includes("deck")
+    ? [...deck].sort((a, b) => {
+        const aPos = a.deckPosition ?? Infinity;
+        const bPos = b.deckPosition ?? Infinity;
+        return aPos - bPos;
+      })
+    : [];
   const selectableCardsForEffect: { card: CardPrimitive; source: CardSource }[] = [
     ...(isNeedCardFrom.includes("hand") ? hand.map((card) => ({ card, source: "hand" as CardSource })) : []),
     ...(isNeedCardFrom.includes("discard") ? discard.map((card) => ({ card, source: "discard" as CardSource })) : []),
-    ...(isNeedCardFrom.includes("deck") ? deck.map((card) => ({ card, source: "deck" as CardSource })) : []),
+    ...(isNeedCardFrom.includes("deck") ? deckForSelect.map((card) => ({ card, source: "deck" as CardSource })) : []),
   ].filter(({ card }) => isCanSelectItself || card.cardId !== selectedCard);
   const isSelectedCardForEffectValid =
     !selectedCardForEffect || selectableCardsForEffect.some(({ card }) => card.cardId === selectedCardForEffect);
@@ -109,7 +116,12 @@ export default function Selections() {
     ? selectableCardsForEffect.find(({ card }) => card.cardId === selectedCardForEffect)
     : null;
   const selectedCardDisplayName = selectedCardLabel
-    ? (cardNames[selectedCardLabel.card.name] || selectedCardLabel.card.name)
+    ? (() => {
+        const base = cardNames[selectedCardLabel.card.name] || selectedCardLabel.card.name;
+        return selectedCardLabel.source === "deck" && selectedCardLabel.card.deckPosition != null
+          ? `#${selectedCardLabel.card.deckPosition} ${base}`
+          : base;
+      })()
     : "—";
 
   return (
@@ -146,19 +158,26 @@ export default function Selections() {
               >
                 —
               </button>
-              {selectableCardsForEffect.map(({ card }) => (
-                <button
-                  key={card.cardId}
-                  type="button"
-                  className={styles.cardSelectOption}
-                  onClick={() => {
-                    dispatch(setSelectedCardForEffect({ cardId: card.cardId }));
-                    setCardDropdownOpen(false);
-                  }}
-                >
-                  {cardNames[card.name] || card.name}
-                </button>
-              ))}
+              {selectableCardsForEffect.map(({ card, source }) => {
+                const baseName = cardNames[card.name] || card.name;
+                const displayName =
+                  source === "deck" && card.deckPosition != null
+                    ? `#${card.deckPosition} ${baseName}`
+                    : baseName;
+                return (
+                  <button
+                    key={card.cardId}
+                    type="button"
+                    className={styles.cardSelectOption}
+                    onClick={() => {
+                      dispatch(setSelectedCardForEffect({ cardId: card.cardId }));
+                      setCardDropdownOpen(false);
+                    }}
+                  >
+                    {displayName}
+                  </button>
+                );
+              })}
             </div>
           )}
         </div>

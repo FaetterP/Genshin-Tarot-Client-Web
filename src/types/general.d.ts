@@ -31,6 +31,7 @@ export type PlayerPrimitive = {
 export type CardPrimitive = {
   cardId: string;
   name: string;
+  deckPosition?: number;
 };
 
 export type Lang = "EN" | "RU";

@@ -133,7 +133,11 @@ export const cards: Record<
     canUpgrade: true,
     require: { enemiesCount: 1, isCanAlternative: true },
   },
-  DemonbanePlus: { cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true },
+  DemonbanePlus: {
+    cost: 1, isUpgraded: true, canUpgrade: false, canPlay: true, require: {
+      enemiesCount: 1
+    }
+  },
   LayeredFrost: { cost: 1, isUpgraded: false, canUpgrade: true, canPlay: true },
   LayeredFrostPlus: { cost: 0, isUpgraded: true, canUpgrade: false, canPlay: true },
   TemperedSword: {

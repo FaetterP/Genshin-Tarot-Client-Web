@@ -31,6 +31,12 @@ export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
     (cardsLeavingDeckForDraw ?? []).map((c) => c.cardId)
   );
 
+  const sortedCards = [...cards].sort((a, b) => {
+    const aPos = a.deckPosition ?? Infinity;
+    const bPos = b.deckPosition ?? Infinity;
+    return aPos - bPos;
+  });
+
   useEffect(() => {
     const prev = prevCardsRef.current;
     const prevIds = new Set(prev.map((c) => c.cardId));
@@ -103,19 +109,26 @@ export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
               className={`${styles.card} ${styles.cardExiting}`}
               onAnimationEnd={() => handleExitAnimationEnd(card.cardId)}
             >
+              {card.deckPosition != null ? `#${card.deckPosition} ` : ""}
               {cardNames[card.name] || card.name}
             </div>
           ))}
-          {cards.map((card) => (
-            <div
-              key={card.cardId}
-              className={`${styles.card} ${enteringIds.has(card.cardId) ? styles.cardEntering : ""} ${leavingForDrawIds.has(card.cardId) ? styles.cardExiting : ""} ${selectedCardForEffect === card.cardId ? styles.cardSelectedForEffect : ""}`}
-              onMouseEnter={() => handleMouseEnter(card)}
-              onMouseLeave={() => setHoveredCard(null)}
-            >
-              {cardNames[card.name] || card.name}
-            </div>
-          ))}
+          {sortedCards.map((card) => {
+            const displayName =
+              card.deckPosition != null
+                ? `#${card.deckPosition} ${cardNames[card.name] || card.name}`
+                : cardNames[card.name] || card.name;
+            return (
+              <div
+                key={card.cardId}
+                className={`${styles.card} ${enteringIds.has(card.cardId) ? styles.cardEntering : ""} ${leavingForDrawIds.has(card.cardId) ? styles.cardExiting : ""} ${selectedCardForEffect === card.cardId ? styles.cardSelectedForEffect : ""}`}
+                onMouseEnter={() => handleMouseEnter(card)}
+                onMouseLeave={() => setHoveredCard(null)}
+              >
+                {displayName}
+              </div>
+            );
+          })}
         </div>
       </div>
       {hoveredCard &&
