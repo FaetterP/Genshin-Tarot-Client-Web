@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardPrimitive, EnemyPrimitive, PlayerPrimitive } from "../types/general";
+import { EElement } from "../types/enums";
 
 const initialState: {
   me: PlayerPrimitive;
@@ -23,6 +24,7 @@ const initialState: {
     hand: [],
     discard: [],
     deck: [],
+    eulaSnowflakes: 0,
   },
   other: [],
   cycle: -1,
@@ -49,6 +51,7 @@ const charactersSlice = createSlice({
         hand: [],
         discard: [],
         deck: [],
+        eulaSnowflakes: 0,
       });
     },
 
@@ -141,7 +144,7 @@ const charactersSlice = createSlice({
       if (player) player.enemies.push(enemy);
     },
 
-    addElementToEnemy(state, action: PayloadAction<{ enemyId: string; element: string }>) {
+    addElementToEnemy(state, action: PayloadAction<{ enemyId: string; element: EElement }>) {
       const { enemyId, element } = action.payload;
       const addTo = (enemy: EnemyPrimitive) => {
         if (enemy.id === enemyId && !enemy.elements.includes(element)) {

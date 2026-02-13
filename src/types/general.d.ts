@@ -1,9 +1,11 @@
+import { EElement } from "./enums";
+
 export type EnemyPrimitive = {
   id: string;
   name: string;
   hp: number;
   shield: number;
-  elements: string[];
+  elements: EElement[];
   isStunned: boolean;
   effects: string[];
 };
@@ -26,11 +28,14 @@ export type PlayerPrimitive = {
   hand: CardPrimitive[];
   discard: CardPrimitive[];
   deck: CardPrimitive[];
+
+  eulaSnowflakes: number;
 };
 
 export type CardPrimitive = {
   cardId: string;
   name: string;
+  type: ECardType;
   deckPosition?: number;
 };
 

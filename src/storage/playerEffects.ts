@@ -16,6 +16,7 @@ export const engPlayerEffects: Record<string, string> = {
   SolarIsotoma: "Solar Isotoma",
   Stormbreaker: "Stormbreaker",
   TrailOfTheQilin: "Trail Of The Qilin",
+  GlacialIllumination: "Glacial Illumination",
 
   BreastplateEffect: "This turn: your normal attacks restore 1 HP to any 1 player.",
   DominusLapidisEffect: "At the start of next turn, apply Geo to all enemies in your zone.",
@@ -34,6 +35,7 @@ export const engPlayerEffects: Record<string, string> = {
   SolarIsotomaEffect: "At the start of next turn, apply Geo to all enemies in your zone.",
   StormbreakerEffect: "This turn: after your Normal Attack cards resolve, deal 1 piercing damage to 1 enemy that was targeted.",
   TrailOfTheQilinEffect: "At the start of next turn: apply Cryo and deal 2 damage to all enemies in your zone.",
+  GlacialIlluminationEffect: "When you play an Eula card, add 1 ❄.",
 };
 
 export const rusPlayerEffects: Record<string, string> = {
@@ -54,6 +56,7 @@ export const rusPlayerEffects: Record<string, string> = {
   SolarIsotoma: "Цветок солнца",
   Stormbreaker: "Крушитель бури",
   TrailOfTheQilin: "След цилиня",
+  GlacialIllumination: "Сумеречный меч",
 
   BreastplateEffect: "На этом ходу ваши обычные атаки восстанавливают 1 ОЗ любому игроку.",
   DominusLapidisEffect: "В начале следующего хода накладывает Гео всем врагам в вашей зоне.",
@@ -72,4 +75,5 @@ export const rusPlayerEffects: Record<string, string> = {
   SolarIsotomaEffect: "В начале следующего хода, накладывает Гео всем врагам в вашей зоне.",
   StormbreakerEffect: "На этом ходу после обычной атаки враг получит дополнительно 1 пронзающий урон.",
   TrailOfTheQilinEffect: "В начале следующего хода накладывает Крио и наносит 2 урона всем врагам в вашей зоне.",
+  GlacialIlluminationEffect: "Когда разыгрывается карты Эолы, добавляется 1 ❄.",
 };

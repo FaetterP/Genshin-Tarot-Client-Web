@@ -3,6 +3,7 @@ import players from "./players";
 import service from "./service";
 import card from "./card";
 import burst from "./burst";
+import eulaEndTurn from "./eulaEndTurn";
 import lang from "./lang";
 import stepAnimation from "./stepAnimation";
 
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   service,
   card,
   burst,
+  eulaEndTurn,
   lang,
   stepAnimation,
 });

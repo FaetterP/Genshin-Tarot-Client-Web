@@ -28,6 +28,11 @@ export default function PlayerStats(props: PlayerPrimitive) {
         <div className={styles.mora}>
           <ChangeableStat value={props.mora}>{props.mora}💰</ChangeableStat>
         </div>
+        {props.eulaSnowflakes > 0 && (
+          <div className={styles.eulaSnowflakes}>
+            <ChangeableStat value={props.eulaSnowflakes}>{props.eulaSnowflakes}❄</ChangeableStat>
+          </div>
+        )}
         <div className={styles.actionPoints}>
           {spentActionPoints}
           {actionPoints}

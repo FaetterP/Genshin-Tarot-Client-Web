@@ -1,13 +1,16 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../../redux";
 import { send } from "../../../ws";
+import { openEulaEndTurn } from "../../../redux/eulaEndTurn";
 import Leyline from "./Leyline";
 import styles from "./Cycles.module.scss";
 import { GameEndTurnRequest } from "../../../types/request";
 
 export default function Cycles() {
+  const dispatch = useDispatch();
   const currentCycle = useSelector((state: State) => state.players.cycle);
   const leylines = useSelector((state: State) => state.players.leylines);
+  const eulaSnowflakes = useSelector((state: State) => state.players.me.eulaSnowflakes ?? 0);
 
   const endTurnText = useSelector((state: State) => state.lang.service.endTurn);
 
@@ -15,7 +18,11 @@ export default function Cycles() {
   const percent = (displayCycle / 12) * 100;
 
   function click() {
-    send<GameEndTurnRequest>({ action: "game.endTurn" });
+    if (eulaSnowflakes > 0) {
+      dispatch(openEulaEndTurn());
+    } else {
+      send<GameEndTurnRequest>({ action: "game.endTurn" });
+    }
   }
 
   return (

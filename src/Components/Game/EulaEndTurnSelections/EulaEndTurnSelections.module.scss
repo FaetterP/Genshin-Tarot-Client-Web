@@ -1,0 +1,55 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
+  border-radius: 12px;
+  border: 1px solid rgba(195, 171, 145, 0.2);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.hint {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 14px;
+}
+
+.targetsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.targetsLabel {
+  flex-shrink: 0;
+}
+
+.targetsList {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.removeLast {
+  flex-shrink: 0;
+  padding: 4px 8px;
+  font-size: 12px;
+  background: rgba(180, 100, 100, 0.3);
+  color: #e8e4dc;
+  border: 1px solid rgba(195, 171, 145, 0.3);
+  border-radius: 6px;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(180, 100, 100, 0.5);
+  }
+}
+
+.buttons {
+  display: flex;
+  gap: 10px;
+}

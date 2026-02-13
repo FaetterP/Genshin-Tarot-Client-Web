@@ -10,6 +10,9 @@ export const engText: Record<string, string> = {
   cancel: "Cancel",
   meLabel: "Me",
   players: "Players: ",
+  eulaBurstTargetsHint: "Select Eula burst targets:",
+  eulaTargetsLabel: "Targets:",
+  eulaRemoveLast: "← remove last",
 };
 
 export const rusText: Record<string, string> = {
@@ -24,4 +27,7 @@ export const rusText: Record<string, string> = {
   cancel: "Отмена",
   meLabel: "Я",
   players: "Игроков: ",
+  eulaBurstTargetsHint: "Выберите цели для взрыва Эолы:",
+  eulaTargetsLabel: "Цели:",
+  eulaRemoveLast: "← убрать",
 };

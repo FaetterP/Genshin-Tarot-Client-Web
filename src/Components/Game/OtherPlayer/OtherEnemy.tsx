@@ -5,6 +5,7 @@ import enemyEffectStyles from "../Enemy/Enemy.module.scss";
 import styles from "./OtherEnemy.module.scss";
 import { selectEnemy } from "../../../redux/card";
 import { toggleBurstEnemy } from "../../../redux/burst";
+import { addEulaEndTurnTarget } from "../../../redux/eulaEndTurn";
 import { burstsRequire } from "../../../storage/characters/burstsRequire";
 import {
   getElementStyleClass,
@@ -28,6 +29,11 @@ export default function OtherEnemy(props: EnemyPrimitive) {
   const isBurstEnemyMode =
     !!burstCharacter && (burstRequire?.needEnemies ?? 0) > 0 && !!burstRequire?.isRange;
 
+  const eulaEndTurnActive = useSelector((state: State) => state.eulaEndTurn.active);
+  const eulaTargets = useSelector((state: State) => state.eulaEndTurn.targets);
+  const eulaSnowflakes = useSelector((state: State) => state.players.me.eulaSnowflakes ?? 0);
+  const isEulaEndTurnMode = eulaEndTurnActive && eulaTargets.length < eulaSnowflakes;
+
   const cardNeedEnemies = useSelector((state: State) => state.card.needEnemies);
   const cardIsRange = !!useSelector((state: State) => state.card.isRange);
   const cardEnemies = useSelector((state: State) => state.card.enemies);
@@ -37,8 +43,9 @@ export default function OtherEnemy(props: EnemyPrimitive) {
   const selectedCount = isBurstEnemyMode ? burstEnemies.length : cardEnemies.length;
   const selectedList = isBurstEnemyMode ? burstEnemies : cardEnemies;
 
-  const isCanSelected = needEnemies && isRange && selectedCount < needEnemies;
-  const isSelected = selectedList.includes(props.id);
+  const isCanSelected =
+    isEulaEndTurnMode || (needEnemies && isRange && selectedCount < needEnemies);
+  const isSelected = isEulaEndTurnMode ? false : selectedList.includes(props.id);
   const isDying = dyingEnemyIds.includes(props.id);
   const isPiercingHit = piercingEnemyIds.includes(props.id);
   const isBlockingHit = blockingEnemyIds.includes(props.id);
@@ -70,7 +77,9 @@ export default function OtherEnemy(props: EnemyPrimitive) {
 
   const handleClick = () => {
     if (!isCanSelected) return;
-    if (isBurstEnemyMode) {
+    if (isEulaEndTurnMode) {
+      dispatch(addEulaEndTurnTarget({ enemyId: props.id }));
+    } else if (isBurstEnemyMode) {
       dispatch(toggleBurstEnemy({ enemyId: props.id }));
     } else {
       dispatch(selectEnemy({ enemyId: props.id }));

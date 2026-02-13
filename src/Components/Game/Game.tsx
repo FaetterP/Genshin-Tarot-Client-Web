@@ -5,6 +5,7 @@ import styles from "./Game.module.scss";
 import Selections from "./Selections/Selections";
 import BurstButtons from "./BurstButtons/BurstButtons";
 import BurstSelections from "./BurstSelections/BurstSelections";
+import EulaEndTurnSelections from "./EulaEndTurnSelections/EulaEndTurnSelections";
 import OtherPlayer, { type OtherPlayerProps } from "./OtherPlayer/OtherPlayer";
 import Cycles from "./Cycles/Cycles";
 import Hand from "./Card/Hand";
@@ -40,6 +41,7 @@ export default function Game() {
       <div className={styles.selections}>
         <Selections />
         <BurstSelections />
+        <EulaEndTurnSelections />
       </div>
       <div className={styles.otherPlayers}>
         <div className={styles.playersHeader}>

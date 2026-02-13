@@ -24,6 +24,7 @@ const effectsMap: Record<string, { display: string }> = {
   SolarIsotoma: { display: "☀💮" },
   Stormbreaker: { display: "☁" },
   TrailOfTheQilin: { display: "❄💮" },
+  GlacialIllumination: { display: "❄⚔" },
 };
 
 export default function PlayerEffects({ effects }: PropsType) {
