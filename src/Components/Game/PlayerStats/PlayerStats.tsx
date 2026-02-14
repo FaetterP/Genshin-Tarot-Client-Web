@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { PlayerPrimitive } from "../../../types/general";
+import { ECard } from "../../../types/enums";
 import ChangeableStat from "../../ChangeableStat/ChangeableStat";
 import PlayerEffects from "./PlayerEffects";
 import styles from "./PlayerStats.module.scss";
@@ -9,7 +10,7 @@ export default function PlayerStats(props: PlayerPrimitive) {
   const spentActionPoints = "◻".repeat(normalMax - props.actionPoints.normal);
   const actionPoints = "⬜".repeat(props.actionPoints.normal);
   const extraActionPoints = "🟧".repeat(props.actionPoints.extra);
-  const hasFreezeInHand = props.hand?.some((c) => c.name === "Freeze") ?? false;
+  const hasFreezeInHand = props.hand?.some((c) => c.name === ECard.Freeze) ?? false;
 
   return (
     <>

@@ -1,30 +1,31 @@
 import { useSelector } from "react-redux";
 import styles from "./PlayerEffects.module.scss";
 import { State } from "../../../redux";
+import { EPlayerEffect } from "../../../types/enums";
 
 type PropsType = {
-  effects: string[];
+  effects: EPlayerEffect[];
 };
 
-const effectsMap: Record<string, { display: string }> = {
-  Breastplate: { display: "🛡🍽" },
-  DominusLapidis: { display: "🗿" },
-  ExplosivePuppet: { display: "🔥🐇" },
-  GuideOfAfterlife: { display: "🔥🦋" },
-  GuobaFire: { display: "🐻🔥" },
-  LayeredFrost: { display: "☃" },
-  LetTheShowBeginPlus: { display: "💦🎶+" },
-  MirrorReflections: { display: "👉👈" },
-  NiwabiFireDance: { display: "🔥🎶" },
-  Overheat: { display: "⚡🔥" },
-  Pyronado: { display: "🔥💨" },
-  Raincutter: { display: "🌧" },
-  SkywardSonnet: { display: "🌬🎶" },
-  SkywardSonnetPlus: { display: "🌬🎶+" },
-  SolarIsotoma: { display: "☀💮" },
-  Stormbreaker: { display: "☁" },
-  TrailOfTheQilin: { display: "❄💮" },
-  GlacialIllumination: { display: "❄⚔" },
+const effectsMap: Record<EPlayerEffect, { display: string }> = {
+  [EPlayerEffect.Breastplate]: { display: "🛡🍽" },
+  [EPlayerEffect.DominusLapidis]: { display: "🗿" },
+  [EPlayerEffect.ExplosivePuppet]: { display: "🔥🐇" },
+  [EPlayerEffect.GlacialIllumination]: { display: "❄⚔" },
+  [EPlayerEffect.GuideOfAfterlife]: { display: "🔥🦋" },
+  [EPlayerEffect.GuobaFire]: { display: "🐻🔥" },
+  [EPlayerEffect.LayeredFrost]: { display: "☃" },
+  [EPlayerEffect.LetTheShowBeginPlus]: { display: "💦🎶+" },
+  [EPlayerEffect.MirrorReflections]: { display: "👉👈" },
+  [EPlayerEffect.NiwabiFireDance]: { display: "🔥🎶" },
+  [EPlayerEffect.Overheat]: { display: "⚡🔥" },
+  [EPlayerEffect.Pyronado]: { display: "🔥💨" },
+  [EPlayerEffect.Raincutter]: { display: "🌧" },
+  [EPlayerEffect.SkywardSonnet]: { display: "🌬🎶" },
+  [EPlayerEffect.SkywardSonnetPlus]: { display: "🌬🎶+" },
+  [EPlayerEffect.SolarIsotoma]: { display: "☀💮" },
+  [EPlayerEffect.Stormbreaker]: { display: "☁" },
+  [EPlayerEffect.TrailOfTheQilin]: { display: "❄💮" },
 };
 
 export default function PlayerEffects({ effects }: PropsType) {
@@ -39,16 +40,14 @@ export default function PlayerEffects({ effects }: PropsType) {
         <div key={effect} className={styles.effect}>
           {effectsMap[effect].display}
           <span className={styles.tooltip}>
-            {playerEffectsLang[effect + "Effect"] || playerEffectsLang[effect] || effect}
+            {playerEffectsLang[effect].description}
           </span>
         </div>
       ))}
       {animatingEffectTrigger && (
         <div className={styles.effectTriggerOverlay} aria-hidden="true">
           {animatingEffectTrigger.isRemove ? "−" : "+"}{" "}
-          {playerEffectsLang[animatingEffectTrigger.effect + "Effect"] ||
-            playerEffectsLang[animatingEffectTrigger.effect] ||
-            animatingEffectTrigger.effect}
+          {playerEffectsLang[animatingEffectTrigger.effect].description}
         </div>
       )}
     </div>

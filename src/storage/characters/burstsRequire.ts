@@ -1,42 +1,50 @@
-/**
- * Требования для использования взрыва стихии (game.useBurst).
- * Совпадает с полями тела запроса: selectedPlayer, selectedEnemy, selectedEnemies, divide, selectedCharacter.
- */
+import { ECharacter } from "../../types/enums";
+
 export type BurstRequire = {
-  /** Количество врагов для selectedEnemies (если 1, можно слать selectedEnemy) */
   needEnemies?: number;
-  /** Враги из зоны любого игрока (isRange для карт) */
   isRange?: boolean;
-  /** Нужен выбор одного игрока (зона или цель для лечения) */
   needPlayer?: boolean;
-  /** Нужен выбор одного врага (часть API selectedEnemy) */
   needEnemy?: boolean;
-  /** Нужно распределение по игрокам (divide: { playerId, count }[]) */
   needDivide?: boolean;
-  /** Нужен выбор персонажа (Mona — объявить персонажа) */
   needCharacter?: boolean;
 };
 
-export const burstsRequire: Record<string, BurstRequire> = {
-  Barbara: { needDivide: true },
-  Jean: { needPlayer: true },
-  Diona: { needPlayer: true },
-  QiQi: { needPlayer: true },
-  Amber: { needPlayer: true },
-  Fischl: { needPlayer: true },
-  Kazuha: { needPlayer: true },
-  ZhongLi: { needPlayer: true },
-  Diluc: { needEnemies: 1, isRange: true },
-  Klee: { needEnemies: 1, isRange: true },
-  Lisa: { needEnemies: 1, isRange: true },
-  Lumine: { needEnemies: 1, isRange: true },
-  Mona: { needEnemies: 1, isRange: true, needCharacter: true },
-  NingGuang: { needEnemies: 1, isRange: true },
-  Ganyu: { needEnemies: 3, isRange: true },
-  KeQing: { needEnemies: 3, isRange: true },
-  Tartaglia: { needEnemies: 3, isRange: true },
-  Eula: { needEnemies: 1, isRange: true },
-  Yoimiya: { needEnemies: 1, isRange: true },
-  Noelle: { needEnemies: 1 },
-  Rosaria: { needEnemies: 1 },
+export const burstsRequire: Record<ECharacter, BurstRequire> = {
+  [ECharacter.Aether]: {},
+  [ECharacter.Albedo]: {},
+  [ECharacter.Amber]: { needPlayer: true },
+  [ECharacter.Barbara]: { needDivide: true },
+  [ECharacter.Beidou]: {},
+  [ECharacter.Bennett]: {},
+  [ECharacter.ChongYun]: {},
+  [ECharacter.Diluc]: { needEnemies: 1, isRange: true },
+  [ECharacter.Diona]: { needPlayer: true },
+  [ECharacter.Eula]: { needEnemies: 1, isRange: true },
+  [ECharacter.Fischl]: { needPlayer: true },
+  [ECharacter.Ganyu]: { needEnemies: 3, isRange: true },
+  [ECharacter.HuTao]: {},
+  [ECharacter.Jean]: { needPlayer: true },
+  [ECharacter.Kaeya]: {},
+  [ECharacter.Kazuha]: { needPlayer: true },
+  [ECharacter.KeQing]: { needEnemies: 3, isRange: true },
+  [ECharacter.Klee]: { needEnemies: 1, isRange: true },
+  [ECharacter.Lisa]: { needEnemies: 1, isRange: true },
+  [ECharacter.Lumine]: { needEnemies: 1, isRange: true },
+  [ECharacter.Mona]: { needEnemies: 1, isRange: true, needCharacter: true },
+  [ECharacter.NingGuang]: { needEnemies: 1, isRange: true },
+  [ECharacter.Noelle]: { needEnemies: 1 },
+  [ECharacter.QiQi]: { needPlayer: true },
+  [ECharacter.Raiden]: {},
+  [ECharacter.Razor]: {},
+  [ECharacter.Rosaria]: { needEnemies: 1 },
+  [ECharacter.Sucrose]: {},
+  [ECharacter.Tartaglia]: { needEnemies: 3, isRange: true },
+  [ECharacter.Venti]: {},
+  [ECharacter.XiangLing]: {},
+  [ECharacter.Xiao]: {},
+  [ECharacter.XingQiu]: {},
+  [ECharacter.Xinyan]: {},
+  [ECharacter.Yanfei]: {},
+  [ECharacter.Yoimiya]: { needEnemies: 1, isRange: true },
+  [ECharacter.ZhongLi]: { needPlayer: true },
 };

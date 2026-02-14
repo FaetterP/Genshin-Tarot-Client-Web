@@ -3,47 +3,9 @@ import { send } from "../../../ws";
 import CharacterLine from "./CharacterLine";
 import styles from "./ChooseCharacters.module.scss";
 import { State } from "../../../redux";
+import { ECharacter } from "../../../types/enums";
 import { GameStartRequest } from "../../../types/request";
 
-const characters: ReadonlyArray<string> = [
-  "Aether",
-  "Albedo",
-  "Amber",
-  "Barbara",
-  "Beidou",
-  "Bennett",
-  "ChongYun",
-  "Diluc",
-  "Diona",
-  "Eula",
-  "Fischl",
-  "Ganyu",
-  "HuTao",
-  "Jean",
-  "Kaeya",
-  "Kazuha",
-  "KeQing",
-  "Klee",
-  "Lisa",
-  "Lumine",
-  "Mona",
-  "NingGuang",
-  "Noelle",
-  "QiQi",
-  "Raiden",
-  "Razor",
-  "Rosaria",
-  "Sucrose",
-  "Tartaglia",
-  "Venti",
-  "XiangLing",
-  "Xiao",
-  "XingQiu",
-  "Xinyan",
-  "Yanfei",
-  "Yoimiya",
-  "ZhongLi",
-];
 
 export function ChooseCharacters() {
   function startGame() {
@@ -56,7 +18,7 @@ export function ChooseCharacters() {
   return (
     <div className={styles.background}>
       <div className={styles.charactersList}>
-        {characters.map((character) => (
+        {Object.values(ECharacter).map((character) => (
           <CharacterLine character={character} key={character} />
         ))}
       </div>

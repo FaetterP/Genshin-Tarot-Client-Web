@@ -4,7 +4,9 @@ import styles from "./LeylineEffect.module.scss";
 
 export default function LeylineEffect() {
   const animatingLeyline = useSelector((state: State) => state.stepAnimation.animatingLeyline);
-  const displayName = useSelector((state: State) => state.lang.leylines[animatingLeyline ?? ""]);
+  const displayName = useSelector((state: State) =>
+    animatingLeyline ? state.lang.leylines[animatingLeyline].name : ""
+  );
 
   if (!animatingLeyline) return null;
 

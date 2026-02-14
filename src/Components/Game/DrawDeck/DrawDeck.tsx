@@ -5,6 +5,7 @@ import { State } from "../../../redux";
 import CompactCard from "../Card/CompactCard";
 import styles from "./DrawDeck.module.scss";
 import { CardPrimitive } from "../../../types/general";
+import type { ECard } from "../../../types/enums";
 
 const ENTER_DURATION_MS = 350;
 const LIST_RESIZE_DURATION_MS = 300;
@@ -20,7 +21,7 @@ export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
   const prevCardsRef = useRef<CardPrimitive[]>([]);
   const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hoveredCard, setHoveredCard] = useState<{
-    name: string;
+    name: ECard;
     panelLeft: number;
     centerY: number;
   } | null>(null);
@@ -140,7 +141,7 @@ export default function DrawDeck({ cards }: { cards: CardPrimitive[] }) {
               } as React.CSSProperties
             }
           >
-            <CompactCard name={hoveredCard.name} />
+            <CompactCard card={hoveredCard.name} />
           </div>,
           document.body,
         )}

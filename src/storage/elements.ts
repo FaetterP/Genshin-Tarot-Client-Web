@@ -1,19 +1,21 @@
-export const engElements: Record<string, string> = {
-  Pyro: "Pyro",
-  Cryo: "Cryo",
-  Geo: "Geo",
-  Anemo: "Anemo",
-  Hydro: "Hydro",
-  Electro: "Electro",
-  Dendro: "Dendro",
+import { EElement } from "../types/enums";
+
+export const engElements: Record<EElement, string> = {
+  [EElement.Pyro]: "Pyro",
+  [EElement.Cryo]: "Cryo",
+  [EElement.Geo]: "Geo",
+  [EElement.Anemo]: "Anemo",
+  [EElement.Hydro]: "Hydro",
+  [EElement.Electro]: "Electro",
+  [EElement.Dendro]: "Dendro",
 };
 
-export const rusElements: Record<string, string> = {
-  Pyro: "Пиро",
-  Cryo: "Крио",
-  Geo: "Гео",
-  Anemo: "Анемо",
-  Hydro: "Гидро",
-  Electro: "Электро",
-  Dendro: "Дендро",
+export const rusElements: Record<EElement, string> = {
+  [EElement.Pyro]: "Пиро",
+  [EElement.Cryo]: "Крио",
+  [EElement.Geo]: "Гео",
+  [EElement.Anemo]: "Анемо",
+  [EElement.Hydro]: "Гидро",
+  [EElement.Electro]: "Электро",
+  [EElement.Dendro]: "Дендро",
 };

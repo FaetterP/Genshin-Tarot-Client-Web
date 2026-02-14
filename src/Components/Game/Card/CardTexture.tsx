@@ -2,14 +2,14 @@ import { useSelector } from "react-redux";
 import { State } from "../../../redux";
 import styles from "./Card.module.scss";
 import { cards } from "../../../storage/cards/cards";
-import { ECardType } from "../../../types/enums";
+import { ECard, ECardType } from "../../../types/enums";
 
 type PropsType = {
-  name: string;
+  card: ECard;
 };
 
 export default function CardTexture(props: PropsType) {
-  const { cost, isUpgraded, cardType } = cards[props.name] || {
+  const { cost, isUpgraded, cardType } = cards[props.card] || {
     cost: -1,
     isUpgraded: false,
     cardType: ECardType.Skill,
@@ -17,14 +17,14 @@ export default function CardTexture(props: PropsType) {
   const cardTypeIcon =
     cardType === ECardType.Attack ? "🗡️" : cardType === ECardType.Skill ? "✨" : "";
   const name =
-    useSelector((state: State) => state.lang.cards.names[props.name]) || `${props.name}.name`;
+    useSelector((state: State) => state.lang.cards.names[props.card]) || `${props.card}.name`;
 
   const description =
-    useSelector((state: State) => state.lang.cards.descriptions[props.name]) ||
-    `${props.name}.description`;
+    useSelector((state: State) => state.lang.cards.descriptions[props.card]) ||
+    `${props.card}.description`;
 
-  const reactionLight = props.name === "Dash" || props.name === "Overheat";
-  const reactionDark = props.name === "Burn" || props.name === "Freeze";
+  const reactionLight = props.card === ECard.Dash || props.card === ECard.Overheat;
+  const reactionDark = props.card === ECard.Burn || props.card === ECard.Freeze;
   const blockClass = reactionLight
     ? `${styles.cardBlock} ${styles.cardBlockLight}`
     : reactionDark

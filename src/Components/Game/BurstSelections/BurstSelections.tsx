@@ -11,8 +11,9 @@ import { engDescriptions as engBursts } from "../../../storage/characters/bursts
 import styles from "./BurstSelections.module.scss";
 import { GameUseBurstRequest } from "../../../types/request";
 import { shortPlayerId } from "../../../utils/formatPlayerId";
+import type { ECharacter } from "../../../types/enums";
 
-const allCharacterKeys = Object.keys(engBursts);
+const allCharacterKeys = Object.keys(engBursts) as ECharacter[];
 
 export default function BurstSelections() {
   const dispatch = useDispatch();
@@ -90,7 +91,7 @@ export default function BurstSelections() {
             Персонаж:{" "}
             <select
               value={burstSelectedChar}
-              onChange={(e) => dispatch(setBurstSelectedCharacter({ character: e.target.value }))}
+              onChange={(e) => dispatch(setBurstSelectedCharacter({ character: (e.target.value || "") as ECharacter | "" }))}
             >
               <option value="">—</option>
               {allCharacterKeys.map((key) => (

@@ -1,14 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ECharacter } from "../types/enums";
 
 export type BurstDivideItem = { playerId: string; count: number };
 
 const initialState: {
-  character: string | null;
+  character: ECharacter | null;
   enemies: string[];
   selectedPlayer: string;
   selectedEnemy: string;
   divide: BurstDivideItem[];
-  selectedCharacter: string;
+  selectedCharacter: ECharacter | "";
 } = {
   character: null,
   enemies: [],
@@ -22,7 +23,7 @@ const burstSlice = createSlice({
   name: "burst",
   initialState,
   reducers: {
-    selectBurstCharacter(state, action: PayloadAction<{ character: string }>) {
+    selectBurstCharacter(state, action: PayloadAction<{ character: ECharacter }>) {
       state.character = action.payload.character;
       state.enemies = [];
       state.selectedPlayer = "";
@@ -45,7 +46,7 @@ const burstSlice = createSlice({
     setBurstDivide(state, action: PayloadAction<{ divide: BurstDivideItem[] }>) {
       state.divide = action.payload.divide;
     },
-    setBurstSelectedCharacter(state, action: PayloadAction<{ character: string }>) {
+    setBurstSelectedCharacter(state, action: PayloadAction<{ character: ECharacter | "" }>) {
       state.selectedCharacter = action.payload.character;
     },
     clearBurstSelection(state) {

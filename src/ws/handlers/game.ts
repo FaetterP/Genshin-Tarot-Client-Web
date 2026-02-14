@@ -13,6 +13,7 @@ import { startStepAnimation } from "../../redux/stepAnimation";
 import { setPage } from "../../redux/service";
 import { DetailedStep } from "../../types/detailedStep";
 import { TaskCompleteTaskRequest } from "../../types/request";
+import type { ELeyline } from "../../types/enums";
 import type {
   AwaitedResponse,
   GameEndTurnResponse,
@@ -32,7 +33,7 @@ async function startCycle(payload: {
   cycle: number;
   you: PlayerPrimitive;
   otherPlayers: PlayerPrimitive[];
-  leylines: string[];
+  leylines: ELeyline[];
   steps: DetailedStep[];
 }) {
   if (payload.steps && payload.steps.length > 0) {

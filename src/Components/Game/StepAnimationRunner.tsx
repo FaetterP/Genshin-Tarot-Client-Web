@@ -40,6 +40,7 @@ import { TaskCompleteTaskRequest } from "../../types/request";
 import { sleep } from "../../utils/sleep";
 import { CardPrimitive } from "../../types/general";
 import { DetailedStep } from "../../types/detailedStep";
+import { EDetailedStep } from "../../types/enums";
 
 const DEATH_ANIMATION_MS = 1500;
 const ENEMY_APPEAR_MS = 500;
@@ -63,30 +64,30 @@ async function runStepAnimations(
 ): Promise<void> {
   const discardCards: CardPrimitive[] = [];
   const drawCards: CardPrimitive[] = [];
-  const hasUpgradeForMe = steps.some((s) => s.type === "upgrade_card" && s.playerId === myPlayerId);
+  const hasUpgradeForMe = steps.some((s) => s.type === EDetailedStep.UpgradeCard && s.playerId === myPlayerId);
 
   for (const step of steps) {
     switch (step.type) {
-      case "enemy_death": {
+      case EDetailedStep.EnemyDeath: {
         dispatch(setDyingEnemy({ enemyId: step.enemyId }));
         await sleep(DEATH_ANIMATION_MS);
         dispatch(removeDyingEnemy({ enemyId: step.enemyId }));
         dispatch(removeEnemy({ enemyId: step.enemyId }));
         break;
       }
-      case "discard_card": {
+      case EDetailedStep.DiscardCard: {
         if (step.playerId === myPlayerId) {
           discardCards.push(step.card);
         }
         break;
       }
-      case "draw_cards": {
+      case EDetailedStep.DrawCards: {
         if (step.playerId === myPlayerId && step.cards.length > 0) {
           drawCards.push(...step.cards);
         }
         break;
       }
-      case "add_card": {
+      case EDetailedStep.AddCard: {
         if (step.playerId === myPlayerId) {
           if (!(hasUpgradeForMe && step.to === "hand")) {
             dispatch(setAnimatingAddCard({ card: step.card, to: step.to }));
@@ -100,7 +101,7 @@ async function runStepAnimations(
         }
         break;
       }
-      case "enemy_take_damage": {
+      case EDetailedStep.EnemyTakeDamage: {
         if (step.isPiercing && step.damage > 0) {
           dispatch(setPiercingEnemy({ enemyId: step.enemyId }));
           await sleep(PIERCING_EFFECT_MS);
@@ -117,14 +118,14 @@ async function runStepAnimations(
         }
         break;
       }
-      case "enemy_get_element": {
+      case EDetailedStep.EnemyGetElement: {
         dispatch(setElementOnEnemy({ enemyId: step.enemyId, element: step.element }));
         await sleep(ELEMENT_EFFECT_MS);
         dispatch(setElementOnEnemy(null));
         dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element }));
         break;
       }
-      case "enemy_reaction": {
+      case EDetailedStep.EnemyReaction: {
         dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element1 }));
         dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element2 }));
         dispatch(
@@ -138,20 +139,20 @@ async function runStepAnimations(
         dispatch(setReactionOnEnemy(null));
         break;
       }
-      case "enemy_block_damage": {
+      case EDetailedStep.EnemyBlockDamage: {
         dispatch(setBlockingEnemy({ enemyId: step.enemyId }));
         await sleep(BLOCK_EFFECT_MS);
         dispatch(clearBlockingEnemy({ enemyId: step.enemyId }));
         break;
       }
-      case "enemy_appearance": {
+      case EDetailedStep.EnemyAppearance: {
         dispatch(addEnemy({ playerId: step.playerId, enemy: step.enemy }));
         dispatch(setAppearingEnemy({ enemyId: step.enemy.id }));
         await sleep(ENEMY_APPEAR_MS);
         dispatch(removeAppearingEnemy({ enemyId: step.enemy.id }));
         break;
       }
-      case "upgrade_card": {
+      case EDetailedStep.UpgradeCard: {
         if (step.playerId === myPlayerId) {
           dispatch(
             setAnimatingUpgradeCard({
@@ -167,7 +168,7 @@ async function runStepAnimations(
         }
         break;
       }
-      case "energy_freezed": {
+      case EDetailedStep.EnergyFreezed: {
         if (step.playerId === myPlayerId) {
           dispatch(setEnergyFreezed({ playerId: step.playerId }));
           await sleep(ENERGY_FREEZED_MS);
@@ -177,13 +178,13 @@ async function runStepAnimations(
         }
         break;
       }
-      case "use_leyline": {
+      case EDetailedStep.UseLeyline: {
         dispatch(setAnimatingLeyline(step.name));
         await sleep(LEYLINE_EFFECT_MS);
         dispatch(setAnimatingLeyline(null));
         break;
       }
-      case "effect_trigger": {
+      case EDetailedStep.EffectTrigger: {
         dispatch(
           setAnimatingEffectTrigger({
             effect: step.effect,
@@ -195,7 +196,7 @@ async function runStepAnimations(
         dispatch(setAnimatingEffectTrigger(null));
         break;
       }
-      case "enemy_attack": {
+      case EDetailedStep.EnemyAttack: {
         dispatch(
           setAnimatingEnemyAttack({
             enemyId: step.enemyId,

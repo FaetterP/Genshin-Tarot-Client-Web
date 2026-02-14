@@ -19,7 +19,7 @@ export default function Card(props: Props) {
   function select() {
     if (upgrading || !canPlay) return;
     dispatch(clearBurstSelection());
-    dispatch(selectCard({ cardId, cardKey: name }));
+    dispatch(selectCard({ cardId, card: name }));
   }
 
   const isSelected = useSelector((state: State) => state.card.selectedCard) === cardId;
@@ -31,10 +31,10 @@ export default function Card(props: Props) {
       <div className={`${styles.canSelect} ${styles.upgrading}`} aria-hidden>
         <div className={styles.upgradingInner}>
           <div className={styles.upgradingOld}>
-            <CardTexture name={upgrading.oldCard.name} />
+            <CardTexture card={upgrading.oldCard.name} />
           </div>
           <div className={styles.upgradingNew}>
-            <CardTexture name={upgrading.newCard.name} />
+            <CardTexture card={upgrading.newCard.name} />
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@ export default function Card(props: Props) {
       className={`${styles.canSelect} ${isSelected ? styles.selected : ""} ${isSelectedForEffect ? styles.selectedForEffect : ""} ${!canPlay ? styles.cannotPlay : ""}`}
       onClick={select}
     >
-      <CardTexture name={name} />
+      <CardTexture card={name} />
     </div>
   );
 }

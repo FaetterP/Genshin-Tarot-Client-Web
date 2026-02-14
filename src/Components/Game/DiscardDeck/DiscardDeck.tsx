@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { State } from "../../../redux";
 import CompactCard from "../Card/CompactCard";
 import { CardPrimitive } from "../../../types/general";
+import type { ECard } from "../../../types/enums";
 import styles from "./DiscardDeck.module.scss";
 
 const ENTER_DURATION_MS = 350;
@@ -17,7 +18,7 @@ export default function DiscardDeck({ cards }: { cards: CardPrimitive[] }) {
   const prevCardsRef = useRef<CardPrimitive[]>([]);
   const resizeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [hoveredCard, setHoveredCard] = useState<{
-    name: string;
+    name: ECard;
     panelRight: number;
     centerY: number;
   } | null>(null);
@@ -120,7 +121,7 @@ export default function DiscardDeck({ cards }: { cards: CardPrimitive[] }) {
               } as React.CSSProperties
             }
           >
-            <CompactCard name={hoveredCard.name} />
+            <CompactCard card={hoveredCard.name} />
           </div>,
           document.body,
         )}

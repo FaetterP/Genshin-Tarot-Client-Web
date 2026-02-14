@@ -1,14 +1,15 @@
 import { useSelector } from "react-redux";
 import styles from "../PlayerStats/PlayerEffects.module.scss";
 import { State } from "../../../redux";
+import { EEnemyEffect } from "../../../types/enums";
 
 type PropsType = {
-  effects: string[];
+  effects: EEnemyEffect[];
 };
 
-const effectsMap: Record<string, { display: string }> = {
-  Nightrider: { display: "🌑🦅" },
-  NightriderPlus: { display: "🌑🦅+" },
+const effectsMap: Record<EEnemyEffect, { display: string }> = {
+  [EEnemyEffect.Nightrider]: { display: "🌑🦅" },
+  [EEnemyEffect.NightriderPlus]: { display: "🌑🦅+" },
 };
 
 export default function EnemyEffects({ effects }: PropsType) {
@@ -22,7 +23,7 @@ export default function EnemyEffects({ effects }: PropsType) {
         <div key={effect} className={styles.effect}>
           {effectsMap[effect]?.display ?? effect}
           <span className={styles.tooltip}>
-            {enemyEffectsLang[effect + "Effect"] || enemyEffectsLang[effect] || effect}
+            {enemyEffectsLang[effect].description}
           </span>
         </div>
       ))}

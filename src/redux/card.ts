@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { cards } from "../storage/cards/cards";
+import { ECard } from "../types/enums";
 
 export type CardSource = "hand" | "discard" | "deck";
 
@@ -31,11 +32,11 @@ const charactersSlice = createSlice({
   name: "card",
   initialState,
   reducers: {
-    selectCard(state, action: PayloadAction<{ cardId: string; cardKey: string }>) {
-      const { cardId, cardKey } = action.payload;
+    selectCard(state, action: PayloadAction<{ cardId: string; card: ECard }>) {
+      const { cardId, card } = action.payload;
       state.selectedCard = cardId;
       const { enemiesCount, isRange, isCanAlternative, isNeedPlayer, isNeedCardFrom } =
-        cards[cardKey].require || {};
+        cards[card].require || {};
 
       if (enemiesCount) {
         state.needEnemies = enemiesCount;

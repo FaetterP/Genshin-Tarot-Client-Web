@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { State } from "../../../redux";
 import type { AddCardDestination } from "../../../redux/stepAnimation";
+import type { ECard } from "../../../types/enums";
 import CardTexture from "../Card/CardTexture";
 import styles from "./CardAnimationOverlay.module.scss";
 
@@ -10,8 +11,8 @@ const addCardClassMap: Record<AddCardDestination, string> = {
   discard: styles.addToDiscard,
 };
 
-function FullSizeCardTexture({ name }: { name: string }) {
-  return <CardTexture name={name} />;
+function FullSizeCardTexture({ name }: { name: ECard }) {
+  return <CardTexture card={name} />;
 }
 
 export default function CardAnimationOverlay() {

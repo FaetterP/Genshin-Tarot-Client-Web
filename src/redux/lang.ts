@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import type { ECard, ECharacter, ELeyline } from "../types/enums";
 import { Lang } from "../types/general";
 import { engNames as engNamesEnemies } from "../storage/enemies/names";
 import {
@@ -19,8 +20,16 @@ import { rusNames as rusNamesCharacters } from "../storage/characters/names";
 import { engText as engTextService, rusText as rusTextService } from "../storage/texts";
 import { engLeylines, rusLeylines } from "../storage/leylines";
 import { engElements, rusElements } from "../storage/elements";
-import { engPlayerEffects, rusPlayerEffects } from "../storage/playerEffects";
-import { engEnemyEffects, rusEnemyEffects } from "../storage/enemyEffects";
+import {
+  type PlayerEffectLocale,
+  engPlayerEffects,
+  rusPlayerEffects,
+} from "../storage/playerEffects";
+import {
+  type EnemyEffectLocale,
+  engEnemyEffects,
+  rusEnemyEffects,
+} from "../storage/enemyEffects";
 
 type LangType = {
   elements: Record<string, string>;
@@ -29,17 +38,17 @@ type LangType = {
     descriptions: Record<string, string>;
   };
   cards: {
-    names: Record<string, string>;
-    descriptions: Record<string, string>;
+    names: Record<ECard, string>;
+    descriptions: Record<ECard, string>;
   };
   characters: {
-    names: Record<string, string>;
-    bursts: Record<string, { name: string; description: string; cost: number }>;
+    names: Record<ECharacter, string>;
+    bursts: Record<ECharacter, { name: string; description: string }>;
   };
   service: Record<string, string>;
-  leylines: Record<string, string>;
-  playerEffects: Record<string, string>;
-  enemyEffects: Record<string, string>;
+  leylines: Record<ELeyline, { name: string; description: string }>;
+  playerEffects: PlayerEffectLocale;
+  enemyEffects: EnemyEffectLocale;
 };
 
 const mapper: { EN: LangType; RU: LangType } = {

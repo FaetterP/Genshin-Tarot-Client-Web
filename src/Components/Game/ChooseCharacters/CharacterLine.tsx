@@ -1,6 +1,7 @@
 import { useSelector } from "react-redux";
 import { send } from "../../../ws";
 import { State } from "../../../redux";
+import { burstCosts } from "../../../storage/characters/burstCosts";
 import { characterSkillCards } from "../../../storage/characters/cards";
 import CompactCard from "../Card/CompactCard";
 import styles from "./CharacterLine.module.scss";
@@ -8,8 +9,9 @@ import {
   CharactersAddCharacterRequest,
   CharactersRemoveCharacterRequest,
 } from "../../../types/request";
+import type { ECard, ECharacter } from "../../../types/enums";
 
-export default function CharacterLine({ character }: { character: string }) {
+export default function CharacterLine({ character }: { character: ECharacter }) {
   function addCharacter() {
     send<CharactersAddCharacterRequest>({
       action: "characters.addCharacter",
@@ -34,15 +36,12 @@ export default function CharacterLine({ character }: { character: string }) {
 
   const name =
     useSelector((state: State) => state.lang.characters.names[character]) || `${character}.name`;
-  const {
-    name: burstName,
-    description,
-    cost,
-  } = useSelector((state: State) => state.lang.characters.bursts[character]) || {
-    name: `${character}.burst`,
-    description: `${character}.description`,
-    cost: 0,
-  };
+  const { name: burstName, description } =
+    useSelector((state: State) => state.lang.characters.bursts[character]) || {
+      name: `${character}.burst`,
+      description: `${character}.description`,
+    };
+  const cost = burstCosts[character] ?? 0;
 
   const me = useSelector((state: State) => {
     return state.players.players.find((player) => player.playerId === state.service.myPlayerId)!;
@@ -78,20 +77,20 @@ export default function CharacterLine({ character }: { character: string }) {
         <div className={styles.skillCards}>
           <div className={styles.skillCardRow}>
             <div className={styles.miniCard}>
-              <CompactCard name={skillCards.card1} />
+              <CompactCard card={skillCards.card1} />
             </div>
             <span className={styles.cardArrow}>⟫</span>
             <div className={styles.miniCard}>
-              <CompactCard name={`${skillCards.card1}Plus`} />
+              <CompactCard card={`${skillCards.card1}Plus` as ECard} />
             </div>
           </div>
           <div className={styles.skillCardRow}>
             <div className={styles.miniCard}>
-              <CompactCard name={skillCards.card2} />
+              <CompactCard card={skillCards.card2} />
             </div>
             <span className={styles.cardArrow}>⟫</span>
             <div className={styles.miniCard}>
-              <CompactCard name={`${skillCards.card2}Plus`} />
+              <CompactCard card={`${skillCards.card2}Plus` as ECard} />
             </div>
           </div>
         </div>

@@ -3,9 +3,11 @@ import { State } from "../../../redux";
 import { send } from "../../../ws";
 import { selectBurstCharacter } from "../../../redux/burst";
 import { clearUsedCard } from "../../../redux/card";
+import { burstCosts } from "../../../storage/characters/burstCosts";
 import { burstsRequire } from "../../../storage/characters/burstsRequire";
 import styles from "./BurstButtons.module.scss";
 import { GameUseBurstRequest } from "../../../types/request";
+import type { ECharacter } from "../../../types/enums";
 
 export default function BurstButtons() {
   const dispatch = useDispatch();
@@ -15,8 +17,8 @@ export default function BurstButtons() {
   const burstData = useSelector((state: State) => state.lang.characters.bursts);
   const characterNames = useSelector((state: State) => state.lang.characters.names);
 
-  function handleBurstClick(character: string) {
-    const cost = burstData[character]?.cost ?? 0;
+  function handleBurstClick(character: ECharacter) {
+    const cost = burstCosts[character] ?? 0;
     if (energy < cost) return;
     const require = burstsRequire[character];
     const needsSelection =
@@ -46,7 +48,7 @@ export default function BurstButtons() {
         const burstName = burst?.name ?? `${character}.burst`;
         const characterName = characterNames[character] ?? character;
         const description = burst?.description ?? "";
-        const cost = burst?.cost ?? 0;
+        const cost = burstCosts[character] ?? 0;
         let costText = "";
         for (let i = 0; i < cost; i++) costText += "⚪";
         for (let i = 0; i < 10 - cost; i++) costText += "⚫";

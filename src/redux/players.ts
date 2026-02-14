@@ -1,13 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardPrimitive, EnemyPrimitive, PlayerPrimitive } from "../types/general";
-import { EElement } from "../types/enums";
+import { ECharacter, EElement, ELeyline } from "../types/enums";
 
 const initialState: {
   me: PlayerPrimitive;
   other: PlayerPrimitive[];
   players: PlayerPrimitive[];
   cycle: number;
-  leylines: string[];
+  leylines: ELeyline[];
 } = {
   players: [],
   me: {
@@ -55,13 +55,13 @@ const charactersSlice = createSlice({
       });
     },
 
-    addCharacterAction(state, action: PayloadAction<{ character: string; playerId: string }>) {
+    addCharacterAction(state, action: PayloadAction<{ character: ECharacter; playerId: string }>) {
       const { character, playerId } = action.payload;
       const player = state.players.find((player) => player.playerId === playerId)!;
       player.characters.push(character);
     },
 
-    removeCharacterAction(state, action: PayloadAction<{ character: string; playerId: string }>) {
+    removeCharacterAction(state, action: PayloadAction<{ character: ECharacter; playerId: string }>) {
       const { character, playerId } = action.payload;
       const player = state.players.find((player) => player.playerId === playerId)!;
       player.characters = player.characters.filter((char) => char !== character);
@@ -83,7 +83,7 @@ const charactersSlice = createSlice({
       state.cycle = action.payload.cycle;
     },
 
-    setLeyline(state, action: PayloadAction<{ leylines: string[] }>) {
+    setLeyline(state, action: PayloadAction<{ leylines: ELeyline[] }>) {
       state.leylines = action.payload.leylines;
     },
 

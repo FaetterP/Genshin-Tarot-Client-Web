@@ -9,6 +9,7 @@ import { cards } from "../../../storage/cards/cards";
 import CompactCard from "../Card/CompactCard";
 import { GameUpgradeCardRequest, GameUseCardRequest } from "../../../types/request";
 import type { CardPrimitive } from "../../../types/general";
+import type { ECard } from "../../../types/enums";
 
 export default function Selections() {
   const dispatch = useDispatch();
@@ -191,11 +192,11 @@ export default function Selections() {
           <div className={styles.upgradeButtonWrap}>
             <div className={styles.upgradeTooltip}>
               <div className={styles.miniCard}>
-                <CompactCard name={selectedCardInHand.name} />
+                <CompactCard card={selectedCardInHand.name} />
               </div>
               <span className={styles.cardArrow}>⟫</span>
               <div className={styles.miniCard}>
-                <CompactCard name={`${selectedCardInHand.name}Plus`} />
+                <CompactCard card={`${selectedCardInHand.name}Plus` as ECard} />
               </div>
             </div>
             <button type="button" className="generalButton" onClick={handleUpgrade}>

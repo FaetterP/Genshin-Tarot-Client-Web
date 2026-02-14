@@ -1,18 +1,18 @@
-import { EElement } from "./enums";
+import type { ECard, ECardType, ECharacter, EElement, EEnemy, EEnemyEffect, EPlayerEffect } from "./enums";
 
 export type EnemyPrimitive = {
   id: string;
-  name: string;
+  name: EEnemy;
   hp: number;
   shield: number;
   elements: EElement[];
   isStunned: boolean;
-  effects: string[];
+  effects: EEnemyEffect[];
 };
 
 export type PlayerPrimitive = {
   playerId: string;
-  characters: string[];
+  characters: ECharacter[];
   hp: number;
   shields: number;
   energy: number;
@@ -24,7 +24,7 @@ export type PlayerPrimitive = {
   };
   wave: number;
   enemies: EnemyPrimitive[];
-  effects: string[];
+  effects: EPlayerEffect[];
   hand: CardPrimitive[];
   discard: CardPrimitive[];
   deck: CardPrimitive[];
@@ -34,7 +34,7 @@ export type PlayerPrimitive = {
 
 export type CardPrimitive = {
   cardId: string;
-  name: string;
+  name: ECard;
   type: ECardType;
   deckPosition?: number;
 };

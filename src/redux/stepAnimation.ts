@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardPrimitive, PlayerPrimitive } from "../types/general";
 import { DetailedStep } from "../types/detailedStep";
+import type { ELeyline, EPlayerEffect } from "../types/enums";
 
-/** Один элемент очереди анимаций — такой же payload, как у startStepAnimation */
 export type StepAnimationPayload =
   | {
       steps: DetailedStep[];
@@ -37,7 +37,7 @@ export type StepAnimationAfterCycle = {
   cycle: number;
   you: PlayerPrimitive;
   otherPlayers: PlayerPrimitive[];
-  leylines: string[];
+  leylines: ELeyline[];
 };
 
 export type StepAnimationAfterEndTurn = {
@@ -68,7 +68,7 @@ export type AnimatingUpgradeCard = {
 };
 
 export type AnimatingEffectTrigger = {
-  effect: string;
+  effect: EPlayerEffect;
   isRemove: boolean;
   playerId: string;
 };
@@ -99,7 +99,7 @@ const initialState: {
   elementOnEnemy: ElementOnEnemy | null;
   reactionOnEnemy: ReactionOnEnemy | null;
   energyFreezedPlayerId: string | null;
-  animatingLeyline: string | null;
+  animatingLeyline: ELeyline | null;
   animatingEffectTrigger: AnimatingEffectTrigger | null;
   animatingEnemyAttack: AnimatingEnemyAttack | null;
 } = {
@@ -261,7 +261,7 @@ const stepAnimationSlice = createSlice({
       state.energyFreezedPlayerId = action.payload === null ? null : action.payload.playerId;
     },
 
-    setAnimatingLeyline(state, action: PayloadAction<string | null>) {
+    setAnimatingLeyline(state, action: PayloadAction<ELeyline | null>) {
       state.animatingLeyline = action.payload;
     },
 
