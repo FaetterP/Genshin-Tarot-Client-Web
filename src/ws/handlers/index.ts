@@ -1,6 +1,7 @@
 import game from "./game";
 import ws from "./ws";
 import characters from "./characters";
+import admin from "./admin";
 
 interface Handlers {
   [key: string]: (payload: any) => void;
@@ -13,5 +14,6 @@ export function buildHandlers() {
   Object.entries(characters.handlers).forEach(
     ([key, fun]) => (handlers[`characters.${key}`] = fun),
   );
+  Object.entries(admin.handlers).forEach(([key, fun]) => (handlers[`admin.${key}`] = fun));
   return handlers;
 }
