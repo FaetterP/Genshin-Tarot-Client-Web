@@ -15,6 +15,7 @@ export default function Selections() {
   const dispatch = useDispatch();
   const {
     needEnemies,
+    needEnemiesMax,
     isCanAlternative,
     selectedCard,
     selectedCardForEffect,
@@ -58,7 +59,7 @@ export default function Selections() {
   const canSubmitCard =
     canPlayCard &&
     (!isNeedPlayer || !!selectedPlayer) &&
-    (!needEnemies || enemies.length >= needEnemies) &&
+    (!needEnemies || (enemies.length >= needEnemies && (!needEnemiesMax || enemies.length <= needEnemiesMax))) &&
     (!isNeedCardFrom?.length || isSelectedCardForEffectValid);
 
   const formik = useFormik({

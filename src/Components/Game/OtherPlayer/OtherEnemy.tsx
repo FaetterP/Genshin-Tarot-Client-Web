@@ -35,16 +35,25 @@ export default function OtherEnemy(props: EnemyPrimitive) {
   const isEulaEndTurnMode = eulaEndTurnActive && eulaTargets.length < eulaSnowflakes;
 
   const cardNeedEnemies = useSelector((state: State) => state.card.needEnemies);
+  const cardNeedEnemiesMax = useSelector((state: State) => state.card.needEnemiesMax);
   const cardIsRange = !!useSelector((state: State) => state.card.isRange);
   const cardEnemies = useSelector((state: State) => state.card.enemies);
   const burstEnemies = useSelector((state: State) => state.burst.enemies);
   const needEnemies = isBurstEnemyMode ? (burstRequire?.needEnemies ?? 0) : cardNeedEnemies;
+  const needEnemiesMax = isBurstEnemyMode ? 0 : cardNeedEnemiesMax;
   const isRange = isBurstEnemyMode || cardIsRange;
   const selectedCount = isBurstEnemyMode ? burstEnemies.length : cardEnemies.length;
   const selectedList = isBurstEnemyMode ? burstEnemies : cardEnemies;
+  const maxToSelect = needEnemiesMax || needEnemies;
+
+  const animatingEnemiesSwap = useSelector(
+    (state: State) => state.stepAnimation.animatingEnemiesSwap,
+  );
+  const isEnemySwapShown =
+    animatingEnemiesSwap?.enemyId1 === props.id || animatingEnemiesSwap?.enemyId2 === props.id;
 
   const isCanSelected =
-    isEulaEndTurnMode || (needEnemies && isRange && selectedCount < needEnemies);
+    isEulaEndTurnMode || (needEnemies && isRange && selectedCount < maxToSelect);
   const isSelected = isEulaEndTurnMode ? false : selectedList.includes(props.id);
   const isDying = dyingEnemyIds.includes(props.id);
   const isPiercingHit = piercingEnemyIds.includes(props.id);
@@ -88,7 +97,7 @@ export default function OtherEnemy(props: EnemyPrimitive) {
 
   return (
     <div
-      className={`${styles.enemyWrapper} ${styles.enemy} ${isCanSelected ? styles.canSelected : ""} ${isSelected ? styles.selected : ""} ${isDying ? styles.death : ""} ${isPiercingHit ? enemyEffectStyles.piercingHit : ""} ${isBlockingHit ? enemyEffectStyles.blockHit : ""} ${elementGlowClass}`}
+      className={`${styles.enemyWrapper} ${styles.enemy} ${isCanSelected ? styles.canSelected : ""} ${isSelected ? styles.selected : ""} ${isDying ? styles.death : ""} ${isPiercingHit ? enemyEffectStyles.piercingHit : ""} ${isBlockingHit ? enemyEffectStyles.blockHit : ""} ${isEnemySwapShown ? enemyEffectStyles.swapEffect : ""} ${elementGlowClass}`}
       onClick={handleClick}
     >
       {name}

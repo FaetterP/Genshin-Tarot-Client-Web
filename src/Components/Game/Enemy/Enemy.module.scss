@@ -156,6 +156,35 @@
   animation: attack 1s infinite alternate ease-in-out;
 }
 
+/* ----- Enemies swap: два врага меняются местами (Anemo) ----- */
+.swapEffect {
+  animation: swapPulse 1.2s ease-out forwards;
+}
+
+@keyframes swapPulse {
+  0% {
+    filter: brightness(1);
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+  }
+  20% {
+    filter: brightness(1.15);
+    box-shadow:
+      0 0 5px 5px rgba(0, 0, 0, 0.2),
+      0 0 24px 10px rgba(140, 255, 220, 0.5),
+      inset 0 0 25px rgba(160, 255, 230, 0.2);
+  }
+  50% {
+    filter: brightness(1.08);
+    box-shadow:
+      0 0 5px 5px rgba(0, 0, 0, 0.2),
+      0 0 22px 9px rgba(140, 255, 220, 0.45);
+  }
+  100% {
+    filter: brightness(1);
+    box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+  }
+}
+
 .death {
   animation: deathBurn 1.5s forwards ease-in;
   pointer-events: none;

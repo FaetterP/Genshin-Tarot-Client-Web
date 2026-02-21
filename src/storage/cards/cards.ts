@@ -11,6 +11,7 @@ export const cards: Record<
     isCanSelectItself?: boolean;
     require?: {
       enemiesCount?: number;
+      enemiesCountMax?: number;
       isRange?: boolean;
       isCanAlternative?: boolean;
       isNeedPlayer?: boolean;
@@ -179,7 +180,7 @@ export const cards: Record<
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
-    require: { enemiesCount: 3 },
+    require: { enemiesCount: 1 },
   },
   [ECard.SearingOnslaughtPlus]: {
     cost: 1,
@@ -187,7 +188,7 @@ export const cards: Record<
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
-    require: { enemiesCount: 3 },
+    require: { enemiesCount: 1 },
   },
   [ECard.KatzleinStyle]: {
     cost: 1,
@@ -336,7 +337,7 @@ export const cards: Record<
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
-    require: { enemiesCount: 1, isCanAlternative: true },
+    require: { enemiesCount: 1, enemiesCountMax: 2, isRange: true, isCanAlternative: true },
   },
   [ECard.GaleBladePlus]: {
     cost: 0,
@@ -344,7 +345,7 @@ export const cards: Record<
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
-    require: { enemiesCount: 1, isRange: true, isCanAlternative: true },
+    require: { enemiesCount: 1, enemiesCountMax: 2, isRange: true, isCanAlternative: true },
   },
   [ECard.CeremonialBladework]: {
     cost: 1,

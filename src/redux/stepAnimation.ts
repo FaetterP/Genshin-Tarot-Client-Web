@@ -79,6 +79,11 @@ export type AnimatingEnemyAttack = {
   damage: number;
 };
 
+export type AnimatingEnemiesSwap = {
+  enemyId1: string;
+  enemyId2: string;
+};
+
 const initialState: {
   steps: DetailedStep[];
   finalPayload: StepAnimationFinalPayload | null;
@@ -102,6 +107,7 @@ const initialState: {
   animatingLeyline: ELeyline | null;
   animatingEffectTrigger: AnimatingEffectTrigger | null;
   animatingEnemyAttack: AnimatingEnemyAttack | null;
+  animatingEnemiesSwap: AnimatingEnemiesSwap | null;
 } = {
   steps: [],
   finalPayload: null,
@@ -125,6 +131,7 @@ const initialState: {
   animatingLeyline: null,
   animatingEffectTrigger: null,
   animatingEnemyAttack: null,
+  animatingEnemiesSwap: null,
 };
 
 const stepAnimationSlice = createSlice({
@@ -152,6 +159,7 @@ const stepAnimationSlice = createSlice({
       state.animatingLeyline = null;
       state.animatingEffectTrigger = null;
       state.animatingEnemyAttack = null;
+      state.animatingEnemiesSwap = null;
       if ("player" in payload && "card" in payload) {
         state.finalPayload = {
           player: payload.player,
@@ -273,6 +281,10 @@ const stepAnimationSlice = createSlice({
       state.animatingEnemyAttack = action.payload;
     },
 
+    setAnimatingEnemiesSwap(state, action: PayloadAction<AnimatingEnemiesSwap | null>) {
+      state.animatingEnemiesSwap = action.payload;
+    },
+
     clearStepAnimation(state) {
       state.steps = [];
       state.finalPayload = null;
@@ -295,6 +307,7 @@ const stepAnimationSlice = createSlice({
       state.animatingLeyline = null;
       state.animatingEffectTrigger = null;
       state.animatingEnemyAttack = null;
+      state.animatingEnemiesSwap = null;
 
       // Запускаем следующую анимацию из очереди
       const next = state.animationQueue.shift();
@@ -310,6 +323,7 @@ const stepAnimationSlice = createSlice({
         state.animatingLeyline = null;
         state.animatingEffectTrigger = null;
         state.animatingEnemyAttack = null;
+        state.animatingEnemiesSwap = null;
         if ("player" in next && "card" in next) {
           state.finalPayload = {
             player: next.player,
@@ -372,5 +386,6 @@ export const {
   setAnimatingLeyline,
   setAnimatingEffectTrigger,
   setAnimatingEnemyAttack,
+  setAnimatingEnemiesSwap,
   clearStepAnimation,
 } = stepAnimationSlice.actions;

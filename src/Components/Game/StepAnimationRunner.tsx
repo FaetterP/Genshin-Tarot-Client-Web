@@ -34,6 +34,7 @@ import {
   setAnimatingLeyline,
   setAnimatingEffectTrigger,
   setAnimatingEnemyAttack,
+  setAnimatingEnemiesSwap,
 } from "../../redux/stepAnimation";
 import { send } from "../../ws";
 import { TaskCompleteTaskRequest } from "../../types/request";
@@ -55,6 +56,7 @@ const ENERGY_FREEZED_MS = 1200;
 const LEYLINE_EFFECT_MS = 2000;
 const EFFECT_TRIGGER_MS = 1000;
 const ENEMY_ATTACK_MS = 2000;
+const ENEMIES_SWAP_MS = 1200;
 const DEFAULT_STEP_MS = 200;
 
 async function runStepAnimations(
@@ -206,6 +208,17 @@ async function runStepAnimations(
         );
         await sleep(ENEMY_ATTACK_MS);
         dispatch(setAnimatingEnemyAttack(null));
+        break;
+      }
+      case EDetailedStep.EnemiesSwap: {
+        dispatch(
+          setAnimatingEnemiesSwap({
+            enemyId1: step.enemyId1,
+            enemyId2: step.enemyId2,
+          }),
+        );
+        await sleep(ENEMIES_SWAP_MS);
+        dispatch(setAnimatingEnemiesSwap(null));
         break;
       }
       default:

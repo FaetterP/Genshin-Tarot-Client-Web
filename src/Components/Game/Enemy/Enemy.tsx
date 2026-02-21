@@ -19,7 +19,12 @@ export default function Enemy(props: EnemyPrimitive) {
   const animatingEnemyAttack = useSelector(
     (state: State) => state.stepAnimation.animatingEnemyAttack,
   );
+  const animatingEnemiesSwap = useSelector(
+    (state: State) => state.stepAnimation.animatingEnemiesSwap,
+  );
   const isEnemyAttackShown = animatingEnemyAttack?.enemyId === props.id;
+  const isEnemySwapShown =
+    animatingEnemiesSwap?.enemyId1 === props.id || animatingEnemiesSwap?.enemyId2 === props.id;
 
   const dyingEnemyIds = useSelector((state: State) => state.stepAnimation.dyingEnemyIds);
   const appearingEnemyIds = useSelector((state: State) => state.stepAnimation.appearingEnemyIds);
@@ -37,14 +42,17 @@ export default function Enemy(props: EnemyPrimitive) {
   const isEulaEndTurnMode = eulaEndTurnActive && eulaTargets.length < eulaSnowflakes;
 
   const cardNeedEnemies = useSelector((state: State) => state.card.needEnemies);
+  const cardNeedEnemiesMax = useSelector((state: State) => state.card.needEnemiesMax);
   const cardEnemies = useSelector((state: State) => state.card.enemies);
   const burstEnemies = useSelector((state: State) => state.burst.enemies);
   const needEnemies = isBurstEnemyMode ? (burstRequire?.needEnemies ?? 0) : cardNeedEnemies;
+  const needEnemiesMax = isBurstEnemyMode ? 0 : cardNeedEnemiesMax;
   const selectedEnemies = isBurstEnemyMode ? burstEnemies.length : cardEnemies.length;
   const selectedList = isBurstEnemyMode ? burstEnemies : cardEnemies;
+  const maxToSelect = needEnemiesMax || needEnemies;
 
   const isCanSelected =
-    isEulaEndTurnMode || (needEnemies && selectedEnemies < needEnemies);
+    isEulaEndTurnMode || (needEnemies && selectedEnemies < maxToSelect);
   const isSelected = isEulaEndTurnMode ? false : selectedList.includes(props.id);
   const isDying = dyingEnemyIds.includes(props.id);
   const isAppearing = appearingEnemyIds.includes(props.id);
@@ -82,6 +90,7 @@ export default function Enemy(props: EnemyPrimitive) {
   };
 
   const attackClass = isEnemyAttackShown ? styles.attackEffect : "";
+  const swapClass = isEnemySwapShown ? styles.swapEffect : "";
   const canSelectClass = isCanSelected ? styles.canSelected : "";
   const selectedClass = isSelected ? styles.selected : "";
 
@@ -91,7 +100,7 @@ export default function Enemy(props: EnemyPrimitive) {
       onClick={handleClick}
     >
       <div
-        className={`${canSelectClass} ${selectedClass} ${attackClass} ${isDying ? styles.death : ""} ${isPiercingHit ? styles.piercingHit : ""} ${isBlockingHit ? styles.blockHit : ""} ${elementGlowClass}`}
+        className={`${canSelectClass} ${selectedClass} ${attackClass} ${swapClass} ${isDying ? styles.death : ""} ${isPiercingHit ? styles.piercingHit : ""} ${isBlockingHit ? styles.blockHit : ""} ${elementGlowClass}`}
       >
         <EnemyCard {...props} />
       </div>

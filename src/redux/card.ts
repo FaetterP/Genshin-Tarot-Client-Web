@@ -12,6 +12,7 @@ const initialState: {
   isNeedCardFrom: CardSource[];
 
   needEnemies: number;
+  needEnemiesMax: number;
   isRange: boolean;
   isCanAlternative: boolean;
   isNeedPlayer: boolean;
@@ -23,6 +24,7 @@ const initialState: {
   isNeedCardFrom: [],
 
   needEnemies: 0,
+  needEnemiesMax: 0,
   isRange: false,
   isCanAlternative: false,
   isNeedPlayer: false,
@@ -35,14 +37,16 @@ const charactersSlice = createSlice({
     selectCard(state, action: PayloadAction<{ cardId: string; card: ECard }>) {
       const { cardId, card } = action.payload;
       state.selectedCard = cardId;
-      const { enemiesCount, isRange, isCanAlternative, isNeedPlayer, isNeedCardFrom } =
+      const { enemiesCount, enemiesCountMax, isRange, isCanAlternative, isNeedPlayer, isNeedCardFrom } =
         cards[card].require || {};
 
       if (enemiesCount) {
         state.needEnemies = enemiesCount;
+        state.needEnemiesMax = enemiesCountMax ?? 0;
         state.isRange = isRange || false;
       } else {
         state.needEnemies = 0;
+        state.needEnemiesMax = 0;
         state.isRange = false;
       }
 
