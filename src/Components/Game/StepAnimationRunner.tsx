@@ -77,29 +77,29 @@ async function runStepAnimations(
         dispatch(removeEnemy({ enemyId: step.enemyId }));
         break;
       }
-      case EDetailedStep.DiscardCard: {
+      case EDetailedStep.MoveCard: {
         if (step.playerId === myPlayerId) {
-          discardCards.push(step.card);
+          if (step.to === "discard") {
+            discardCards.push(step.card);
+          } else if (step.to === "trash") {
+            await sleep(DEFAULT_STEP_MS);
+          } else if (step.to === "hand" || step.to === "deck") {
+            if (!(hasUpgradeForMe && step.to === "hand")) {
+              dispatch(setAnimatingAddCard({ card: step.card, to: step.to }));
+              await sleep(CARD_ANIMATION_MS);
+              dispatch(setAnimatingAddCard(null));
+            } else {
+              await sleep(DEFAULT_STEP_MS);
+            }
+          }
+        } else {
+          await sleep(DEFAULT_STEP_MS);
         }
         break;
       }
       case EDetailedStep.DrawCards: {
         if (step.playerId === myPlayerId && step.cards.length > 0) {
           drawCards.push(...step.cards);
-        }
-        break;
-      }
-      case EDetailedStep.AddCard: {
-        if (step.playerId === myPlayerId) {
-          if (!(hasUpgradeForMe && step.to === "hand")) {
-            dispatch(setAnimatingAddCard({ card: step.card, to: step.to }));
-            await sleep(CARD_ANIMATION_MS);
-            dispatch(setAnimatingAddCard(null));
-          } else {
-            await sleep(DEFAULT_STEP_MS);
-          }
-        } else {
-          await sleep(DEFAULT_STEP_MS);
         }
         break;
       }
@@ -186,7 +186,7 @@ async function runStepAnimations(
         dispatch(setAnimatingLeyline(null));
         break;
       }
-      case EDetailedStep.EffectTrigger: {
+      case EDetailedStep.PlayerEffectTrigger: {
         dispatch(
           setAnimatingEffectTrigger({
             effect: step.effect,
