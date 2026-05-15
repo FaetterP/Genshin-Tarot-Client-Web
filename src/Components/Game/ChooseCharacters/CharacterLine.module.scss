@@ -1,89 +1,54 @@
-.characterBlock {
-  width: 520px;
-  min-height: 200px;
-  padding: 14px 20px 18px;
-
-  background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
-  border-radius: 12px;
+.characterItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border-radius: 8px;
   border: 1px solid rgba(195, 171, 145, 0.15);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  background: linear-gradient(145deg, #1a1a1a 0%, #0f0f0f 100%);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+  color: #e8e4dc;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 
-  .name {
-    text-align: center;
-    color: #e8e4dc;
-    font-weight: 800;
-    font-size: 38px;
-    letter-spacing: 0.02em;
-    margin-bottom: 2px;
-  }
-
-  .burst {
-    width: 100%;
-    position: relative;
-    min-height: 44px;
-
-    .burstName {
-      position: absolute;
-      left: 0;
-      color: #c3ab91;
-      font-size: 14px;
-      font-weight: 600;
-    }
-
-    .burstCost {
-      position: absolute;
-      right: 0;
-      letter-spacing: 1px;
-    }
-
-    .burstDescription {
-      margin-top: 22px;
-      color: rgba(255, 255, 255, 0.92);
-      font-size: 12px;
-      line-height: 1.35;
-    }
-  }
-
-  .skillCards {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 12px;
-    align-items: center;
-    padding-top: 12px;
-    border-top: 1px solid rgba(195, 171, 145, 0.2);
-  }
-
-  .skillCardRow {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .cardArrow {
-    color: #c3ab91;
-    font-size: 24px;
-    flex-shrink: 0;
-    opacity: 0.9;
-    filter: drop-shadow(0 0 4px rgba(195, 171, 145, 0.3));
-  }
-
-  .miniCard {
-    pointer-events: none;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  &:hover {
+    border-color: rgba(195, 171, 145, 0.4);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
   }
 }
 
-.characterBlock:hover {
-  outline: 3px solid white;
+.characterItem.selected {
+  border: 2px solid gold;
+  background: linear-gradient(145deg, #2a2010 0%, #1a1508 100%);
+  box-shadow:
+    0 2px 12px rgba(0, 0, 0, 0.5),
+    0 0 10px rgba(255, 215, 0, 0.2);
+  color: #f5e6a3;
 }
 
-.characterBlock.selected {
-  outline: 3px solid gold;
+.characterItem.selected:hover {
+  border-color: blanchedalmond;
+  box-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.5),
+    0 0 14px rgba(255, 235, 205, 0.25);
 }
 
-.characterBlock.selected:hover {
-  outline: 3px solid blanchedalmond;
+.characterItem.viewing {
+  border-color: rgba(195, 171, 145, 0.6);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+.characterItem.selected.viewing {
+  border-color: gold;
+}
+
+.checkmark {
+  color: gold;
+  font-size: 12px;
+  flex-shrink: 0;
 }

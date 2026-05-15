@@ -1,100 +1,29 @@
 import { useSelector } from "react-redux";
-import { send } from "../../../ws";
 import { State } from "../../../redux";
-import { burstCosts } from "../../../storage/characters/burstCosts";
-import { characterSkillCards } from "../../../storage/characters/cards";
-import CompactCard from "../Card/CompactCard";
 import styles from "./CharacterLine.module.scss";
-import {
-  CharactersAddCharacterRequest,
-  CharactersRemoveCharacterRequest,
-} from "../../../types/request";
-import type { ECard, ECharacter } from "../../../types/enums";
+import type { ECharacter } from "../../../types/enums";
 
-export default function CharacterLine({ character }: { character: ECharacter }) {
-  function addCharacter() {
-    send<CharactersAddCharacterRequest>({
-      action: "characters.addCharacter",
-      character,
-    });
-  }
+interface Props {
+  character: ECharacter;
+  isViewing: boolean;
+  onClick: () => void;
+}
 
-  function removeCharacter() {
-    send<CharactersRemoveCharacterRequest>({
-      action: "characters.removeCharacter",
-      character,
-    });
-  }
-
-  function clickCharacter() {
-    if (isCharacterChosen) {
-      removeCharacter();
-    } else {
-      addCharacter();
-    }
-  }
-
+export default function CharacterLine({ character, isViewing, onClick }: Props) {
   const name =
-    useSelector((state: State) => state.lang.characters.names[character]) || `${character}.name`;
-  const { name: burstName, description } =
-    useSelector((state: State) => state.lang.characters.bursts[character]) || {
-      name: `${character}.burst`,
-      description: `${character}.description`,
-    };
-  const cost = burstCosts[character] ?? 0;
-
-  const me = useSelector((state: State) => {
-    return state.players.players.find((player) => player.playerId === state.service.myPlayerId)!;
-  });
-  if (!me) return <></>;
-
-  const isCharacterChosen = me.characters.includes(character);
-
-  const skillCards = characterSkillCards[character];
-
-  let costText = "";
-  for (let i = 0; i < cost; i++) {
-    costText += "⚪";
-  }
-  for (let i = 0; i < 10 - cost; i++) {
-    costText += "⚫";
-  }
+    useSelector((state: State) => state.lang.characters.names[character]) || character;
+  const me = useSelector((state: State) =>
+    state.players.players.find((player) => player.playerId === state.service.myPlayerId),
+  );
+  const isCharacterChosen = me?.characters.includes(character) ?? false;
 
   return (
     <div
-      className={`${styles.characterBlock} ${isCharacterChosen ? styles.selected : ""}`}
-      onClick={clickCharacter}
+      className={`${styles.characterItem} ${isCharacterChosen ? styles.selected : ""} ${isViewing ? styles.viewing : ""}`}
+      onClick={onClick}
     >
-      <div className={styles.name}>{name}</div>
-      <div className={styles.burst}>
-        <div style={{ display: "flex" }}>
-          <div className={styles.burstName}>{burstName}</div>
-          <div className={styles.burstCost}>{costText}</div>
-        </div>
-        <div className={styles.burstDescription}>{description}</div>
-      </div>
-      {skillCards && (
-        <div className={styles.skillCards}>
-          <div className={styles.skillCardRow}>
-            <div className={styles.miniCard}>
-              <CompactCard card={skillCards.card1} />
-            </div>
-            <span className={styles.cardArrow}>⟫</span>
-            <div className={styles.miniCard}>
-              <CompactCard card={`${skillCards.card1}Plus` as ECard} />
-            </div>
-          </div>
-          <div className={styles.skillCardRow}>
-            <div className={styles.miniCard}>
-              <CompactCard card={skillCards.card2} />
-            </div>
-            <span className={styles.cardArrow}>⟫</span>
-            <div className={styles.miniCard}>
-              <CompactCard card={`${skillCards.card2}Plus` as ECard} />
-            </div>
-          </div>
-        </div>
-      )}
+      {isCharacterChosen && <span className={styles.checkmark}>✓</span>}
+      {name}
     </div>
   );
 }
