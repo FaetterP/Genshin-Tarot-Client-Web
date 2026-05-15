@@ -57,6 +57,12 @@ const burstSlice = createSlice({
       state.divide = [];
       state.selectedCharacter = "";
     },
+    filterStaleEnemies(state, action: PayloadAction<{ validIds: string[] }>) {
+      state.enemies = state.enemies.filter((id) => action.payload.validIds.includes(id));
+      if (state.selectedEnemy && !action.payload.validIds.includes(state.selectedEnemy)) {
+        state.selectedEnemy = "";
+      }
+    },
   },
 });
 
@@ -69,4 +75,5 @@ export const {
   setBurstDivide,
   setBurstSelectedCharacter,
   clearBurstSelection,
+  filterStaleEnemies,
 } = burstSlice.actions;

@@ -86,6 +86,13 @@ export interface AdminChangeStatsResponse {
   cycle: number;
 }
 
+export interface AdminStateSyncResponse {
+  action: "admin.stateSync";
+  you: PlayerPrimitive;
+  otherPlayers: PlayerPrimitive[];
+  cycle: number;
+}
+
 export type AnyResponse =
   | WsConnectResponse
   | GameStartGameResponse
@@ -97,4 +104,5 @@ export type AnyResponse =
   | GameUseBurstResponse
   | CharactersAddCharacterResponse
   | CharactersRemoveCharacterResponse
-  | AdminChangeStatsResponse;
+  | AdminChangeStatsResponse
+  | AdminStateSyncResponse;

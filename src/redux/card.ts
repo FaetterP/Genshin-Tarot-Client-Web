@@ -77,6 +77,9 @@ const charactersSlice = createSlice({
     clearUsedCard(state, _action: PayloadAction<void>) {
       return initialState;
     },
+    filterStaleEnemies(state, action: PayloadAction<{ validIds: string[] }>) {
+      state.enemies = state.enemies.filter((id) => action.payload.validIds.includes(id));
+    },
   },
 });
 
@@ -87,4 +90,5 @@ export const {
   setCardSelectedPlayer,
   setSelectedCardForEffect,
   clearUsedCard,
+  filterStaleEnemies,
 } = charactersSlice.actions;
