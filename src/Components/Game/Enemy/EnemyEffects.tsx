@@ -5,6 +5,7 @@ import { EEnemyEffect } from "../../../types/enums";
 
 type PropsType = {
   effects: EEnemyEffect[];
+  enemyId: string;
 };
 
 const effectsMap: Record<EEnemyEffect, { display: string }> = {
@@ -12,10 +13,14 @@ const effectsMap: Record<EEnemyEffect, { display: string }> = {
   [EEnemyEffect.NightriderPlus]: { display: "🌑🦅+" },
 };
 
-export default function EnemyEffects({ effects }: PropsType) {
+export default function EnemyEffects({ effects, enemyId }: PropsType) {
   const enemyEffectsLang = useSelector((state: State) => state.lang.enemyEffects);
+  const animatingEnemyEffects = useSelector(
+    (state: State) => state.stepAnimation.animatingEnemyEffects,
+  );
+  const myEffectChange = animatingEnemyEffects.find((e) => e.enemyId === enemyId);
 
-  if (!effects.length) return null;
+  if (!effects.length && !myEffectChange) return null;
 
   return (
     <div style={{ display: "flex" }}>
@@ -27,6 +32,12 @@ export default function EnemyEffects({ effects }: PropsType) {
           </span>
         </div>
       ))}
+      {myEffectChange && (
+        <div className={styles.effectTriggerOverlay} aria-hidden="true">
+          {myEffectChange.isAdd ? "+" : "−"}{" "}
+          {enemyEffectsLang[myEffectChange.effect]?.description ?? myEffectChange.effect}
+        </div>
+      )}
     </div>
   );
 }

@@ -40,7 +40,7 @@ export default function EnemyCard(props: EnemyPrimitive) {
           </div>
         )}
       </div>
-      {props.effects?.length > 0 && <EnemyEffects effects={props.effects} />}
+      <EnemyEffects effects={props.effects ?? []} enemyId={props.id} />
     </div>
   );
 }

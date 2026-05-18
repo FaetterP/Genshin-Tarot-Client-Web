@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { CardPrimitive, PlayerPrimitive } from "../types/general";
 import { DetailedStep } from "../types/detailedStep";
-import type { ELeyline, EPlayerEffect } from "../types/enums";
+import type { ELeyline, EPlayerEffect, EEnemyEffect } from "../types/enums";
 
 export type StepAnimationPayload =
   | {
@@ -84,6 +84,9 @@ export type AnimatingEnemiesSwap = {
   enemyId2: string;
 };
 
+export type AnimatingEnemyEffect = { enemyId: string; effect: EEnemyEffect; isAdd: boolean };
+export type AnimatingPlayerEffect = { playerId: string; effect: EPlayerEffect; isAdd: boolean };
+
 const initialState: {
   steps: DetailedStep[];
   finalPayload: StepAnimationFinalPayload | null;
@@ -101,8 +104,10 @@ const initialState: {
   animatingUpgradeCard: AnimatingUpgradeCard | null;
   piercingEnemyIds: string[];
   blockingEnemyIds: string[];
-  elementOnEnemy: ElementOnEnemy | null;
-  reactionOnEnemy: ReactionOnEnemy | null;
+  elementOnEnemies: ElementOnEnemy[];
+  reactionsOnEnemies: ReactionOnEnemy[];
+  animatingEnemyEffects: AnimatingEnemyEffect[];
+  animatingPlayerEffects: AnimatingPlayerEffect[];
   energyFreezedPlayerId: string | null;
   animatingLeyline: ELeyline | null;
   animatingEffectTrigger: AnimatingEffectTrigger | null;
@@ -125,8 +130,10 @@ const initialState: {
   animatingUpgradeCard: null,
   piercingEnemyIds: [],
   blockingEnemyIds: [],
-  elementOnEnemy: null,
-  reactionOnEnemy: null,
+  elementOnEnemies: [],
+  reactionsOnEnemies: [],
+  animatingEnemyEffects: [],
+  animatingPlayerEffects: [],
   energyFreezedPlayerId: null,
   animatingLeyline: null,
   animatingEffectTrigger: null,
@@ -153,8 +160,10 @@ const stepAnimationSlice = createSlice({
       state.appearingEnemyIds = [];
       state.piercingEnemyIds = [];
       state.blockingEnemyIds = [];
-      state.elementOnEnemy = null;
-      state.reactionOnEnemy = null;
+      state.elementOnEnemies = [];
+      state.reactionsOnEnemies = [];
+      state.animatingEnemyEffects = [];
+      state.animatingPlayerEffects = [];
       state.energyFreezedPlayerId = null;
       state.animatingLeyline = null;
       state.animatingEffectTrigger = null;
@@ -257,12 +266,44 @@ const stepAnimationSlice = createSlice({
       state.blockingEnemyIds = state.blockingEnemyIds.filter((id) => id !== action.payload.enemyId);
     },
 
-    setElementOnEnemy(state, action: PayloadAction<ElementOnEnemy | null>) {
-      state.elementOnEnemy = action.payload;
+    setElementOnEnemy(state, action: PayloadAction<ElementOnEnemy>) {
+      const idx = state.elementOnEnemies.findIndex((e) => e.enemyId === action.payload.enemyId);
+      if (idx >= 0) state.elementOnEnemies[idx] = action.payload;
+      else state.elementOnEnemies.push(action.payload);
     },
 
-    setReactionOnEnemy(state, action: PayloadAction<ReactionOnEnemy | null>) {
-      state.reactionOnEnemy = action.payload;
+    clearElementOnEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      state.elementOnEnemies = state.elementOnEnemies.filter((e) => e.enemyId !== action.payload.enemyId);
+    },
+
+    setReactionOnEnemy(state, action: PayloadAction<ReactionOnEnemy>) {
+      const idx = state.reactionsOnEnemies.findIndex((e) => e.enemyId === action.payload.enemyId);
+      if (idx >= 0) state.reactionsOnEnemies[idx] = action.payload;
+      else state.reactionsOnEnemies.push(action.payload);
+    },
+
+    clearReactionOnEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      state.reactionsOnEnemies = state.reactionsOnEnemies.filter((e) => e.enemyId !== action.payload.enemyId);
+    },
+
+    addAnimatingEnemyEffect(state, action: PayloadAction<AnimatingEnemyEffect>) {
+      const idx = state.animatingEnemyEffects.findIndex((e) => e.enemyId === action.payload.enemyId);
+      if (idx >= 0) state.animatingEnemyEffects[idx] = action.payload;
+      else state.animatingEnemyEffects.push(action.payload);
+    },
+
+    removeAnimatingEnemyEffect(state, action: PayloadAction<{ enemyId: string }>) {
+      state.animatingEnemyEffects = state.animatingEnemyEffects.filter((e) => e.enemyId !== action.payload.enemyId);
+    },
+
+    addAnimatingPlayerEffect(state, action: PayloadAction<AnimatingPlayerEffect>) {
+      const idx = state.animatingPlayerEffects.findIndex((e) => e.playerId === action.payload.playerId);
+      if (idx >= 0) state.animatingPlayerEffects[idx] = action.payload;
+      else state.animatingPlayerEffects.push(action.payload);
+    },
+
+    removeAnimatingPlayerEffect(state, action: PayloadAction<{ playerId: string }>) {
+      state.animatingPlayerEffects = state.animatingPlayerEffects.filter((e) => e.playerId !== action.payload.playerId);
     },
 
     setEnergyFreezed(state, action: PayloadAction<{ playerId: string } | null>) {
@@ -301,8 +342,10 @@ const stepAnimationSlice = createSlice({
       state.animatingUpgradeCard = null;
       state.piercingEnemyIds = [];
       state.blockingEnemyIds = [];
-      state.elementOnEnemy = null;
-      state.reactionOnEnemy = null;
+      state.elementOnEnemies = [];
+      state.reactionsOnEnemies = [];
+      state.animatingEnemyEffects = [];
+      state.animatingPlayerEffects = [];
       state.energyFreezedPlayerId = null;
       state.animatingLeyline = null;
       state.animatingEffectTrigger = null;
@@ -317,8 +360,10 @@ const stepAnimationSlice = createSlice({
         state.appearingEnemyIds = [];
         state.piercingEnemyIds = [];
         state.blockingEnemyIds = [];
-        state.elementOnEnemy = null;
-        state.reactionOnEnemy = null;
+        state.elementOnEnemies = [];
+        state.reactionsOnEnemies = [];
+        state.animatingEnemyEffects = [];
+        state.animatingPlayerEffects = [];
         state.energyFreezedPlayerId = null;
         state.animatingLeyline = null;
         state.animatingEffectTrigger = null;
@@ -381,7 +426,13 @@ export const {
   setBlockingEnemy,
   clearBlockingEnemy,
   setElementOnEnemy,
+  clearElementOnEnemy,
   setReactionOnEnemy,
+  clearReactionOnEnemy,
+  addAnimatingEnemyEffect,
+  removeAnimatingEnemyEffect,
+  addAnimatingPlayerEffect,
+  removeAnimatingPlayerEffect,
   setEnergyFreezed,
   setAnimatingLeyline,
   setAnimatingEffectTrigger,

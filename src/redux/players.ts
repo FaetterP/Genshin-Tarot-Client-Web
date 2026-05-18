@@ -154,6 +154,29 @@ const charactersSlice = createSlice({
       state.me.enemies.forEach(addTo);
       state.other.forEach((p) => p.enemies.forEach(addTo));
     },
+
+    applyPlayerHpShieldDelta(
+      state,
+      action: PayloadAction<{ playerId: string; hpDelta?: number; shieldDelta?: number }>,
+    ) {
+      const { playerId, hpDelta, shieldDelta } = action.payload;
+      const player =
+        state.me.playerId === playerId
+          ? state.me
+          : state.other.find((p) => p.playerId === playerId);
+      if (!player) return;
+      if (shieldDelta !== undefined) player.shields = Math.max(0, player.shields + shieldDelta);
+      if (hpDelta !== undefined) player.hp = Math.max(0, player.hp + hpDelta);
+    },
+
+    applyEnemyHpDelta(state, action: PayloadAction<{ enemyId: string; delta: number }>) {
+      const { enemyId, delta } = action.payload;
+      const update = (enemy: EnemyPrimitive) => {
+        if (enemy.id === enemyId) enemy.hp = Math.max(0, enemy.hp + delta);
+      };
+      state.me.enemies.forEach(update);
+      state.other.forEach((p) => p.enemies.forEach(update));
+    },
   },
 });
 
@@ -167,8 +190,10 @@ export const {
   setLeyline,
   useCard,
   applyPlayerUpdate,
+  applyPlayerHpShieldDelta,
   setHand,
   removeEnemy,
   addEnemy,
   addElementToEnemy,
+  applyEnemyHpDelta,
 } = charactersSlice.actions;

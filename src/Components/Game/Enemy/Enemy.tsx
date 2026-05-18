@@ -30,8 +30,8 @@ export default function Enemy(props: EnemyPrimitive) {
   const appearingEnemyIds = useSelector((state: State) => state.stepAnimation.appearingEnemyIds);
   const piercingEnemyIds = useSelector((state: State) => state.stepAnimation.piercingEnemyIds);
   const blockingEnemyIds = useSelector((state: State) => state.stepAnimation.blockingEnemyIds);
-  const elementOnEnemy = useSelector((state: State) => state.stepAnimation.elementOnEnemy);
-  const reactionOnEnemy = useSelector((state: State) => state.stepAnimation.reactionOnEnemy);
+  const elementOnEnemies = useSelector((state: State) => state.stepAnimation.elementOnEnemies);
+  const reactionsOnEnemies = useSelector((state: State) => state.stepAnimation.reactionsOnEnemies);
   const burstCharacter = useSelector((state: State) => state.burst.character);
   const burstRequire = burstCharacter ? burstsRequire[burstCharacter] : null;
   const isBurstEnemyMode = !!burstCharacter && (burstRequire?.needEnemies ?? 0) > 0;
@@ -58,8 +58,8 @@ export default function Enemy(props: EnemyPrimitive) {
   const isAppearing = appearingEnemyIds.includes(props.id);
   const isPiercingHit = piercingEnemyIds.includes(props.id);
   const isBlockingHit = blockingEnemyIds.includes(props.id);
-  const isElementEffect = elementOnEnemy?.enemyId === props.id ? elementOnEnemy.element : null;
-  const isReactionEffect = reactionOnEnemy?.enemyId === props.id ? reactionOnEnemy : null;
+  const isElementEffect = elementOnEnemies.find((e) => e.enemyId === props.id)?.element ?? null;
+  const isReactionEffect = reactionsOnEnemies.find((e) => e.enemyId === props.id) ?? null;
 
   const elementEffectClass = isElementEffect
     ? getElementStyleClass(isElementEffect, "element_", styles)

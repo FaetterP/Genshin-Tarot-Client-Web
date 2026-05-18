@@ -5,6 +5,7 @@ import { EPlayerEffect } from "../../../types/enums";
 
 type PropsType = {
   effects: EPlayerEffect[];
+  playerId: string;
 };
 
 const effectsMap: Record<EPlayerEffect, { display: string }> = {
@@ -28,11 +29,16 @@ const effectsMap: Record<EPlayerEffect, { display: string }> = {
   [EPlayerEffect.TrailOfTheQilin]: { display: "❄💮" },
 };
 
-export default function PlayerEffects({ effects }: PropsType) {
+export default function PlayerEffects({ effects, playerId }: PropsType) {
   const animatingEffectTrigger = useSelector(
     (state: State) => state.stepAnimation.animatingEffectTrigger,
   );
+  const animatingPlayerEffects = useSelector(
+    (state: State) => state.stepAnimation.animatingPlayerEffects,
+  );
   const playerEffectsLang = useSelector((state: State) => state.lang.playerEffects);
+
+  const myEffectChange = animatingPlayerEffects.find((e) => e.playerId === playerId);
 
   return (
     <div style={{ display: "flex" }}>
@@ -48,6 +54,12 @@ export default function PlayerEffects({ effects }: PropsType) {
         <div className={styles.effectTriggerOverlay} aria-hidden="true">
           {animatingEffectTrigger.isRemove ? "−" : "+"}{" "}
           {playerEffectsLang[animatingEffectTrigger.effect].description}
+        </div>
+      )}
+      {myEffectChange && (
+        <div className={styles.effectTriggerOverlay} aria-hidden="true">
+          {myEffectChange.isAdd ? "+" : "−"}{" "}
+          {playerEffectsLang[myEffectChange.effect].description}
         </div>
       )}
     </div>
