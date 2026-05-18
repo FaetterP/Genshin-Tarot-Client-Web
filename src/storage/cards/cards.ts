@@ -604,7 +604,7 @@ export const cards: Record<
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
-    require: { enemiesCount: 2, isRange: true, isCanAlternative: true },
+    require: { enemiesCount: 1, enemiesCountMax: 2, isRange: true, isCanAlternative: true },
   },
   [ECard.SpearOfTheChurchPlus]: {
     cost: 1,
@@ -722,7 +722,7 @@ export const cards: Record<
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
-    require: { enemiesCount: 2, isRange: true, isCanAlternative: true },
+    require: { enemiesCount: 1, enemiesCountMax: 2, isRange: true, isCanAlternative: true },
   },
   [ECard.WhirlwindThrustPlus]: {
     cost: 1,
@@ -812,7 +812,7 @@ export const cards: Record<
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
-    require: { enemiesCount: 2, isRange: true, isCanAlternative: true },
+    require: { enemiesCount: 1, enemiesCountMax: 2, isRange: true, isCanAlternative: true },
   },
   [ECard.RainOfStonePlus]: {
     cost: 1,
