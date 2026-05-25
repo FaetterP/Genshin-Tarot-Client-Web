@@ -57,4 +57,5 @@ export const enemies: Record<EEnemy, { mora: number; attack: number }> = {
   [EEnemy.AnemoHypostasis]: { mora: 7, attack: 3 },
   [EEnemy.ElectroHypostasis]: { mora: 7, attack: 3 },
   [EEnemy.GeoHypostasis]: { mora: 7, attack: 3 },
+  [EEnemy.Dvalin]: { mora: 0, attack: 4 },
 };

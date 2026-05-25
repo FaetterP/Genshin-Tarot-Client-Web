@@ -16,6 +16,10 @@ import StepAnimationRunner from "./StepAnimationRunner";
 import Enemies from "./Enemy/Enemies";
 import DiscardDeck from "./DiscardDeck/DiscardDeck";
 import DrawDeck from "./DrawDeck/DrawDeck";
+import Boss from "./Boss/Boss";
+import DragonBreathModal from "./DragonBreathModal/DragonBreathModal";
+import BossPassiveModal from "./BossPassiveModal/BossPassiveModal";
+import BossAttackEffect from "./BossAttackEffect/BossAttackEffect";
 
 export default function Game() {
   const me = useSelector((state: State) => state.players.me);
@@ -30,6 +34,10 @@ export default function Game() {
       <EnergyFreezedOverlay />
       <CardAnimationOverlay />
       <LeylineEffect />
+      <BossAttackEffect />
+      <Boss />
+      <DragonBreathModal />
+      <BossPassiveModal />
       <Enemies />
       <div className={styles.stats}>
         <PlayerStats {...me} />

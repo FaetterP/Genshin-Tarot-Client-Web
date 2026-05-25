@@ -1,0 +1,618 @@
+@use '../../../styles/effectOverlays';
+
+/* =============================================
+   DVALIN BOSS CARD — epic visual styles
+   ============================================= */
+
+/* ---------- Appearance overlay (darkens screen) ---------- */
+.appearanceOverlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 20, 60, 0.7) 0%, rgba(0, 0, 0, 0.85) 100%);
+  z-index: 90;
+  animation: overlayFadeIn 0.4s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ---------- Reset overlay (flash) ---------- */
+.resetOverlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 20%, rgba(100, 200, 255, 0.5) 0%, transparent 70%);
+  z-index: 90;
+  animation: resetFlashOverlay 3.5s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes resetFlashOverlay {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  30%  { opacity: 0.2; }
+  60%  { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+/* ---------- Selection states ---------- */
+.bossWrapper.canSelected {
+  cursor: crosshair;
+}
+
+.bossWrapper.canSelected .bossCard {
+  outline: 2px dashed rgba(255, 80, 80, 0.7);
+  outline-offset: 3px;
+  box-shadow: 0 0 12px rgba(255, 60, 60, 0.4);
+}
+
+.bossWrapper.canSelected:hover .bossCard {
+  outline: 2px solid rgba(255, 80, 80, 1);
+  box-shadow: 0 0 20px rgba(255, 60, 60, 0.7);
+}
+
+.bossWrapper.selected .bossCard {
+  outline: 3px solid rgba(255, 60, 60, 1);
+  outline-offset: 3px;
+  box-shadow: 0 0 24px rgba(255, 60, 60, 0.9);
+}
+
+/* ---------- Boss wrapper (positioning + entrance) ---------- */
+.bossWrapper {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Entrance: crash down from sky */
+.bossWrapper.appearing {
+  animation: bossDescend 3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@keyframes bossDescend {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-120vh) scale(2);
+    filter: brightness(3) blur(8px);
+  }
+  40% {
+    opacity: 1;
+    filter: brightness(1.6) blur(2px);
+  }
+  65% {
+    transform: translateX(-50%) translateY(12px) scale(1.04);
+    filter: brightness(1.2) blur(0);
+  }
+  80% {
+    transform: translateX(-50%) translateY(-5px) scale(0.99);
+  }
+  90% {
+    transform: translateX(-50%) translateY(3px) scale(1.01);
+  }
+  100% {
+    transform: translateX(-50%) translateY(0) scale(1);
+    filter: brightness(1) blur(0);
+    opacity: 1;
+  }
+}
+
+/* Phase reset: collapse → rebuild */
+.bossWrapper.resetting {
+  animation: bossReset 3.5s ease-in-out forwards;
+}
+
+@keyframes bossReset {
+  0%   { filter: brightness(1); transform: translateX(-50%) scale(1); }
+  8%   { filter: brightness(4) saturate(0); transform: translateX(-50%) scale(1.06); }
+  18%  { filter: brightness(0.2) saturate(0); transform: translateX(-50%) scale(0.9); }
+  35%  { filter: brightness(0.4) saturate(0.2); transform: translateX(-50%) scale(0.95); }
+  55%  { filter: brightness(1.8) saturate(1.5) hue-rotate(30deg); transform: translateX(-50%) scale(1.03); }
+  75%  { filter: brightness(1.3) hue-rotate(0deg); transform: translateX(-50%) scale(1.01); }
+  100% { filter: brightness(1); transform: translateX(-50%) scale(1); }
+}
+
+/* Anemo immunity: repel swirl */
+.bossWrapper.anemoImmune {
+  animation: anemoRepel 1.2s ease-out forwards;
+}
+
+@keyframes anemoRepel {
+  0%   { filter: brightness(1); }
+  15%  { filter: brightness(1.2) hue-rotate(120deg); }
+  40%  { filter: brightness(1.1) hue-rotate(60deg); }
+  100% { filter: brightness(1) hue-rotate(0deg); }
+}
+
+/* Damage effects */
+.piercingHit { animation: bossPiercingFlash 0.8s ease-out; }
+
+@keyframes bossPiercingFlash {
+  0%   { filter: brightness(1); }
+  15%  { filter: brightness(2.2); }
+  35%  { filter: brightness(1.4); }
+  100% { filter: brightness(1); }
+}
+
+.blockHit { animation: bossBlockFlash 0.9s ease-out; }
+
+@keyframes bossBlockFlash {
+  0%   { filter: brightness(1); }
+  12%  { filter: brightness(0.6) saturate(0.4); }
+  100% { filter: brightness(1); }
+}
+
+/* ---------- Main card ---------- */
+.bossCard {
+  position: relative;
+  width: 680px;
+  background: linear-gradient(
+    135deg,
+    rgba(5, 15, 40, 0.97) 0%,
+    rgba(8, 25, 65, 0.95) 35%,
+    rgba(10, 30, 75, 0.95) 60%,
+    rgba(5, 20, 55, 0.97) 100%
+  );
+  border: 1px solid rgba(80, 160, 255, 0.35);
+  border-radius: 12px;
+  padding: 14px 20px 12px;
+  box-shadow:
+    0 0 40px rgba(60, 140, 255, 0.18),
+    0 0 80px rgba(30, 100, 220, 0.12),
+    inset 0 0 60px rgba(20, 60, 180, 0.08),
+    0 4px 24px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+  animation: bossCardBreath 4s ease-in-out infinite alternate;
+
+  /* Storm pattern overlay */
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        -45deg,
+        transparent 0px,
+        transparent 18px,
+        rgba(60, 130, 255, 0.025) 20px,
+        rgba(60, 130, 255, 0.025) 22px
+      );
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  /* Top edge glow */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(120, 200, 255, 0.6) 30%,
+      rgba(180, 230, 255, 0.9) 50%,
+      rgba(120, 200, 255, 0.6) 70%,
+      transparent 100%
+    );
+    border-radius: 1px;
+    filter: blur(1px);
+  }
+}
+
+@keyframes bossCardBreath {
+  0%   { box-shadow: 0 0 40px rgba(60, 140, 255, 0.18), 0 0 80px rgba(30, 100, 220, 0.12), inset 0 0 60px rgba(20, 60, 180, 0.08), 0 4px 24px rgba(0, 0, 0, 0.6); }
+  100% { box-shadow: 0 0 55px rgba(60, 140, 255, 0.28), 0 0 100px rgba(30, 100, 220, 0.18), inset 0 0 70px rgba(20, 60, 180, 0.12), 0 4px 24px rgba(0, 0, 0, 0.6); }
+}
+
+/* ---------- Title row ---------- */
+.titleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  font-size: 11px;
+  font-style: italic;
+  color: rgba(160, 210, 255, 0.7);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.anemoTag {
+  font-size: 10px;
+  color: rgba(140, 255, 220, 0.8);
+  background: rgba(80, 200, 160, 0.12);
+  border: 1px solid rgba(140, 255, 220, 0.3);
+  border-radius: 4px;
+  padding: 2px 6px;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- Name row ---------- */
+.nameRow {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-size: 32px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: transparent;
+  background: linear-gradient(
+    135deg,
+    rgba(180, 230, 255, 1) 0%,
+    rgba(120, 200, 255, 1) 40%,
+    rgba(80, 160, 240, 1) 70%,
+    rgba(160, 220, 255, 1) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 12px rgba(100, 180, 255, 0.7));
+  line-height: 1;
+}
+
+.stunnedBadge {
+  font-size: 13px;
+  color: rgba(255, 220, 100, 0.9);
+  background: rgba(120, 80, 0, 0.3);
+  border: 1px solid rgba(255, 200, 60, 0.4);
+  border-radius: 4px;
+  padding: 2px 8px;
+}
+
+/* ---------- Stats row ---------- */
+.statsRow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.hpSection {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hpLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 120, 120, 0.9);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.hpBar {
+  flex: 1;
+  height: 18px;
+  background: rgba(30, 10, 10, 0.6);
+  border: 1px solid rgba(200, 60, 60, 0.35);
+  border-radius: 9px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hpFill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(220, 50, 50, 0.9) 0%,
+    rgba(255, 80, 80, 0.95) 40%,
+    rgba(255, 120, 100, 0.9) 80%,
+    rgba(255, 180, 160, 0.8) 100%
+  );
+  border-radius: 9px;
+  transition: width 0.6s ease-out;
+  box-shadow: 0 0 8px rgba(255, 60, 60, 0.5);
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 8px;
+    right: 8px;
+    height: 4px;
+    background: rgba(255, 200, 200, 0.35);
+    border-radius: 2px;
+  }
+}
+
+.hpText {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 0 6px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+}
+
+.shieldSection {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  min-width: 60px;
+}
+
+.shieldOrb {
+  font-size: 18px;
+  filter: drop-shadow(0 0 4px rgba(150, 200, 255, 0.6));
+  animation: shieldPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes shieldPulse {
+  0%   { filter: drop-shadow(0 0 4px rgba(150, 200, 255, 0.5)); }
+  100% { filter: drop-shadow(0 0 8px rgba(150, 200, 255, 0.9)); }
+}
+
+.noShield {
+  font-size: 14px;
+  color: rgba(120, 130, 140, 0.6);
+}
+
+/* ---------- Lives row ---------- */
+.livesRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.livesLabel {
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(160, 180, 220, 0.7);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-right: 2px;
+}
+
+.lifeOrb {
+  font-size: 16px;
+  color: rgba(100, 180, 255, 0.9);
+  filter: drop-shadow(0 0 6px rgba(80, 160, 255, 0.7));
+  animation: lifeOrbPulse 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes lifeOrbPulse {
+  0%   { filter: drop-shadow(0 0 6px rgba(80, 160, 255, 0.6)); transform: scale(1); }
+  100% { filter: drop-shadow(0 0 10px rgba(80, 160, 255, 1)); transform: scale(1.08); }
+}
+
+/* ---------- Elements row ---------- */
+.elementsRow {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.elementBadge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.Pyro    { color: #ff6644; background: rgba(255, 60, 20, 0.18); border: 1px solid rgba(255, 80, 30, 0.4); }
+.Hydro   { color: #60aaff; background: rgba(80, 170, 255, 0.15); border: 1px solid rgba(80, 170, 255, 0.4); }
+.Cryo    { color: #a8f0ff; background: rgba(160, 240, 255, 0.15); border: 1px solid rgba(160, 240, 255, 0.4); }
+.Electro { color: #cc88ff; background: rgba(180, 100, 255, 0.15); border: 1px solid rgba(180, 100, 255, 0.4); }
+.Geo     { color: #d4a040; background: rgba(180, 140, 80, 0.15); border: 1px solid rgba(180, 140, 80, 0.4); }
+.Dendro  { color: #88dd55; background: rgba(120, 200, 80, 0.15); border: 1px solid rgba(120, 200, 80, 0.4); }
+
+/* ---------- Passives row ---------- */
+.passivesRow {
+  display: flex;
+  gap: 8px;
+}
+
+.passive {
+  font-size: 10px;
+  font-style: italic;
+  color: rgba(180, 200, 230, 0.6);
+  background: rgba(60, 90, 160, 0.12);
+  border: 1px solid rgba(80, 120, 200, 0.2);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+/* ---------- Dragon silhouette (decorative) ---------- */
+.dragonSilhouette {
+  position: absolute;
+  right: -20px;
+  top: -10px;
+  width: 160px;
+  height: 120px;
+  pointer-events: none;
+  opacity: 0.08;
+  background: radial-gradient(ellipse at 70% 40%, rgba(100, 180, 255, 1) 0%, transparent 65%);
+  clip-path: polygon(
+    85% 0%, 100% 15%, 95% 35%, 100% 55%, 85% 70%, 70% 80%,
+    55% 100%, 35% 85%, 20% 90%, 10% 75%, 0% 55%, 15% 35%,
+    5% 20%, 25% 10%, 45% 20%, 60% 5%
+  );
+  animation: dragonBreath 5s ease-in-out infinite alternate;
+}
+
+@keyframes dragonBreath {
+  0%   { opacity: 0.06; transform: scale(1) rotate(-2deg); }
+  100% { opacity: 0.12; transform: scale(1.05) rotate(2deg); }
+}
+
+/* ---------- Damage overlays ---------- */
+.piercingOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  animation: bossPiercingSlash 0.8s ease-out forwards;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(
+      135deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.9) 48%,
+      rgba(255, 200, 80, 0.95) 50%,
+      rgba(255, 255, 255, 0.9) 52%,
+      transparent 60%
+    );
+    transform: translateX(-200%) skewX(-15deg);
+    animation: bossPiercingLine 0.8s ease-out forwards;
+  }
+}
+
+@keyframes bossPiercingSlash {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes bossPiercingLine {
+  0%   { transform: translateX(-200%) skewX(-15deg); opacity: 1; }
+  100% { transform: translateX(200%) skewX(-15deg); opacity: 0; }
+}
+
+.blockOverlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(ellipse at center, rgba(100, 100, 110, 0.4) 0%, transparent 70%);
+  animation: bossBlockThud 0.9s ease-out forwards;
+}
+
+@keyframes bossBlockThud {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ---------- Anemo immunity effect ---------- */
+.anemoImmunityEffect {
+  position: absolute;
+  inset: -10px;
+  pointer-events: none;
+  z-index: 6;
+  border-radius: inherit;
+  animation: anemoRepelEffect 1.2s ease-out forwards;
+
+  &::before {
+    content: "⊘";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    font-size: 48px;
+    color: rgba(140, 255, 220, 0.9);
+    text-shadow: 0 0 20px rgba(140, 255, 220, 0.8);
+    transform: translate(-50%, -50%) scale(0);
+    animation: anemoImmunityIcon 1.2s ease-out forwards;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 3px solid rgba(140, 255, 220, 0.7);
+    animation: anemoImmunityRing 1.2s ease-out forwards;
+  }
+}
+
+@keyframes anemoRepelEffect {
+  0%   { opacity: 0; }
+  10%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes anemoImmunityIcon {
+  0%   { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  30%  { transform: translate(-50%, -50%) scale(1.4); opacity: 1; }
+  70%  { transform: translate(-50%, -50%) scale(1.2); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+@keyframes anemoImmunityRing {
+  0%   { transform: scale(0.8); opacity: 0; }
+  20%  { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+/* ---------- Element glow: inner card animation (outer wrapper glow from effectOverlays) ---------- */
+.elementGlow_Pyro {
+  .bossCard {
+    box-shadow:
+      0 0 24px 8px rgba(255, 80, 30, 0.45),
+      inset 0 0 30px rgba(255, 100, 40, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+.elementGlow_Cryo {
+  .bossCard {
+    box-shadow:
+      0 0 24px 8px rgba(160, 240, 255, 0.45),
+      inset 0 0 30px rgba(200, 255, 255, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+.elementGlow_Electro {
+  .bossCard {
+    box-shadow:
+      0 0 24px 8px rgba(180, 100, 255, 0.45),
+      inset 0 0 30px rgba(200, 130, 255, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+.elementGlow_Hydro {
+  .bossCard {
+    box-shadow:
+      0 0 24px 8px rgba(80, 170, 255, 0.45),
+      inset 0 0 30px rgba(100, 190, 255, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+.elementGlow_Geo {
+  .bossCard {
+    box-shadow:
+      0 0 24px 8px rgba(180, 140, 80, 0.45),
+      inset 0 0 30px rgba(170, 130, 70, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}
+
+.elementGlow_Anemo {
+  .bossCard {
+    box-shadow:
+      0 0 24px 8px rgba(140, 255, 220, 0.45),
+      inset 0 0 30px rgba(160, 255, 230, 0.12);
+    animation: elementGlowPulse 1s ease-out forwards;
+  }
+}

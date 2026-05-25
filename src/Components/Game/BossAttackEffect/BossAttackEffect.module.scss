@@ -1,0 +1,52 @@
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.overlay {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+  backdrop-filter: blur(8px);
+  z-index: 50;
+  animation: fadeInOut 2.5s ease-in-out forwards;
+  padding: 0 32px;
+}
+
+.name {
+  font-size: 72px;
+  font-weight: bold;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+}
+
+.desc {
+  font-size: 28px;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  max-width: 700px;
+}
+
+.SwoopingStrike {
+  @extend .overlay;
+  color: #e8f4ff;
+  background-color: rgba(10, 20, 60, 0.75);
+}
+
+.PulsingWind {
+  @extend .overlay;
+  color: #d0f5f0;
+  background-color: rgba(0, 80, 90, 0.72);
+}
+
+.DragonBreath {
+  @extend .overlay;
+  color: #ffd966;
+  background-color: rgba(0, 60, 40, 0.78);
+}

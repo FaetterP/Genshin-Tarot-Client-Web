@@ -1,5 +1,5 @@
-import type { CardPrimitive, EnemyPrimitive } from "./general";
-import type { EDetailedStep, EElement, EEnemyEffect, ELeyline, EPlayerEffect } from "./enums";
+import type { BossPrimitive, CardPrimitive, EnemyPrimitive } from "./general";
+import type { EDvalinAttack, EDetailedStep, EElement, EEnemyEffect, ELeyline, EPlayerEffect } from "./enums";
 
 export type DetailedStep =
   | {
@@ -30,7 +30,7 @@ export type DetailedStep =
   | {
       type: EDetailedStep.PlayerStatChange;
       playerId: string;
-      stat: "energy" | "shield" | "mora" | "actionPoints";
+      stat: "energy" | "shield" | "mora" | "actionPoints" | "eulaSnowflakes";
       delta: number;
     }
   | { type: EDetailedStep.PlayerGetEffect; playerId: string; effect: EPlayerEffect }
@@ -62,4 +62,9 @@ export type DetailedStep =
       effect: EEnemyEffect;
       isRemove: boolean;
     }
-  | { type: EDetailedStep.EnemiesSwap; playerId: string; enemyId1: string; enemyId2: string };
+  | { type: EDetailedStep.EnemiesSwap; playerId: string; enemyId1: string; enemyId2: string }
+  | { type: EDetailedStep.BossAppearance; boss: BossPrimitive }
+  | { type: EDetailedStep.GameWin }
+  | { type: EDetailedStep.BossReset; bossId: string; hp: number; shield: number; livesRemaining: number }
+  | { type: EDetailedStep.BossAnemoImmunity; bossId: string }
+  | { type: EDetailedStep.BossAttack; bossId: string; attackName: EDvalinAttack };

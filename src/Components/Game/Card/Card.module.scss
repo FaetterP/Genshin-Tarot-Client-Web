@@ -139,6 +139,7 @@
   &.upgrading {
     pointer-events: none;
     outline: none;
+    transform: translate(0, -140px);
   }
 }
 

@@ -6,6 +6,7 @@ import burst from "./burst";
 import eulaEndTurn from "./eulaEndTurn";
 import lang from "./lang";
 import stepAnimation from "./stepAnimation";
+import boss from "./boss";
 
 const rootReducer = combineReducers({
   players,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   eulaEndTurn,
   lang,
   stepAnimation,
+  boss,
 });
 
 export type State = ReturnType<typeof rootReducer>;

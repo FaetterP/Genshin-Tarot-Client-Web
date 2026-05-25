@@ -1,4 +1,14 @@
-import type { ECard, ECardType, ECharacter, EElement, EEnemy, EEnemyEffect, EPlayerEffect } from "./enums";
+import { Player } from "../game/Player";
+import { BaseElement } from "../storage/elements/BaseElement";
+import type {
+  ECard,
+  ECardType,
+  ECharacter,
+  EElement,
+  EEnemy,
+  EEnemyEffect,
+  EPlayerEffect,
+} from "./enums";
 
 export type EnemyPrimitive = {
   id: string;
@@ -8,6 +18,10 @@ export type EnemyPrimitive = {
   elements: EElement[];
   isStunned: boolean;
   effects: EEnemyEffect[];
+};
+
+export type BossPrimitive = EnemyPrimitive & {
+  lives: number;
 };
 
 export type PlayerPrimitive = {
@@ -30,6 +44,14 @@ export type PlayerPrimitive = {
   deck: CardPrimitive[];
 
   eulaSnowflakes: number;
+};
+
+export type Attack = {
+  damage: number;
+  isPiercing?: boolean;
+  isRange?: boolean;
+  element?: BaseElement;
+  player: Player;
 };
 
 export type CardPrimitive = {

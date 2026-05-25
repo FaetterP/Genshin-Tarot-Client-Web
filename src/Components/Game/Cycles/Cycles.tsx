@@ -11,6 +11,7 @@ export default function Cycles() {
   const currentCycle = useSelector((state: State) => state.players.cycle);
   const leylines = useSelector((state: State) => state.players.leylines);
   const eulaSnowflakes = useSelector((state: State) => state.players.me.eulaSnowflakes ?? 0);
+  const boss = useSelector((state: State) => state.boss.boss);
 
   const endTurnText = useSelector((state: State) => state.lang.service.endTurn);
 
@@ -28,18 +29,20 @@ export default function Cycles() {
   return (
     <>
       <div className={styles.cycleBlock}>
-        <div
-          className={styles.cycleProgressbar}
-          style={{ ["--percent" as string]: percent }}
-          aria-hidden
-        >
-          <svg width="56" height="56" viewBox="0 0 56 56" className={styles.cycleSvg}>
-            <circle className={styles.cycleInner} cx="28" cy="28" r="22" fill="currentColor" />
-            <circle className={styles.cycleProgressbarTrack} cx="28" cy="28" r="25" />
-            <circle className={styles.cycleProgressbarThumb} cx="28" cy="28" r="25" />
-          </svg>
-          <div className={styles.cycleNumber}>{currentCycle < 0 ? "—" : currentCycle}</div>
-        </div>
+        {!boss && (
+          <div
+            className={styles.cycleProgressbar}
+            style={{ ["--percent" as string]: percent }}
+            aria-hidden
+          >
+            <svg width="56" height="56" viewBox="0 0 56 56" className={styles.cycleSvg}>
+              <circle className={styles.cycleInner} cx="28" cy="28" r="22" fill="currentColor" />
+              <circle className={styles.cycleProgressbarTrack} cx="28" cy="28" r="25" />
+              <circle className={styles.cycleProgressbarThumb} cx="28" cy="28" r="25" />
+            </svg>
+            <div className={styles.cycleNumber}>{currentCycle < 0 ? "—" : currentCycle}</div>
+          </div>
+        )}
         <button onClick={click} className={styles.endTurnButton}>
           {endTurnText}
         </button>

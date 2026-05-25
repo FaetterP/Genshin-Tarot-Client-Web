@@ -57,6 +57,7 @@ export const engNames: Record<EEnemy, string> = {
   [EEnemy.AnemoHypostasis]: "Anemo Hypostasis",
   [EEnemy.ElectroHypostasis]: "Electro Hypostasis",
   [EEnemy.GeoHypostasis]: "Geo Hypostasis",
+  [EEnemy.Dvalin]: "Dvalin",
 };
 
 export const rusNames: Record<EEnemy, string> = {
@@ -116,4 +117,5 @@ export const rusNames: Record<EEnemy, string> = {
   [EEnemy.AnemoHypostasis]: "Анемо гипостазис",
   [EEnemy.ElectroHypostasis]: "Электро гипостазис",
   [EEnemy.GeoHypostasis]: "Гео гипостазис",
+  [EEnemy.Dvalin]: "Двалин",
 };

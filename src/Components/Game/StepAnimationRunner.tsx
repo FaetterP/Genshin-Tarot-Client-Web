@@ -23,6 +23,7 @@ import {
   clearStepAnimation,
   removeDyingEnemy,
   setAnimatingAddCard,
+  setAnimatingTrashCards,
   setAnimatingDiscardCards,
   setAnimatingDrawCards,
   setAnimatingUpgradeCard,
@@ -43,7 +44,18 @@ import {
   removeAnimatingEnemyEffect,
   addAnimatingPlayerEffect,
   removeAnimatingPlayerEffect,
+  setAnimatingBossAppearance,
+  setAnimatingBossReset,
+  setAnimatingBossAnemoImmunity,
+  setAnimatingBossAttack,
 } from "../../redux/stepAnimation";
+import {
+  setBoss,
+  applyBossHpDelta,
+  applyBossShieldDelta,
+  resetBossStats,
+  addElementToBoss,
+} from "../../redux/boss";
 import { send } from "../../ws";
 import { TaskCompleteTaskRequest } from "../../types/request";
 import { sleep } from "../../utils/sleep";
@@ -51,6 +63,7 @@ import { CardPrimitive } from "../../types/general";
 import { DetailedStep } from "../../types/detailedStep";
 import { EDetailedStep } from "../../types/enums";
 
+const TRASH_ANIMATION_MS = 1500;
 const DEATH_ANIMATION_MS = 1500;
 const ENEMY_APPEAR_MS = 500;
 const CARD_ANIMATION_MS = 2000;
@@ -67,6 +80,11 @@ const EFFECT_CHANGE_MS = 800;
 const ENEMY_ATTACK_MS = 2000;
 const ENEMY_ATTACK_HIT_MS = 800;
 const ENEMIES_SWAP_MS = 1200;
+const BOSS_APPEAR_MS = 3000;
+const BOSS_RESET_MS = 3500;
+const BOSS_RESET_FLASH_MS = 600;
+const BOSS_ANEMO_IMMUNITY_MS = 1200;
+const BOSS_ATTACK_MS = 2500;
 const DEFAULT_STEP_MS = 200;
 
 const PARALLEL_STEP_TYPES = new Set<EDetailedStep>([
@@ -75,7 +93,6 @@ const PARALLEL_STEP_TYPES = new Set<EDetailedStep>([
   EDetailedStep.EnemyGetElement,
   EDetailedStep.EnemyReaction,
   EDetailedStep.EnemyDeath,
-  EDetailedStep.EnemyAppearance,
   EDetailedStep.EnemyEffectTrigger,
   EDetailedStep.EnemyGetEffect,
   EDetailedStep.EnemyLoseEffect,
@@ -145,6 +162,7 @@ async function processStep(
   step: DetailedStep,
   dispatch: ReturnType<typeof useDispatch>,
   myPlayerId: string,
+  trashCards: CardPrimitive[],
   discardCards: CardPrimitive[],
   drawCards: CardPrimitive[],
   hasUpgradeForMe: boolean,
@@ -162,12 +180,16 @@ async function processStep(
         if (step.to === "discard") {
           discardCards.push(step.card);
         } else if (step.to === "trash") {
-          await sleep(DEFAULT_STEP_MS);
+          trashCards.push(step.card);
         } else if (step.to === "hand" || step.to === "deck") {
           if (!(hasUpgradeForMe && step.to === "hand")) {
             dispatch(setAnimatingAddCard({ card: step.card, to: step.to }));
             await sleep(CARD_ANIMATION_MS);
             dispatch(setAnimatingAddCard(null));
+            if (step.to === "hand") {
+              const currentHand = store.getState().players.me.hand;
+              dispatch(setHand({ cards: [...currentHand, step.card] }));
+            }
           } else {
             await sleep(DEFAULT_STEP_MS);
           }
@@ -184,8 +206,14 @@ async function processStep(
       break;
     }
     case EDetailedStep.EnemyTakeDamage: {
+      const bossId = store.getState().boss.boss?.id;
+      const isBossTarget = bossId != null && step.enemyId === bossId;
       if (step.damage > 0) {
-        dispatch(applyEnemyHpDelta({ enemyId: step.enemyId, delta: -step.damage }));
+        if (isBossTarget) {
+          dispatch(applyBossHpDelta({ delta: -step.damage }));
+        } else {
+          dispatch(applyEnemyHpDelta({ enemyId: step.enemyId, delta: -step.damage }));
+        }
       }
       if (step.isPiercing && step.damage > 0) {
         dispatch(setPiercingEnemy({ enemyId: step.enemyId }));
@@ -196,7 +224,11 @@ async function processStep(
         dispatch(setElementOnEnemy({ enemyId: step.enemyId, element: step.element }));
         await sleep(ELEMENT_EFFECT_MS);
         dispatch(clearElementOnEnemy({ enemyId: step.enemyId }));
-        dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element }));
+        if (isBossTarget) {
+          dispatch(addElementToBoss({ element: step.element }));
+        } else {
+          dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element }));
+        }
       }
       if (!step.isPiercing && step.damage <= 0 && !step.element) {
         await sleep(DEFAULT_STEP_MS);
@@ -204,10 +236,16 @@ async function processStep(
       break;
     }
     case EDetailedStep.EnemyGetElement: {
+      const bossId = store.getState().boss.boss?.id;
+      const isBossTarget = bossId != null && step.enemyId === bossId;
       dispatch(setElementOnEnemy({ enemyId: step.enemyId, element: step.element }));
       await sleep(ELEMENT_EFFECT_MS);
       dispatch(clearElementOnEnemy({ enemyId: step.enemyId }));
-      dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element }));
+      if (isBossTarget) {
+        dispatch(addElementToBoss({ element: step.element }));
+      } else {
+        dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element }));
+      }
       break;
     }
     case EDetailedStep.EnemyReaction: {
@@ -341,6 +379,33 @@ async function processStep(
       dispatch(setAnimatingEnemiesSwap(null));
       break;
     }
+    case EDetailedStep.BossAppearance: {
+      dispatch(setBoss(step.boss));
+      dispatch(setAnimatingBossAppearance(true));
+      await sleep(BOSS_APPEAR_MS);
+      dispatch(setAnimatingBossAppearance(false));
+      break;
+    }
+    case EDetailedStep.BossReset: {
+      dispatch(setAnimatingBossReset(true));
+      await sleep(BOSS_RESET_FLASH_MS);
+      dispatch(resetBossStats({ hp: step.hp, shield: step.shield, livesRemaining: step.livesRemaining }));
+      await sleep(BOSS_RESET_MS - BOSS_RESET_FLASH_MS);
+      dispatch(setAnimatingBossReset(false));
+      break;
+    }
+    case EDetailedStep.BossAnemoImmunity: {
+      dispatch(setAnimatingBossAnemoImmunity(true));
+      await sleep(BOSS_ANEMO_IMMUNITY_MS);
+      dispatch(setAnimatingBossAnemoImmunity(false));
+      break;
+    }
+    case EDetailedStep.BossAttack: {
+      dispatch(setAnimatingBossAttack(step.attackName));
+      await sleep(BOSS_ATTACK_MS);
+      dispatch(setAnimatingBossAttack(null));
+      break;
+    }
     default:
       await sleep(DEFAULT_STEP_MS);
       break;
@@ -352,6 +417,7 @@ async function runStepAnimations(
   dispatch: ReturnType<typeof useDispatch>,
   myPlayerId: string,
 ): Promise<void> {
+  const trashCards: CardPrimitive[] = [];
   const discardCards: CardPrimitive[] = [];
   const drawCards: CardPrimitive[] = [];
   const hasUpgradeForMe = steps.some((s) => s.type === EDetailedStep.UpgradeCard && s.playerId === myPlayerId);
@@ -359,8 +425,18 @@ async function runStepAnimations(
   const groups = groupSteps(steps);
   for (const group of groups) {
     await Promise.all(
-      group.map((step) => processStep(step, dispatch, myPlayerId, discardCards, drawCards, hasUpgradeForMe)),
+      group.map((step) => processStep(step, dispatch, myPlayerId, trashCards, discardCards, drawCards, hasUpgradeForMe)),
     );
+  }
+
+  if (trashCards.length > 0) {
+    const state = store.getState();
+    const me = state.players.me;
+    const trashIds = new Set(trashCards.map((c) => c.cardId));
+    dispatch(setHand({ cards: me.hand.filter((c) => !trashIds.has(c.cardId)) }));
+    dispatch(setAnimatingTrashCards(trashCards));
+    await sleep(TRASH_ANIMATION_MS);
+    dispatch(setAnimatingTrashCards(null));
   }
 
   if (discardCards.length > 0) {
@@ -378,6 +454,8 @@ async function runStepAnimations(
     dispatch(setAnimatingDrawCards(drawCards));
     await sleep(CARD_ANIMATION_MS);
     dispatch(setAnimatingDrawCards(null));
+    const currentHand = store.getState().players.me.hand;
+    dispatch(setHand({ cards: [...currentHand, ...drawCards] }));
   }
 }
 
@@ -423,6 +501,9 @@ export default function StepAnimationRunner() {
             isMe: finalPayload.isMe,
           }),
         );
+        if ("boss" in finalPayload) {
+          store.dispatch(setBoss(finalPayload.boss ?? null));
+        }
         store.dispatch(clearUsedCard(undefined));
       } else if (afterCyclePayload) {
         store.dispatch(setCycle({ cycle: afterCyclePayload.cycle }));
@@ -433,6 +514,9 @@ export default function StepAnimationRunner() {
             otherPlayers: afterCyclePayload.otherPlayers,
           }),
         );
+        if ("boss" in afterCyclePayload) {
+          store.dispatch(setBoss(afterCyclePayload.boss ?? null));
+        }
       } else if (afterEndTurnPayload) {
         if (afterEndTurnPayload.taskId) {
           send<TaskCompleteTaskRequest>({
@@ -447,6 +531,9 @@ export default function StepAnimationRunner() {
         });
       } else if (afterUpgradePayload) {
         store.dispatch(applyPlayerUpdate({ player: afterUpgradePayload.player }));
+        if ("boss" in afterUpgradePayload) {
+          store.dispatch(setBoss(afterUpgradePayload.boss ?? null));
+        }
         store.dispatch(clearUsedCard(undefined));
       }
 

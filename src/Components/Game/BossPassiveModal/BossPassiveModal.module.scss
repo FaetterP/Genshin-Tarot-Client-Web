@@ -1,0 +1,221 @@
+/* =============================================
+   Boss Passive (Unstable Platforms) modal
+   ============================================= */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 10, 40, 0.80) 0%, rgba(0, 0, 0, 0.72) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  animation: overlayIn 0.3s ease-out forwards;
+}
+
+@keyframes overlayIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal {
+  position: relative;
+  width: 500px;
+  background: linear-gradient(
+    160deg,
+    rgba(5, 12, 35, 0.98) 0%,
+    rgba(8, 20, 55, 0.97) 50%,
+    rgba(5, 15, 42, 0.98) 100%
+  );
+  border: 1px solid rgba(80, 160, 255, 0.35);
+  border-radius: 14px;
+  padding: 24px 26px 20px;
+  box-shadow:
+    0 0 50px rgba(60, 140, 255, 0.2),
+    0 0 100px rgba(30, 100, 220, 0.12),
+    inset 0 0 60px rgba(20, 60, 180, 0.06);
+  animation: modalIn 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(100, 180, 255, 0.7), transparent);
+  }
+}
+
+@keyframes modalIn {
+  from { transform: scale(0.9) translateY(-16px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* ---------- Decorative wind effect ---------- */
+.windEffect {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg 80deg,
+    rgba(80, 200, 180, 0.04) 100deg,
+    transparent 120deg 200deg,
+    rgba(80, 200, 180, 0.03) 220deg,
+    transparent 240deg 360deg
+  );
+  animation: windSpin 6s linear infinite;
+}
+
+@keyframes windSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ---------- Header ---------- */
+.header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.passiveName {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: transparent;
+  background: linear-gradient(135deg, #a0d8ff, #60b0ff, #c0e8ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(0 0 8px rgba(80, 160, 255, 0.6));
+  margin-bottom: 8px;
+}
+
+.passiveDesc {
+  font-size: 13px;
+  color: rgba(180, 210, 255, 0.8);
+  line-height: 1.5;
+
+  strong {
+    color: rgba(120, 190, 255, 1);
+    text-shadow: 0 0 6px rgba(80, 160, 255, 0.4);
+  }
+}
+
+/* ---------- Separator ---------- */
+.separator {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(80, 140, 220, 0.3), transparent);
+  margin: 14px 0;
+}
+
+/* ---------- Section ---------- */
+.section {
+  margin-bottom: 4px;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(140, 185, 240, 0.75);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+/* ---------- Card picker ---------- */
+.cardList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.cardChip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  font-size: 12px;
+  background: rgba(60, 120, 220, 0.08);
+  border: 1px solid rgba(60, 130, 220, 0.25);
+  border-radius: 20px;
+  color: rgba(180, 215, 255, 0.85);
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: rgba(60, 120, 220, 0.16);
+    border-color: rgba(80, 150, 240, 0.5);
+  }
+}
+
+.cardChip.cardSelected {
+  background: rgba(80, 140, 255, 0.25);
+  border-color: rgba(100, 170, 255, 0.75);
+  color: #fff;
+  box-shadow: 0 0 8px rgba(80, 140, 255, 0.3);
+}
+
+.cardTypeBadge {
+  font-size: 11px;
+}
+
+.notEnough {
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(180, 100, 80, 0.8);
+  margin-bottom: 6px;
+}
+
+/* ---------- Action buttons ---------- */
+.discardBtn {
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: linear-gradient(135deg, rgba(50, 110, 220, 0.85), rgba(80, 150, 255, 0.8));
+  border: 1px solid rgba(100, 160, 255, 0.5);
+  border-radius: 7px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  box-shadow: 0 0 14px rgba(60, 130, 255, 0.25);
+  display: block;
+  width: 100%;
+
+  &:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(60, 120, 230, 0.9), rgba(90, 160, 255, 0.85));
+    box-shadow: 0 0 22px rgba(80, 150, 255, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+.btnDisabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.loseApBtn {
+  display: block;
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  background: rgba(180, 60, 60, 0.12);
+  border: 1px solid rgba(200, 80, 60, 0.35);
+  border-radius: 7px;
+  color: rgba(255, 160, 140, 0.9);
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  &:hover {
+    background: rgba(200, 60, 60, 0.2);
+    border-color: rgba(220, 90, 70, 0.6);
+    transform: translateY(-1px);
+  }
+}

@@ -57,6 +57,7 @@ export const engDescriptions: Record<EEnemy, string> = {
   [EEnemy.AnemoHypostasis]: "Passive: I cannot be applied with Anemo. I regain all of my health at the start of each player phase.",
   [EEnemy.ElectroHypostasis]: "Passive: I cannot be applied with Electro. I regain all of my health at the start of each player phase.",
   [EEnemy.GeoHypostasis]: "Passive: I cannot be applied with Geo. I regain all of my health at the start of each player phase.",
+  [EEnemy.Dvalin]: "Stormterror's Scourge. Cannot be applied with Anemo.",
 };
 
 export const rusDescriptions: Record<EEnemy, string> = {
@@ -116,4 +117,5 @@ export const rusDescriptions: Record<EEnemy, string> = {
   [EEnemy.AnemoHypostasis]: "Пассивно: Нельзя наложить Анемо. Восстанавливает всё здоровье в начале каждого хода.",
   [EEnemy.ElectroHypostasis]: "Пассивно: Нельзя наложить Электро. Восстанавливает всё здоровье в начале каждого хода.",
   [EEnemy.GeoHypostasis]: "Пассивно: Нельзя наложить Гео. Восстанавливает всё здоровье в начале каждого хода.",
+  [EEnemy.Dvalin]: "Бич Штормтеррора. Нельзя наложить Анемо.",
 };

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CardPrimitive, PlayerPrimitive } from "../types/general";
+import { BossPrimitive, CardPrimitive, PlayerPrimitive } from "../types/general";
 import { DetailedStep } from "../types/detailedStep";
-import type { ELeyline, EPlayerEffect, EEnemyEffect } from "../types/enums";
+import type { EDvalinAttack, ELeyline, EPlayerEffect, EEnemyEffect } from "../types/enums";
 
 export type StepAnimationPayload =
   | {
@@ -9,6 +9,7 @@ export type StepAnimationPayload =
       player: PlayerPrimitive;
       card: string;
       isMe: boolean;
+      boss?: BossPrimitive | null;
     }
   | {
       steps: DetailedStep[];
@@ -31,6 +32,7 @@ export type StepAnimationFinalPayload = {
   player: PlayerPrimitive;
   card: string;
   isMe: boolean;
+  boss?: BossPrimitive | null;
 };
 
 export type StepAnimationAfterCycle = {
@@ -38,6 +40,7 @@ export type StepAnimationAfterCycle = {
   you: PlayerPrimitive;
   otherPlayers: PlayerPrimitive[];
   leylines: ELeyline[];
+  boss?: BossPrimitive | null;
 };
 
 export type StepAnimationAfterEndTurn = {
@@ -50,6 +53,7 @@ export type StepAnimationAfterEndCycle = {
 
 export type StepAnimationAfterUpgrade = {
   player: PlayerPrimitive;
+  boss?: BossPrimitive | null;
 };
 
 export type AddCardDestination = "hand" | "deck" | "discard";
@@ -97,6 +101,7 @@ const initialState: {
   animationQueue: StepAnimationPayload[];
   dyingEnemyIds: string[];
   appearingEnemyIds: string[];
+  animatingTrashCards: CardPrimitive[] | null;
   animatingDiscardCards: CardPrimitive[] | null;
   animatingDrawCards: CardPrimitive[] | null;
   cardsLeavingDeckForDraw: CardPrimitive[] | null;
@@ -113,6 +118,10 @@ const initialState: {
   animatingEffectTrigger: AnimatingEffectTrigger | null;
   animatingEnemyAttack: AnimatingEnemyAttack | null;
   animatingEnemiesSwap: AnimatingEnemiesSwap | null;
+  animatingBossAppearance: boolean;
+  animatingBossReset: boolean;
+  animatingBossAnemoImmunity: boolean;
+  animatingBossAttack: EDvalinAttack | null;
 } = {
   steps: [],
   finalPayload: null,
@@ -123,6 +132,7 @@ const initialState: {
   animationQueue: [],
   dyingEnemyIds: [],
   appearingEnemyIds: [],
+  animatingTrashCards: null,
   animatingDiscardCards: null,
   animatingDrawCards: null,
   cardsLeavingDeckForDraw: null,
@@ -139,6 +149,10 @@ const initialState: {
   animatingEffectTrigger: null,
   animatingEnemyAttack: null,
   animatingEnemiesSwap: null,
+  animatingBossAppearance: false,
+  animatingBossReset: false,
+  animatingBossAnemoImmunity: false,
+  animatingBossAttack: null,
 };
 
 const stepAnimationSlice = createSlice({
@@ -174,6 +188,7 @@ const stepAnimationSlice = createSlice({
           player: payload.player,
           card: payload.card,
           isMe: payload.isMe,
+          boss: payload.boss,
         };
         state.afterCyclePayload = null;
         state.afterEndTurnPayload = null;
@@ -226,6 +241,10 @@ const stepAnimationSlice = createSlice({
       state.appearingEnemyIds = state.appearingEnemyIds.filter(
         (id) => id !== action.payload.enemyId,
       );
+    },
+
+    setAnimatingTrashCards(state, action: PayloadAction<CardPrimitive[] | null>) {
+      state.animatingTrashCards = action.payload;
     },
 
     setAnimatingDiscardCards(state, action: PayloadAction<CardPrimitive[] | null>) {
@@ -326,6 +345,22 @@ const stepAnimationSlice = createSlice({
       state.animatingEnemiesSwap = action.payload;
     },
 
+    setAnimatingBossAppearance(state, action: PayloadAction<boolean>) {
+      state.animatingBossAppearance = action.payload;
+    },
+
+    setAnimatingBossReset(state, action: PayloadAction<boolean>) {
+      state.animatingBossReset = action.payload;
+    },
+
+    setAnimatingBossAnemoImmunity(state, action: PayloadAction<boolean>) {
+      state.animatingBossAnemoImmunity = action.payload;
+    },
+
+    setAnimatingBossAttack(state, action: PayloadAction<EDvalinAttack | null>) {
+      state.animatingBossAttack = action.payload;
+    },
+
     clearStepAnimation(state) {
       state.steps = [];
       state.finalPayload = null;
@@ -335,6 +370,7 @@ const stepAnimationSlice = createSlice({
       state.afterUpgradePayload = null;
       state.dyingEnemyIds = [];
       state.appearingEnemyIds = [];
+      state.animatingTrashCards = null;
       state.animatingDiscardCards = null;
       state.animatingDrawCards = null;
       state.cardsLeavingDeckForDraw = null;
@@ -351,6 +387,10 @@ const stepAnimationSlice = createSlice({
       state.animatingEffectTrigger = null;
       state.animatingEnemyAttack = null;
       state.animatingEnemiesSwap = null;
+      state.animatingBossAppearance = false;
+      state.animatingBossReset = false;
+      state.animatingBossAnemoImmunity = false;
+      state.animatingBossAttack = null;
 
       // Запускаем следующую анимацию из очереди
       const next = state.animationQueue.shift();
@@ -374,6 +414,7 @@ const stepAnimationSlice = createSlice({
             player: next.player,
             card: next.card,
             isMe: next.isMe,
+            boss: next.boss,
           };
           state.afterCyclePayload = null;
           state.afterEndTurnPayload = null;
@@ -416,6 +457,7 @@ export const {
   removeDyingEnemy,
   setAppearingEnemy,
   removeAppearingEnemy,
+  setAnimatingTrashCards,
   setAnimatingDiscardCards,
   setAnimatingDrawCards,
   setCardsLeavingDeckForDraw,
@@ -438,5 +480,9 @@ export const {
   setAnimatingEffectTrigger,
   setAnimatingEnemyAttack,
   setAnimatingEnemiesSwap,
+  setAnimatingBossAppearance,
+  setAnimatingBossReset,
+  setAnimatingBossAnemoImmunity,
+  setAnimatingBossAttack,
   clearStepAnimation,
 } = stepAnimationSlice.actions;
