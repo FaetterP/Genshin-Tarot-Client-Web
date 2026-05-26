@@ -1,3 +1,23 @@
+.effectsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.effectSlot {
+  overflow: hidden;
+  animation: effectSlotExpand 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes effectSlotExpand {
+  from {
+    max-width: 0;
+  }
+  to {
+    max-width: 100px;
+  }
+}
+
 .effect {
   position: relative;
   display: inline-block;
@@ -8,6 +28,19 @@
   margin: 10px auto;
   width: fit-content;
   cursor: help;
+
+  animation: effectAppear 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes effectAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .effect .tooltip {

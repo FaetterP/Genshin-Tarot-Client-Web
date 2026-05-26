@@ -5,7 +5,6 @@ import { EPlayerEffect } from "../../../types/enums";
 
 type PropsType = {
   effects: EPlayerEffect[];
-  playerId: string;
 };
 
 const effectsMap: Record<EPlayerEffect, { display: string }> = {
@@ -29,39 +28,21 @@ const effectsMap: Record<EPlayerEffect, { display: string }> = {
   [EPlayerEffect.TrailOfTheQilin]: { display: "❄💮" },
 };
 
-export default function PlayerEffects({ effects, playerId }: PropsType) {
-  const animatingEffectTrigger = useSelector(
-    (state: State) => state.stepAnimation.animatingEffectTrigger,
-  );
-  const animatingPlayerEffects = useSelector(
-    (state: State) => state.stepAnimation.animatingPlayerEffects,
-  );
+export default function PlayerEffects({ effects }: PropsType) {
   const playerEffectsLang = useSelector((state: State) => state.lang.playerEffects);
 
-  const myEffectChange = animatingPlayerEffects.find((e) => e.playerId === playerId);
-
   return (
-    <div style={{ display: "flex" }}>
+    <div className={styles.effectsList}>
       {effects.map((effect) => (
-        <div key={effect} className={styles.effect}>
-          {effectsMap[effect].display}
-          <span className={styles.tooltip}>
-            {playerEffectsLang[effect].description}
-          </span>
+        <div key={effect} className={styles.effectSlot}>
+          <div className={styles.effect}>
+            {effectsMap[effect].display}
+            <span className={styles.tooltip}>
+              {playerEffectsLang[effect].description}
+            </span>
+          </div>
         </div>
       ))}
-      {animatingEffectTrigger && (
-        <div className={styles.effectTriggerOverlay} aria-hidden="true">
-          {animatingEffectTrigger.isRemove ? "−" : "+"}{" "}
-          {playerEffectsLang[animatingEffectTrigger.effect].description}
-        </div>
-      )}
-      {myEffectChange && (
-        <div className={styles.effectTriggerOverlay} aria-hidden="true">
-          {myEffectChange.isAdd ? "+" : "−"}{" "}
-          {playerEffectsLang[myEffectChange.effect].description}
-        </div>
-      )}
     </div>
   );
 }

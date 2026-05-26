@@ -14,7 +14,7 @@ export default function PlayerStats(props: PlayerPrimitive) {
 
   return (
     <>
-      <PlayerEffects effects={props.effects} playerId={props.playerId} />
+      <PlayerEffects effects={props.effects} />
       <div className={styles.myStats}>
         <div className={styles.hp}>
           <ChangeableStat value={props.hp}>{props.hp}♥</ChangeableStat>

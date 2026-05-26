@@ -134,27 +134,42 @@ function getStepTarget(step: DetailedStep): string {
 function groupSteps(steps: DetailedStep[]): DetailedStep[][] {
   const groups: DetailedStep[][] = [];
   let i = 0;
+
   while (i < steps.length) {
     const step = steps[i];
     if (!PARALLEL_STEP_TYPES.has(step.type)) {
       groups.push([step]);
       i++;
     } else {
-      const group: DetailedStep[] = [step];
-      const usedTargets = new Set([getStepTarget(step)]);
-      i++;
-      while (
-        i < steps.length &&
-        PARALLEL_STEP_TYPES.has(steps[i].type) &&
-        !usedTargets.has(getStepTarget(steps[i]))
-      ) {
-        group.push(steps[i]);
-        usedTargets.add(getStepTarget(steps[i]));
+      const windowStart = i;
+      while (i < steps.length && PARALLEL_STEP_TYPES.has(steps[i].type)) {
         i++;
       }
-      groups.push(group);
+      const window = steps.slice(windowStart, i);
+
+      const targetSequences = new Map<string, DetailedStep[]>();
+      for (const s of window) {
+        const target = getStepTarget(s);
+        if (!targetSequences.has(target)) {
+          targetSequences.set(target, []);
+        }
+        targetSequences.get(target)!.push(s);
+      }
+
+      const sequences = Array.from(targetSequences.values());
+      const maxLength = Math.max(...sequences.map((seq) => seq.length));
+      for (let pos = 0; pos < maxLength; pos++) {
+        const group: DetailedStep[] = [];
+        for (const seq of sequences) {
+          if (pos < seq.length) {
+            group.push(seq[pos]);
+          }
+        }
+        groups.push(group);
+      }
     }
   }
+
   return groups;
 }
 
@@ -219,18 +234,7 @@ async function processStep(
         dispatch(setPiercingEnemy({ enemyId: step.enemyId }));
         await sleep(PIERCING_EFFECT_MS);
         dispatch(clearPiercingEnemy({ enemyId: step.enemyId }));
-      }
-      if (step.element) {
-        dispatch(setElementOnEnemy({ enemyId: step.enemyId, element: step.element }));
-        await sleep(ELEMENT_EFFECT_MS);
-        dispatch(clearElementOnEnemy({ enemyId: step.enemyId }));
-        if (isBossTarget) {
-          dispatch(addElementToBoss({ element: step.element }));
-        } else {
-          dispatch(addElementToEnemy({ enemyId: step.enemyId, element: step.element }));
-        }
-      }
-      if (!step.isPiercing && step.damage <= 0 && !step.element) {
+      } else if (step.damage <= 0) {
         await sleep(DEFAULT_STEP_MS);
       }
       break;
