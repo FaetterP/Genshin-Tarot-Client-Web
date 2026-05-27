@@ -1,0 +1,120 @@
+.faceDown {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  background: linear-gradient(160deg, #1c1830 0%, #2c2050 50%, #170f28 100%);
+  box-shadow:
+    0 0 8px 3px rgba(0, 0, 0, 0.5),
+    inset 0 0 25px rgba(0, 0, 0, 0.4);
+  border: 2px solid rgba(130, 85, 210, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  // outer frame
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 7px;
+    border: 1px solid rgba(130, 85, 210, 0.3);
+    pointer-events: none;
+  }
+
+  // diagonal pattern fill
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 13px;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 8px,
+      rgba(110, 65, 195, 0.07) 8px,
+      rgba(110, 65, 195, 0.07) 9px
+    );
+    pointer-events: none;
+  }
+}
+
+.corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+
+  span {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: rgba(160, 110, 255, 0.5);
+    border-style: solid;
+
+    &:nth-child(1) {
+      top: 12px;
+      left: 12px;
+      border-width: 2px 0 0 2px;
+    }
+    &:nth-child(2) {
+      top: 12px;
+      right: 12px;
+      border-width: 2px 2px 0 0;
+    }
+    &:nth-child(3) {
+      bottom: 12px;
+      left: 12px;
+      border-width: 0 0 2px 2px;
+    }
+    &:nth-child(4) {
+      bottom: 12px;
+      right: 12px;
+      border-width: 0 2px 2px 0;
+    }
+  }
+}
+
+.symbol {
+  position: relative;
+  z-index: 2;
+  font-size: 52px;
+  color: rgba(170, 120, 255, 0.55);
+  text-shadow:
+    0 0 18px rgba(160, 100, 255, 0.5),
+    0 0 35px rgba(140, 80, 255, 0.2);
+  user-select: none;
+  line-height: 1;
+}
+
+// Elite variant (rows 4–5)
+.elite {
+  background: linear-gradient(160deg, #2a1508 0%, #4a2810 50%, #1f0d04 100%);
+  border-color: rgba(220, 155, 60, 0.6);
+  box-shadow:
+    0 0 8px 3px rgba(0, 0, 0, 0.5),
+    inset 0 0 25px rgba(0, 0, 0, 0.4),
+    0 0 14px rgba(220, 155, 60, 0.2);
+
+  &::before {
+    border-color: rgba(210, 145, 55, 0.3);
+  }
+
+  &::after {
+    background: repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 8px,
+      rgba(200, 135, 45, 0.06) 8px,
+      rgba(200, 135, 45, 0.06) 9px
+    );
+  }
+
+  .corners span {
+    border-color: rgba(230, 170, 80, 0.55);
+  }
+
+  .symbol {
+    color: rgba(255, 185, 70, 0.65);
+    text-shadow:
+      0 0 18px rgba(255, 175, 50, 0.55),
+      0 0 35px rgba(240, 155, 30, 0.25);
+  }
+}

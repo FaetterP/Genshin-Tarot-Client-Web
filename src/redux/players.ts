@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { CardPrimitive, EnemyPrimitive, PlayerPrimitive } from "../types/general";
+import { CardPrimitive, EnemyPrimitive, PlayerPrimitive, PyramidSlot } from "../types/general";
 import { ECharacter, EElement, ELeyline } from "../types/enums";
 
 const initialState: {
@@ -13,7 +13,7 @@ const initialState: {
   me: {
     playerId: "",
     hp: 0,
-    wave: 0,
+    pyramid: [],
     enemies: [],
     effects: [],
     characters: [],
@@ -40,7 +40,7 @@ const charactersSlice = createSlice({
       state.players.push({
         playerId,
         hp: 0,
-        wave: 0,
+        pyramid: [],
         enemies: [],
         effects: [],
         characters: [],
@@ -177,6 +177,43 @@ const charactersSlice = createSlice({
       state.me.enemies.forEach(update);
       state.other.forEach((p) => p.enemies.forEach(update));
     },
+
+    revealEnemyInPyramid(
+      state,
+      action: PayloadAction<{ enemy: Extract<PyramidSlot, { faceDown: false }> }>,
+    ) {
+      const { enemy } = action.payload;
+      const update = (pyramid: PyramidSlot[][]) => {
+        for (const row of pyramid) {
+          const idx = row.findIndex((slot) => slot.id === enemy.id);
+          if (idx !== -1) {
+            row[idx] = enemy;
+            return true;
+          }
+        }
+        return false;
+      };
+      if (!update(state.me.pyramid)) {
+        for (const player of state.other) update(player.pyramid);
+      }
+    },
+
+    removeEnemyFromPyramid(state, action: PayloadAction<{ enemyId: string }>) {
+      const { enemyId } = action.payload;
+      const update = (pyramid: PyramidSlot[][]) => {
+        for (const row of pyramid) {
+          const idx = row.findIndex((slot) => slot.id === enemyId);
+          if (idx !== -1) {
+            row.splice(idx, 1);
+            return true;
+          }
+        }
+        return false;
+      };
+      if (!update(state.me.pyramid)) {
+        for (const player of state.other) update(player.pyramid);
+      }
+    },
   },
 });
 
@@ -196,4 +233,6 @@ export const {
   addEnemy,
   addElementToEnemy,
   applyEnemyHpDelta,
+  revealEnemyInPyramid,
+  removeEnemyFromPyramid,
 } = charactersSlice.actions;

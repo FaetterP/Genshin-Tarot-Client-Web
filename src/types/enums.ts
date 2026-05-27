@@ -315,8 +315,6 @@ export enum EEnemy {
   TreasureHoarderGang = "TreasureHoarderGang",
   UnusualHilichurl = "UnusualHilichurl",
   VishapHatchling = "VishapHatchling",
-  // boss
-  Dvalin = "Dvalin",
   // elite
   AnemoHypostasis = "AnemoHypostasis",
   BlazingAxeMitachurl = "BlazingAxeMitachurl",
@@ -334,6 +332,8 @@ export enum EEnemy {
   RuinHunter = "RuinHunter",
   ShieldBearerMitachurl = "ShieldBearerMitachurl",
   StonehideLawachurl = "StonehideLawachurl",
+  // boss
+  Dvalin = "Dvalin",
 }
 
 export enum ELeyline {
@@ -355,19 +355,13 @@ export enum ELeyline {
   WindCurrent = "WindCurrent",
 }
 
-export enum EDvalinAttack {
-  SwoopingStrike = "SwoopingStrike",
-  PulsingWind = "PulsingWind",
-  DragonBreath = "DragonBreath",
-}
-
 export enum EDetailedStep {
   MoveCard = "MoveCard",
   DrawCards = "DrawCards",
   EnemyTakeDamage = "EnemyTakeDamage",
   EnemyBlockDamage = "EnemyBlockDamage",
   EnemyDeath = "EnemyDeath",
-  EnemyAppearance = "EnemyAppearance",
+  EnemyReveal = "EnemyReveal",
   PlayerTakeDamage = "PlayerTakeDamage",
   PlayerHeal = "PlayerHeal",
   PlayerStatChange = "PlayerStatChange",
@@ -384,6 +378,7 @@ export enum EDetailedStep {
   EnemyAttack = "EnemyAttack",
   EnemyGetEffect = "EnemyGetEffect",
   EnemyLoseEffect = "EnemyLoseEffect",
+  EnemyLoseElement = "EnemyLoseElement",
   EnemyEffectTrigger = "EnemyEffectTrigger",
   EnemiesSwap = "EnemiesSwap",
   BossAppearance = "BossAppearance",
@@ -391,4 +386,10 @@ export enum EDetailedStep {
   BossReset = "BossReset",
   BossAnemoImmunity = "BossAnemoImmunity",
   BossAttack = "BossAttack",
+}
+
+export enum EDvalinAttack {
+  SwoopingStrike = "SwoopingStrike",
+  PulsingWind = "PulsingWind",
+  DragonBreath = "DragonBreath",
 }

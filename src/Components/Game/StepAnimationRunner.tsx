@@ -13,6 +13,8 @@ import {
   removeEnemy,
   addEnemy,
   addElementToEnemy,
+  revealEnemyInPyramid,
+  removeEnemyFromPyramid,
 } from "../../redux/players";
 import { clearUsedCard } from "../../redux/card";
 import {
@@ -30,8 +32,8 @@ import {
   setBlockingEnemy,
   setCardsLeavingDeckForDraw,
   setDyingEnemy,
-  setAppearingEnemy,
-  removeAppearingEnemy,
+  setRevealingEnemy,
+  removeRevealingEnemy,
   setElementOnEnemy,
   setPiercingEnemy,
   setReactionOnEnemy,
@@ -118,7 +120,7 @@ function getStepTarget(step: DetailedStep): string {
     case EDetailedStep.EnemyHeal:
     case EDetailedStep.EnemyChangeShield:
       return step.enemyId;
-    case EDetailedStep.EnemyAppearance:
+    case EDetailedStep.EnemyReveal:
       return step.enemy.id;
     case EDetailedStep.PlayerEffectTrigger:
     case EDetailedStep.PlayerGetEffect:
@@ -188,6 +190,7 @@ async function processStep(
       await sleep(DEATH_ANIMATION_MS);
       dispatch(removeDyingEnemy({ enemyId: step.enemyId }));
       dispatch(removeEnemy({ enemyId: step.enemyId }));
+      dispatch(removeEnemyFromPyramid({ enemyId: step.enemyId }));
       break;
     }
     case EDetailedStep.MoveCard: {
@@ -272,11 +275,12 @@ async function processStep(
       dispatch(clearBlockingEnemy({ enemyId: step.enemyId }));
       break;
     }
-    case EDetailedStep.EnemyAppearance: {
+    case EDetailedStep.EnemyReveal: {
       dispatch(addEnemy({ playerId: step.playerId, enemy: step.enemy }));
-      dispatch(setAppearingEnemy({ enemyId: step.enemy.id }));
+      dispatch(revealEnemyInPyramid({ enemy: step.enemy }));
+      dispatch(setRevealingEnemy({ enemyId: step.enemy.id }));
       await sleep(ENEMY_APPEAR_MS);
-      dispatch(removeAppearingEnemy({ enemyId: step.enemy.id }));
+      dispatch(removeRevealingEnemy({ enemyId: step.enemy.id }));
       break;
     }
     case EDetailedStep.UpgradeCard: {

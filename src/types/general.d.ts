@@ -1,5 +1,4 @@
 import { Player } from "../game/Player";
-import { BaseElement } from "../storage/elements/BaseElement";
 import type {
   ECard,
   ECardType,
@@ -20,6 +19,10 @@ export type EnemyPrimitive = {
   effects: EEnemyEffect[];
 };
 
+export type PyramidSlot =
+  | { id: string; faceDown: true; covers: string[] }
+  | (EnemyPrimitive & { faceDown: false; covers: string[] });
+
 export type BossPrimitive = EnemyPrimitive & {
   lives: number;
 };
@@ -36,7 +39,7 @@ export type PlayerPrimitive = {
     extra: number;
     total: number;
   };
-  wave: number;
+  pyramid: PyramidSlot[][];
   enemies: EnemyPrimitive[];
   effects: EPlayerEffect[];
   hand: CardPrimitive[];
@@ -50,7 +53,6 @@ export type Attack = {
   damage: number;
   isPiercing?: boolean;
   isRange?: boolean;
-  element?: BaseElement;
   player: Player;
 };
 

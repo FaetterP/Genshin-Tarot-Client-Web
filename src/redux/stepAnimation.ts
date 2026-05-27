@@ -101,6 +101,7 @@ const initialState: {
   animationQueue: StepAnimationPayload[];
   dyingEnemyIds: string[];
   appearingEnemyIds: string[];
+  revealingEnemyIds: string[];
   animatingTrashCards: CardPrimitive[] | null;
   animatingDiscardCards: CardPrimitive[] | null;
   animatingDrawCards: CardPrimitive[] | null;
@@ -132,6 +133,7 @@ const initialState: {
   animationQueue: [],
   dyingEnemyIds: [],
   appearingEnemyIds: [],
+  revealingEnemyIds: [],
   animatingTrashCards: null,
   animatingDiscardCards: null,
   animatingDrawCards: null,
@@ -172,6 +174,7 @@ const stepAnimationSlice = createSlice({
       state.steps = steps;
       state.dyingEnemyIds = [];
       state.appearingEnemyIds = [];
+      state.revealingEnemyIds = [];
       state.piercingEnemyIds = [];
       state.blockingEnemyIds = [];
       state.elementOnEnemies = [];
@@ -239,6 +242,16 @@ const stepAnimationSlice = createSlice({
 
     removeAppearingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
       state.appearingEnemyIds = state.appearingEnemyIds.filter(
+        (id) => id !== action.payload.enemyId,
+      );
+    },
+
+    setRevealingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      state.revealingEnemyIds.push(action.payload.enemyId);
+    },
+
+    removeRevealingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      state.revealingEnemyIds = state.revealingEnemyIds.filter(
         (id) => id !== action.payload.enemyId,
       );
     },
@@ -457,6 +470,8 @@ export const {
   removeDyingEnemy,
   setAppearingEnemy,
   removeAppearingEnemy,
+  setRevealingEnemy,
+  removeRevealingEnemy,
   setAnimatingTrashCards,
   setAnimatingDiscardCards,
   setAnimatingDrawCards,

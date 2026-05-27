@@ -1,4 +1,4 @@
-import type { BossPrimitive, CardPrimitive, EnemyPrimitive } from "./general";
+import type { BossPrimitive, CardPrimitive, EnemyPrimitive, PyramidSlot } from "./general";
 import type { EDvalinAttack, EDetailedStep, EElement, EEnemyEffect, ELeyline, EPlayerEffect } from "./enums";
 
 export type DetailedStep =
@@ -18,7 +18,7 @@ export type DetailedStep =
     }
   | { type: EDetailedStep.EnemyBlockDamage; enemyId: string; element?: EElement }
   | { type: EDetailedStep.EnemyDeath; enemyId: string }
-  | { type: EDetailedStep.EnemyAppearance; playerId: string; enemy: EnemyPrimitive }
+  | { type: EDetailedStep.EnemyReveal; playerId: string; enemy: Extract<PyramidSlot, { faceDown: false }> }
   | {
       type: EDetailedStep.PlayerTakeDamage;
       playerId: string;
@@ -37,6 +37,7 @@ export type DetailedStep =
   | { type: EDetailedStep.PlayerLoseEffect; playerId: string; effect: EPlayerEffect }
   | { type: EDetailedStep.EnemyGetElement; enemyId: string; element: EElement }
   | { type: EDetailedStep.EnemyReaction; enemyId: string; element1: EElement; element2: EElement }
+  | { type: EDetailedStep.EnemyLoseElement; enemyId: string; element: EElement }
   | { type: EDetailedStep.EnemyChangeShield; enemyId: string; delta: number }
   | { type: EDetailedStep.EnemyHeal; enemyId: string; amount: number }
   | {
