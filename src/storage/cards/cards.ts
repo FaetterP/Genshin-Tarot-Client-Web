@@ -405,7 +405,7 @@ export const cards: Record<
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
-    require: { enemiesCount: 1, isRange: true, isCanAlternative: true },
+    require: { enemiesCount: 1, enemiesCountMax: 2, isRange: true },
   },
   [ECard.StellarRestorationPlus]: {
     cost: 1,
@@ -413,7 +413,7 @@ export const cards: Record<
     canPlay: true,
     isUpgraded: true,
     canUpgrade: false,
-    require: { enemiesCount: 3, isRange: true },
+    require: { enemiesCount: 1, enemiesCountMax: 3, isRange: true },
   },
   [ECard.Kaboom]: {
     cost: 1,

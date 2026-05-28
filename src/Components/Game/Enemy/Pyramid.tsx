@@ -1,7 +1,7 @@
 import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { State } from "../../../redux";
-import { EnemyPrimitive } from "../../../types/general";
+import { PyramidSlot } from "../../../types/general";
 import Enemy from "./Enemy";
 import EnemyFaceDown from "./EnemyFaceDown";
 import styles from "./Pyramid.module.scss";
@@ -9,16 +9,106 @@ import styles from "./Pyramid.module.scss";
 
 type Line = { x1: number; y1: number; x2: number; y2: number };
 
+function buildLayers(enemies: PyramidSlot[]): PyramidSlot[][] {
+  if (enemies.length === 0) return [];
+
+  const parents = new Map<string, string[]>();
+  for (const e of enemies) {
+    for (const childId of e.covers) {
+      const list = parents.get(childId);
+      if (list) list.push(e.id);
+      else parents.set(childId, [e.id]);
+    }
+  }
+
+  function longestDepths(group: PyramidSlot[]): Map<string, number> {
+    const groupIds = new Set(group.map((e) => e.id));
+    const byId = new Map(group.map((e) => [e.id, e]));
+
+    const inDeg = new Map<string, number>(group.map((e) => [e.id, 0]));
+    for (const e of group) {
+      for (const childId of e.covers) {
+        if (groupIds.has(childId)) inDeg.set(childId, inDeg.get(childId)! + 1);
+      }
+    }
+
+    const depth = new Map<string, number>();
+    const queue: string[] = [];
+    inDeg.forEach((deg, id) => {
+      if (deg === 0) { queue.push(id); depth.set(id, 0); }
+    });
+
+    let qi = 0;
+    while (qi < queue.length) {
+      const id = queue[qi++];
+      const d = depth.get(id)!;
+      for (const childId of (byId.get(id)?.covers ?? [])) {
+        if (!groupIds.has(childId)) continue;
+        if ((depth.get(childId) ?? 0) < d + 1) depth.set(childId, d + 1);
+        const nd = inDeg.get(childId)! - 1;
+        inDeg.set(childId, nd);
+        if (nd === 0) queue.push(childId);
+      }
+    }
+    return depth;
+  }
+
+  function depthsToLayers(
+    group: PyramidSlot[],
+    depth: Map<string, number>,
+    externalPos?: Map<string, number>,
+  ): PyramidSlot[][] {
+    if (group.length === 0) return [];
+    const maxD = Math.max(...Array.from(depth.values()), -1);
+    if (maxD < 0) return [];
+
+    const layers: PyramidSlot[][] = Array.from({ length: maxD + 1 }, () => []);
+    for (const e of group) {
+      const d = depth.get(e.id);
+      if (d !== undefined) layers[d].push(e);
+    }
+
+    const layerPos = new Map<string, number>(externalPos ? Array.from(externalPos) : []);
+    for (const layer of layers) {
+      layer.sort((a, b) => {
+        const avg = (e: PyramidSlot) => {
+          const ps = (parents.get(e.id) ?? []).filter((id) => layerPos.has(id));
+          return ps.length > 0
+            ? ps.reduce((s, id) => s + layerPos.get(id)!, 0) / ps.length
+            : 0;
+        };
+        return avg(a) - avg(b);
+      });
+      layer.forEach((e, i) => layerPos.set(e.id, i));
+    }
+
+    return layers.filter((l) => l.length > 0);
+  }
+
+  const revealed = enemies.filter((e) => !e.faceDown);
+  const hidden = enemies.filter((e) => e.faceDown);
+  const revLayers = depthsToLayers(revealed, longestDepths(revealed));
+  const revPos = new Map<string, number>();
+  let off = 0;
+  for (const layer of revLayers) {
+    layer.forEach((e, i) => revPos.set(e.id, off + i));
+    off += layer.length;
+  }
+
+  const hidLayers = depthsToLayers(
+    hidden,
+    longestDepths(hidden),
+    revPos.size > 0 ? revPos : undefined,
+  );
+
+  return [...revLayers, ...hidLayers].filter((l) => l.length > 0);
+}
+
 export default function Pyramid() {
-  const pyramid = useSelector((state: State) => state.players.me.pyramid);
   const enemies = useSelector((state: State) => state.players.me.enemies);
   const revealingEnemyIds = useSelector((state: State) => state.stepAnimation.revealingEnemyIds);
 
-  const enemyMap = useMemo(() => {
-    const map = new Map<string, EnemyPrimitive>();
-    for (const e of enemies) map.set(e.id, e);
-    return map;
-  }, [enemies]);
+  const layers = useMemo(() => buildLayers(enemies), [enemies]);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const slotRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -30,7 +120,7 @@ export default function Pyramid() {
     const containerRect = container.getBoundingClientRect();
     const newLines: Line[] = [];
 
-    for (const row of pyramid) {
+    for (const row of layers) {
       for (const slot of row) {
         if (!slot.covers.length) continue;
         const parentEl = slotRefs.current.get(slot.id);
@@ -51,11 +141,9 @@ export default function Pyramid() {
     }
 
     setLines(newLines);
-  }, [pyramid]);
+  }, [layers]);
 
-  if (!pyramid.length) return null;
-
-  const eliteThreshold = pyramid.length - 2;
+  if (!layers.length) return null;
 
   return (
     <div className={styles.pyramidWrap}>
@@ -96,9 +184,8 @@ export default function Pyramid() {
           ))}
         </svg>
 
-        {pyramid.map((row, rowIdx) => {
+        {layers.map((row, rowIdx) => {
           if (row.length === 0) return null;
-          const isEliteRow = rowIdx >= eliteThreshold;
 
           return (
             <div key={rowIdx} className={styles.row}>
@@ -111,18 +198,18 @@ export default function Pyramid() {
                 if (slot.faceDown) {
                   return (
                     <div key={slot.id} className={styles.slot} ref={ref}>
-                      <EnemyFaceDown isElite={isEliteRow} />
+                      <EnemyFaceDown isElite={slot.isElite} />
                     </div>
                   );
                 }
 
-                const enemyData: EnemyPrimitive = enemyMap.get(slot.id) ?? slot;
+                const { faceDown: _fd, covers: _c, ...enemyProps } = slot;
                 const isRevealing = revealingEnemyIds.includes(slot.id);
 
                 return (
                   <div key={slot.id} className={`${styles.slot} ${styles.hoverable}`} ref={ref}>
                     <div className={isRevealing ? styles.revealing : undefined}>
-                      <Enemy {...enemyData} />
+                      <Enemy {...enemyProps} />
                     </div>
                   </div>
                 );

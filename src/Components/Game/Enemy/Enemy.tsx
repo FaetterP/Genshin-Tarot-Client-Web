@@ -27,6 +27,7 @@ export default function Enemy(props: EnemyPrimitive) {
     animatingEnemiesSwap?.enemyId1 === props.id || animatingEnemiesSwap?.enemyId2 === props.id;
 
   const dyingEnemyIds = useSelector((state: State) => state.stepAnimation.dyingEnemyIds);
+  const flippingFaceDownEnemyIds = useSelector((state: State) => state.stepAnimation.flippingFaceDownEnemyIds);
   const appearingEnemyIds = useSelector((state: State) => state.stepAnimation.appearingEnemyIds);
   const piercingEnemyIds = useSelector((state: State) => state.stepAnimation.piercingEnemyIds);
   const blockingEnemyIds = useSelector((state: State) => state.stepAnimation.blockingEnemyIds);
@@ -55,6 +56,7 @@ export default function Enemy(props: EnemyPrimitive) {
     isEulaEndTurnMode || (needEnemies && selectedEnemies < maxToSelect);
   const isSelected = isEulaEndTurnMode ? false : selectedList.includes(props.id);
   const isDying = dyingEnemyIds.includes(props.id);
+  const isFlippingFaceDown = flippingFaceDownEnemyIds.includes(props.id);
   const isAppearing = appearingEnemyIds.includes(props.id);
   const isPiercingHit = piercingEnemyIds.includes(props.id);
   const isBlockingHit = blockingEnemyIds.includes(props.id);
@@ -100,7 +102,7 @@ export default function Enemy(props: EnemyPrimitive) {
       onClick={handleClick}
     >
       <div
-        className={`${canSelectClass} ${selectedClass} ${attackClass} ${swapClass} ${isDying ? styles.death : ""} ${isPiercingHit ? styles.piercingHit : ""} ${isBlockingHit ? styles.blockHit : ""} ${elementGlowClass}`}
+        className={`${canSelectClass} ${selectedClass} ${attackClass} ${swapClass} ${isDying ? styles.death : ""} ${isFlippingFaceDown ? styles.flippingFaceDown : ""} ${isPiercingHit ? styles.piercingHit : ""} ${isBlockingHit ? styles.blockHit : ""} ${elementGlowClass}`}
       >
         <EnemyCard {...props} />
       </div>

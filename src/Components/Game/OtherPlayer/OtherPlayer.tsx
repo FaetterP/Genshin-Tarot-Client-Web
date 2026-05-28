@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { PlayerPrimitive } from "../../../types/general";
+import { PlayerPrimitive, PyramidSlot } from "../../../types/general";
 import OtherEnemy from "./OtherEnemy";
 import styles from "./OtherPlayer.module.scss";
 import { State } from "../../../redux";
@@ -46,9 +46,11 @@ export default function OtherPlayer(props: OtherPlayerProps) {
         <>
           {shortPlayerId(props.playerId)}
           <div>
-            {props.enemies.map((enemy) => (
-              <OtherEnemy key={enemy.id} {...enemy} />
-            ))}
+            {props.enemies
+              .filter((e): e is Extract<PyramidSlot, { faceDown: false }> => !e.faceDown)
+              .map((enemy) => (
+                <OtherEnemy key={enemy.id} {...enemy} />
+              ))}
           </div>
         </>
       )}

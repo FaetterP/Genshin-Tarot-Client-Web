@@ -192,6 +192,34 @@
   pointer-events: none;
 }
 
+@keyframes flipFaceDown {
+  0% {
+    transform: scaleX(1);
+    filter: brightness(1);
+    opacity: 1;
+  }
+  40% {
+    transform: scaleX(0.02);
+    filter: brightness(0.6);
+    opacity: 0.9;
+  }
+  55% {
+    transform: scaleX(0.02);
+    filter: brightness(0.3) saturate(0.1);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scaleX(0.6);
+    filter: brightness(0.2) saturate(0);
+    opacity: 0;
+  }
+}
+
+.flippingFaceDown {
+  animation: flipFaceDown 0.8s ease-in-out forwards;
+  pointer-events: none;
+}
+
 .canSelected:hover {
   background-color: lightgrey;
 

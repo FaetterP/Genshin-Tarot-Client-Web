@@ -13,7 +13,6 @@ const initialState: {
   me: {
     playerId: "",
     hp: 0,
-    pyramid: [],
     enemies: [],
     effects: [],
     characters: [],
@@ -40,7 +39,6 @@ const charactersSlice = createSlice({
       state.players.push({
         playerId,
         hp: 0,
-        pyramid: [],
         enemies: [],
         effects: [],
         characters: [],
@@ -120,39 +118,32 @@ const charactersSlice = createSlice({
 
     removeEnemy(state, action: PayloadAction<{ enemyId: string }>) {
       const { enemyId } = action.payload;
-      const inMe = state.me.enemies.findIndex((e) => e.id === enemyId);
-      if (inMe !== -1) {
-        state.me.enemies.splice(inMe, 1);
-        return;
-      }
-      for (const player of state.other) {
-        const idx = player.enemies.findIndex((e) => e.id === enemyId);
+      const removeFrom = (enemies: PyramidSlot[]) => {
+        const idx = enemies.findIndex((e) => e.id === enemyId);
         if (idx !== -1) {
-          player.enemies.splice(idx, 1);
-          return;
+          enemies.splice(idx, 1);
+          for (const e of enemies) {
+            e.covers = e.covers.filter((id) => id !== enemyId);
+          }
+          return true;
         }
+        return false;
+      };
+      if (!removeFrom(state.me.enemies)) {
+        for (const player of state.other) removeFrom(player.enemies);
       }
-    },
-
-    addEnemy(state, action: PayloadAction<{ playerId: string; enemy: EnemyPrimitive }>) {
-      const { playerId, enemy } = action.payload;
-      if (state.me.playerId === playerId) {
-        state.me.enemies.push(enemy);
-        return;
-      }
-      const player = state.other.find((p) => p.playerId === playerId);
-      if (player) player.enemies.push(enemy);
     },
 
     addElementToEnemy(state, action: PayloadAction<{ enemyId: string; element: EElement }>) {
       const { enemyId, element } = action.payload;
-      const addTo = (enemy: EnemyPrimitive) => {
-        if (enemy.id === enemyId && !enemy.elements.includes(element)) {
-          enemy.elements.push(element);
+      const addTo = (enemies: PyramidSlot[]) => {
+        const slot = enemies.find((e) => e.id === enemyId);
+        if (slot && !slot.faceDown && !slot.elements.includes(element)) {
+          slot.elements.push(element);
         }
       };
-      state.me.enemies.forEach(addTo);
-      state.other.forEach((p) => p.enemies.forEach(addTo));
+      addTo(state.me.enemies);
+      state.other.forEach((p) => addTo(p.enemies));
     },
 
     applyPlayerHpShieldDelta(
@@ -171,47 +162,54 @@ const charactersSlice = createSlice({
 
     applyEnemyHpDelta(state, action: PayloadAction<{ enemyId: string; delta: number }>) {
       const { enemyId, delta } = action.payload;
-      const update = (enemy: EnemyPrimitive) => {
-        if (enemy.id === enemyId) enemy.hp = Math.max(0, enemy.hp + delta);
+      const update = (enemies: PyramidSlot[]) => {
+        const slot = enemies.find((e) => e.id === enemyId);
+        if (slot && !slot.faceDown) {
+          slot.hp = Math.max(0, slot.hp + delta);
+        }
       };
-      state.me.enemies.forEach(update);
-      state.other.forEach((p) => p.enemies.forEach(update));
+      update(state.me.enemies);
+      state.other.forEach((p) => update(p.enemies));
     },
 
-    revealEnemyInPyramid(
+    revealEnemyAction(
       state,
       action: PayloadAction<{ enemy: Extract<PyramidSlot, { faceDown: false }> }>,
     ) {
       const { enemy } = action.payload;
-      const update = (pyramid: PyramidSlot[][]) => {
-        for (const row of pyramid) {
-          const idx = row.findIndex((slot) => slot.id === enemy.id);
-          if (idx !== -1) {
-            row[idx] = enemy;
-            return true;
-          }
+      const update = (enemies: PyramidSlot[]) => {
+        const idx = enemies.findIndex((slot) => slot.id === enemy.id);
+        if (idx !== -1) {
+          enemies[idx] = enemy;
+          return true;
         }
         return false;
       };
-      if (!update(state.me.pyramid)) {
-        for (const player of state.other) update(player.pyramid);
+      if (!update(state.me.enemies)) {
+        for (const player of state.other) update(player.enemies);
       }
     },
 
-    removeEnemyFromPyramid(state, action: PayloadAction<{ enemyId: string }>) {
-      const { enemyId } = action.payload;
-      const update = (pyramid: PyramidSlot[][]) => {
-        for (const row of pyramid) {
-          const idx = row.findIndex((slot) => slot.id === enemyId);
-          if (idx !== -1) {
-            row.splice(idx, 1);
-            return true;
-          }
+    flipEnemyFaceDownAction(
+      state,
+      action: PayloadAction<{
+        enemy: Extract<PyramidSlot, { faceDown: true }>;
+        coveredByEnemyId: string;
+      }>,
+    ) {
+      const { enemy, coveredByEnemyId } = action.payload;
+      const update = (enemies: PyramidSlot[]) => {
+        const idx = enemies.findIndex((e) => e.id === enemy.id);
+        if (idx !== -1) {
+          enemies[idx] = enemy;
+          const coveringSlot = enemies.find((e) => e.id === coveredByEnemyId);
+          if (coveringSlot) coveringSlot.covers = [enemy.id];
+          return true;
         }
         return false;
       };
-      if (!update(state.me.pyramid)) {
-        for (const player of state.other) update(player.pyramid);
+      if (!update(state.me.enemies)) {
+        for (const player of state.other) update(player.enemies);
       }
     },
   },
@@ -230,9 +228,8 @@ export const {
   applyPlayerHpShieldDelta,
   setHand,
   removeEnemy,
-  addEnemy,
   addElementToEnemy,
   applyEnemyHpDelta,
-  revealEnemyInPyramid,
-  removeEnemyFromPyramid,
+  revealEnemyAction,
+  flipEnemyFaceDownAction,
 } = charactersSlice.actions;

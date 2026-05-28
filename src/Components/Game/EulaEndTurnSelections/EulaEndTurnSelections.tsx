@@ -12,8 +12,8 @@ function getAllEnemies(state: State): { id: string; name: string }[] {
   const result: { id: string; name: string }[] = [];
   const add = (e: { id: string; name: string }) =>
     result.push({ id: e.id, name: names[e.name] ?? e.name });
-  me.enemies.forEach(add);
-  other.forEach((p) => p.enemies.forEach(add));
+  me.enemies.filter((e): e is Extract<typeof e, { faceDown: false }> => !e.faceDown).forEach(add);
+  other.forEach((p) => p.enemies.filter((e): e is Extract<typeof e, { faceDown: false }> => !e.faceDown).forEach(add));
   return result;
 }
 

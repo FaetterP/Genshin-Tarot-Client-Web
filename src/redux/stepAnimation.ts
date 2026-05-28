@@ -100,6 +100,7 @@ const initialState: {
   afterUpgradePayload: StepAnimationAfterUpgrade | null;
   animationQueue: StepAnimationPayload[];
   dyingEnemyIds: string[];
+  flippingFaceDownEnemyIds: string[];
   appearingEnemyIds: string[];
   revealingEnemyIds: string[];
   animatingTrashCards: CardPrimitive[] | null;
@@ -132,6 +133,7 @@ const initialState: {
   afterUpgradePayload: null,
   animationQueue: [],
   dyingEnemyIds: [],
+  flippingFaceDownEnemyIds: [],
   appearingEnemyIds: [],
   revealingEnemyIds: [],
   animatingTrashCards: null,
@@ -173,6 +175,7 @@ const stepAnimationSlice = createSlice({
 
       state.steps = steps;
       state.dyingEnemyIds = [];
+      state.flippingFaceDownEnemyIds = [];
       state.appearingEnemyIds = [];
       state.revealingEnemyIds = [];
       state.piercingEnemyIds = [];
@@ -234,6 +237,16 @@ const stepAnimationSlice = createSlice({
 
     removeDyingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
       state.dyingEnemyIds = state.dyingEnemyIds.filter((id) => id !== action.payload.enemyId);
+    },
+
+    setFlippingFaceDownEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      state.flippingFaceDownEnemyIds.push(action.payload.enemyId);
+    },
+
+    removeFlippingFaceDownEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      state.flippingFaceDownEnemyIds = state.flippingFaceDownEnemyIds.filter(
+        (id) => id !== action.payload.enemyId,
+      );
     },
 
     setAppearingEnemy(state, action: PayloadAction<{ enemyId: string }>) {
@@ -382,6 +395,7 @@ const stepAnimationSlice = createSlice({
       state.afterEndCyclePayload = null;
       state.afterUpgradePayload = null;
       state.dyingEnemyIds = [];
+      state.flippingFaceDownEnemyIds = [];
       state.appearingEnemyIds = [];
       state.animatingTrashCards = null;
       state.animatingDiscardCards = null;
@@ -410,6 +424,7 @@ const stepAnimationSlice = createSlice({
       if (next) {
         state.steps = next.steps;
         state.dyingEnemyIds = [];
+        state.flippingFaceDownEnemyIds = [];
         state.appearingEnemyIds = [];
         state.piercingEnemyIds = [];
         state.blockingEnemyIds = [];
@@ -468,6 +483,8 @@ export const {
   startStepAnimation,
   setDyingEnemy,
   removeDyingEnemy,
+  setFlippingFaceDownEnemy,
+  removeFlippingFaceDownEnemy,
   setAppearingEnemy,
   removeAppearingEnemy,
   setRevealingEnemy,

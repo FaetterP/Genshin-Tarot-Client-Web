@@ -11,10 +11,9 @@ import {
   setLeyline,
   setPlayers,
   removeEnemy,
-  addEnemy,
   addElementToEnemy,
-  revealEnemyInPyramid,
-  removeEnemyFromPyramid,
+  revealEnemyAction,
+  flipEnemyFaceDownAction,
 } from "../../redux/players";
 import { clearUsedCard } from "../../redux/card";
 import {
@@ -24,6 +23,8 @@ import {
   clearReactionOnEnemy,
   clearStepAnimation,
   removeDyingEnemy,
+  setFlippingFaceDownEnemy,
+  removeFlippingFaceDownEnemy,
   setAnimatingAddCard,
   setAnimatingTrashCards,
   setAnimatingDiscardCards,
@@ -190,7 +191,6 @@ async function processStep(
       await sleep(DEATH_ANIMATION_MS);
       dispatch(removeDyingEnemy({ enemyId: step.enemyId }));
       dispatch(removeEnemy({ enemyId: step.enemyId }));
-      dispatch(removeEnemyFromPyramid({ enemyId: step.enemyId }));
       break;
     }
     case EDetailedStep.MoveCard: {
@@ -276,8 +276,7 @@ async function processStep(
       break;
     }
     case EDetailedStep.EnemyReveal: {
-      dispatch(addEnemy({ playerId: step.playerId, enemy: step.enemy }));
-      dispatch(revealEnemyInPyramid({ enemy: step.enemy }));
+      dispatch(revealEnemyAction({ enemy: step.enemy }));
       dispatch(setRevealingEnemy({ enemyId: step.enemy.id }));
       await sleep(ENEMY_APPEAR_MS);
       dispatch(removeRevealingEnemy({ enemyId: step.enemy.id }));
@@ -385,6 +384,14 @@ async function processStep(
       );
       await sleep(ENEMIES_SWAP_MS);
       dispatch(setAnimatingEnemiesSwap(null));
+      break;
+    }
+    case EDetailedStep.EnemyFlipFaceDown: {
+      const FLIP_FACE_DOWN_MS = 800;
+      dispatch(setFlippingFaceDownEnemy({ enemyId: step.enemy.id }));
+      await sleep(FLIP_FACE_DOWN_MS);
+      dispatch(removeFlippingFaceDownEnemy({ enemyId: step.enemy.id }));
+      dispatch(flipEnemyFaceDownAction({ enemy: step.enemy, coveredByEnemyId: step.coveredByEnemyId }));
       break;
     }
     case EDetailedStep.BossAppearance: {
