@@ -31,6 +31,7 @@ export default function Enemy(props: EnemyPrimitive) {
   const appearingEnemyIds = useSelector((state: State) => state.stepAnimation.appearingEnemyIds);
   const piercingEnemyIds = useSelector((state: State) => state.stepAnimation.piercingEnemyIds);
   const blockingEnemyIds = useSelector((state: State) => state.stepAnimation.blockingEnemyIds);
+  const stunningEnemyIds = useSelector((state: State) => state.stepAnimation.stunningEnemyIds);
   const elementOnEnemies = useSelector((state: State) => state.stepAnimation.elementOnEnemies);
   const reactionsOnEnemies = useSelector((state: State) => state.stepAnimation.reactionsOnEnemies);
   const burstCharacter = useSelector((state: State) => state.burst.character);
@@ -60,6 +61,7 @@ export default function Enemy(props: EnemyPrimitive) {
   const isAppearing = appearingEnemyIds.includes(props.id);
   const isPiercingHit = piercingEnemyIds.includes(props.id);
   const isBlockingHit = blockingEnemyIds.includes(props.id);
+  const isStunning = stunningEnemyIds.includes(props.id);
   const isElementEffect = elementOnEnemies.find((e) => e.enemyId === props.id)?.element ?? null;
   const isReactionEffect = reactionsOnEnemies.find((e) => e.enemyId === props.id) ?? null;
 
@@ -102,12 +104,13 @@ export default function Enemy(props: EnemyPrimitive) {
       onClick={handleClick}
     >
       <div
-        className={`${canSelectClass} ${selectedClass} ${attackClass} ${swapClass} ${isDying ? styles.death : ""} ${isFlippingFaceDown ? styles.flippingFaceDown : ""} ${isPiercingHit ? styles.piercingHit : ""} ${isBlockingHit ? styles.blockHit : ""} ${elementGlowClass}`}
+        className={`${canSelectClass} ${selectedClass} ${attackClass} ${swapClass} ${isDying ? styles.death : ""} ${isFlippingFaceDown ? styles.flippingFaceDown : ""} ${isPiercingHit ? styles.piercingHit : ""} ${isBlockingHit ? styles.blockHit : ""} ${isStunning ? styles.stunHit : ""} ${elementGlowClass}`}
       >
         <EnemyCard {...props} />
       </div>
       {isPiercingHit && <div className={styles.piercingOverlay} aria-hidden="true" />}
       {isBlockingHit && <div className={styles.blockOverlay} aria-hidden="true" />}
+      {isStunning && <div className={styles.stunOverlay} aria-hidden="true" />}
       {isElementEffect && (
         <div className={`${styles.elementEffect} ${elementEffectClass}`} aria-hidden="true" />
       )}

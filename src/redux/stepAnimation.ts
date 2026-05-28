@@ -111,6 +111,7 @@ const initialState: {
   animatingUpgradeCard: AnimatingUpgradeCard | null;
   piercingEnemyIds: string[];
   blockingEnemyIds: string[];
+  stunningEnemyIds: string[];
   elementOnEnemies: ElementOnEnemy[];
   reactionsOnEnemies: ReactionOnEnemy[];
   animatingEnemyEffects: AnimatingEnemyEffect[];
@@ -144,6 +145,7 @@ const initialState: {
   animatingUpgradeCard: null,
   piercingEnemyIds: [],
   blockingEnemyIds: [],
+  stunningEnemyIds: [],
   elementOnEnemies: [],
   reactionsOnEnemies: [],
   animatingEnemyEffects: [],
@@ -180,6 +182,7 @@ const stepAnimationSlice = createSlice({
       state.revealingEnemyIds = [];
       state.piercingEnemyIds = [];
       state.blockingEnemyIds = [];
+      state.stunningEnemyIds = [];
       state.elementOnEnemies = [];
       state.reactionsOnEnemies = [];
       state.animatingEnemyEffects = [];
@@ -311,6 +314,14 @@ const stepAnimationSlice = createSlice({
       state.blockingEnemyIds = state.blockingEnemyIds.filter((id) => id !== action.payload.enemyId);
     },
 
+    setStunningEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      state.stunningEnemyIds.push(action.payload.enemyId);
+    },
+
+    clearStunningEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      state.stunningEnemyIds = state.stunningEnemyIds.filter((id) => id !== action.payload.enemyId);
+    },
+
     setElementOnEnemy(state, action: PayloadAction<ElementOnEnemy>) {
       const idx = state.elementOnEnemies.findIndex((e) => e.enemyId === action.payload.enemyId);
       if (idx >= 0) state.elementOnEnemies[idx] = action.payload;
@@ -405,6 +416,7 @@ const stepAnimationSlice = createSlice({
       state.animatingUpgradeCard = null;
       state.piercingEnemyIds = [];
       state.blockingEnemyIds = [];
+      state.stunningEnemyIds = [];
       state.elementOnEnemies = [];
       state.reactionsOnEnemies = [];
       state.animatingEnemyEffects = [];
@@ -499,6 +511,8 @@ export const {
   clearPiercingEnemy,
   setBlockingEnemy,
   clearBlockingEnemy,
+  setStunningEnemy,
+  clearStunningEnemy,
   setElementOnEnemy,
   clearElementOnEnemy,
   setReactionOnEnemy,

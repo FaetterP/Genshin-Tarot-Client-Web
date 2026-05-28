@@ -31,6 +31,8 @@ import {
   setAnimatingDrawCards,
   setAnimatingUpgradeCard,
   setBlockingEnemy,
+  setStunningEnemy,
+  clearStunningEnemy,
   setCardsLeavingDeckForDraw,
   setDyingEnemy,
   setRevealingEnemy,
@@ -88,6 +90,7 @@ const BOSS_RESET_MS = 3500;
 const BOSS_RESET_FLASH_MS = 600;
 const BOSS_ANEMO_IMMUNITY_MS = 1200;
 const BOSS_ATTACK_MS = 2500;
+const STUN_EFFECT_MS = 1000;
 const DEFAULT_STEP_MS = 200;
 
 const PARALLEL_STEP_TYPES = new Set<EDetailedStep>([
@@ -419,6 +422,12 @@ async function processStep(
       dispatch(setAnimatingBossAttack(step.attackName));
       await sleep(BOSS_ATTACK_MS);
       dispatch(setAnimatingBossAttack(null));
+      break;
+    }
+    case EDetailedStep.EnemyStun: {
+      dispatch(setStunningEnemy({ enemyId: step.enemyId }));
+      await sleep(STUN_EFFECT_MS);
+      dispatch(clearStunningEnemy({ enemyId: step.enemyId }));
       break;
     }
     default:
