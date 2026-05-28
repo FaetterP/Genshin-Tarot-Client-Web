@@ -271,6 +271,8 @@ export enum EPlayerEffect {
 export enum EEnemyEffect {
   Nightrider = "Nightrider",
   NightriderPlus = "NightriderPlus",
+  HeraldOfFrost = "HeraldOfFrost",
+  HeraldOfFrostPlus = "HeraldOfFrostPlus",
 }
 
 export enum EEnemy {
@@ -380,6 +382,7 @@ export enum EDetailedStep {
   EnemyLoseEffect = "EnemyLoseEffect",
   EnemyLoseElement = "EnemyLoseElement",
   EnemyEffectTrigger = "EnemyEffectTrigger",
+  EnemyStun = "EnemyStun",
   EnemiesSwap = "EnemiesSwap",
   EnemyFlipFaceDown = "EnemyFlipFaceDown",
   BossAppearance = "BossAppearance",

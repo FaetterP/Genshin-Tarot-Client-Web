@@ -11,6 +11,8 @@ type PropsType = {
 const effectsMap: Record<EEnemyEffect, { display: string }> = {
   [EEnemyEffect.Nightrider]: { display: "🌑🦅" },
   [EEnemyEffect.NightriderPlus]: { display: "🌑🦅+" },
+  [EEnemyEffect.HeraldOfFrost]: { display: "❄🩵" },
+  [EEnemyEffect.HeraldOfFrostPlus]: { display: "❄🩵+" },
 };
 
 export default function EnemyEffects({ effects, enemyId }: PropsType) {
