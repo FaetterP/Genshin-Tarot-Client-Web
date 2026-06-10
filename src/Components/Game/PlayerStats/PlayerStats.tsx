@@ -39,6 +39,11 @@ export default function PlayerStats(props: PlayerPrimitive) {
             <ChangeableStat value={props.raidenPoints}>{props.raidenPoints}👁️</ChangeableStat>
           </div>
         )}
+        {props.razorPoints > 0 && (
+          <div className={styles.razorPoints}>
+            <ChangeableStat value={props.razorPoints}>{props.razorPoints}🟣</ChangeableStat>
+          </div>
+        )}
         <div className={styles.actionPoints}>
           {spentActionPoints}
           {actionPoints}
