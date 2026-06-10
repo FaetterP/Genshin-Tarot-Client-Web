@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useRef, useEffect } from "react";
 import { State } from "../../../redux";
-import { setSelectedCardForEffect, type CardSource } from "../../../redux/card";
+import { setSelectedCardForEffect, toggleRaidenMode, type CardSource } from "../../../redux/card";
 import { send } from "../../../ws";
 import { useFormik } from "formik";
 import styles from "./Selections.module.scss";
@@ -9,7 +9,7 @@ import { cards } from "../../../storage/cards/cards";
 import CompactCard from "../Card/CompactCard";
 import { GameUpgradeCardRequest, GameUseCardRequest } from "../../../types/request";
 import type { CardPrimitive } from "../../../types/general";
-import type { ECard } from "../../../types/enums";
+import { ECard, ECardType } from "../../../types/enums";
 
 export default function Selections() {
   const dispatch = useDispatch();
@@ -32,6 +32,11 @@ export default function Selections() {
   const canUpgrade = selectedCardInHand && cards[selectedCardInHand.name]?.canUpgrade === true;
 
   const isNeedPlayer = useSelector((state: State) => state.card.isNeedPlayer);
+  const raidenEnemies = useSelector((state: State) => state.card.raidenEnemies);
+  const isRaidenMode = useSelector((state: State) => state.card.isRaidenMode);
+  const myRaidenPoints = useSelector((state: State) => state.players.me.raidenPoints);
+  const isAttackCard = selectedCardInHand ? cards[selectedCardInHand.name]?.cardType === ECardType.Attack : false;
+  const canUseRaiden = isAttackCard && myRaidenPoints > 0;
   const isCanSelectItself = selectedCardInHand
     ? cards[selectedCardInHand.name]?.isCanSelectItself !== false
     : true;
@@ -76,6 +81,9 @@ export default function Selections() {
       }
       if (selectedCardForEffect) {
         data.selectedCard = selectedCardForEffect;
+      }
+      if (raidenEnemies.length > 0) {
+        data.raidenEnemies = raidenEnemies;
       }
 
       data.isUseAlternative = values.isUseAlternative;
@@ -181,6 +189,19 @@ export default function Selections() {
               })}
             </div>
           )}
+        </div>
+      )}
+      {canPlayCard && canUseRaiden && (
+        <div className={styles.isCanAlternative}>
+          <input
+            id="isRaidenMode"
+            type="checkbox"
+            checked={isRaidenMode}
+            onChange={() => dispatch(toggleRaidenMode())}
+          />
+          <label htmlFor="isRaidenMode">
+            👁️ {raidenEnemies.length}/{myRaidenPoints}
+          </label>
         </div>
       )}
       <div className={styles.buttons}>

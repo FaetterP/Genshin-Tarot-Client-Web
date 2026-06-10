@@ -34,6 +34,11 @@ export default function PlayerStats(props: PlayerPrimitive) {
             <ChangeableStat value={props.eulaSnowflakes}>{props.eulaSnowflakes}❄</ChangeableStat>
           </div>
         )}
+        {props.raidenPoints > 0 && (
+          <div className={styles.raidenPoints}>
+            <ChangeableStat value={props.raidenPoints}>{props.raidenPoints}👁️</ChangeableStat>
+          </div>
+        )}
         <div className={styles.actionPoints}>
           {spentActionPoints}
           {actionPoints}

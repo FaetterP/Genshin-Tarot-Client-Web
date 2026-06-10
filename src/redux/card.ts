@@ -16,6 +16,9 @@ const initialState: {
   isRange: boolean;
   isCanAlternative: boolean;
   isNeedPlayer: boolean;
+
+  raidenEnemies: string[];
+  isRaidenMode: boolean;
 } = {
   enemies: [],
   selectedPlayer: "",
@@ -28,6 +31,9 @@ const initialState: {
   isRange: false,
   isCanAlternative: false,
   isNeedPlayer: false,
+
+  raidenEnemies: [],
+  isRaidenMode: false,
 };
 
 const charactersSlice = createSlice({
@@ -57,6 +63,8 @@ const charactersSlice = createSlice({
 
       state.enemies = [];
       state.selectedPlayer = "";
+      state.raidenEnemies = [];
+      state.isRaidenMode = false;
     },
     selectEnemy(state, action: PayloadAction<{ enemyId: string }>) {
       if (!state.needEnemies) return;
@@ -79,6 +87,20 @@ const charactersSlice = createSlice({
     },
     filterStaleEnemies(state, action: PayloadAction<{ validIds: string[] }>) {
       state.enemies = state.enemies.filter((id) => action.payload.validIds.includes(id));
+      state.raidenEnemies = state.raidenEnemies.filter((id) => action.payload.validIds.includes(id));
+    },
+
+    toggleRaidenEnemy(state, action: PayloadAction<{ enemyId: string }>) {
+      const enemyId = action.payload.enemyId;
+      if (state.raidenEnemies.includes(enemyId)) {
+        state.raidenEnemies = state.raidenEnemies.filter((id) => id !== enemyId);
+      } else {
+        state.raidenEnemies.push(enemyId);
+      }
+    },
+
+    toggleRaidenMode(state) {
+      state.isRaidenMode = !state.isRaidenMode;
     },
   },
 });
@@ -91,4 +113,6 @@ export const {
   setSelectedCardForEffect,
   clearUsedCard,
   filterStaleEnemies,
+  toggleRaidenEnemy,
+  toggleRaidenMode,
 } = charactersSlice.actions;

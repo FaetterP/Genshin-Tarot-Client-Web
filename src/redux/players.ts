@@ -24,6 +24,7 @@ const initialState: {
     discard: [],
     deck: [],
     eulaSnowflakes: 0,
+    raidenPoints: 0,
   },
   other: [],
   cycle: -1,
@@ -50,6 +51,7 @@ const charactersSlice = createSlice({
         discard: [],
         deck: [],
         eulaSnowflakes: 0,
+        raidenPoints: 0,
       });
     },
 

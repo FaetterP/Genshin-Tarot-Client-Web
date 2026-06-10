@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { EnemyPrimitive } from "../../../types/general";
 import styles from "./Enemy.module.scss";
 import { State } from "../../../redux";
-import { selectEnemy } from "../../../redux/card";
+import { selectEnemy, toggleRaidenEnemy } from "../../../redux/card";
 import { toggleBurstEnemy } from "../../../redux/burst";
 import { addEulaEndTurnTarget } from "../../../redux/eulaEndTurn";
 import { burstsRequire } from "../../../storage/characters/burstsRequire";
@@ -46,6 +46,8 @@ export default function Enemy(props: EnemyPrimitive) {
   const cardNeedEnemies = useSelector((state: State) => state.card.needEnemies);
   const cardNeedEnemiesMax = useSelector((state: State) => state.card.needEnemiesMax);
   const cardEnemies = useSelector((state: State) => state.card.enemies);
+  const raidenEnemies = useSelector((state: State) => state.card.raidenEnemies);
+  const isRaidenMode = useSelector((state: State) => state.card.isRaidenMode);
   const burstEnemies = useSelector((state: State) => state.burst.enemies);
   const needEnemies = isBurstEnemyMode ? (burstRequire?.needEnemies ?? 0) : cardNeedEnemies;
   const needEnemiesMax = isBurstEnemyMode ? 0 : cardNeedEnemiesMax;
@@ -54,8 +56,9 @@ export default function Enemy(props: EnemyPrimitive) {
   const maxToSelect = needEnemiesMax || needEnemies;
 
   const isCanSelected =
-    isEulaEndTurnMode || (needEnemies && selectedEnemies < maxToSelect);
+    isEulaEndTurnMode || isRaidenMode || (needEnemies && selectedEnemies < maxToSelect);
   const isSelected = isEulaEndTurnMode ? false : selectedList.includes(props.id);
+  const isRaidenSelected = raidenEnemies.includes(props.id);
   const isDying = dyingEnemyIds.includes(props.id);
   const isFlippingFaceDown = flippingFaceDownEnemyIds.includes(props.id);
   const isAppearing = appearingEnemyIds.includes(props.id);
@@ -86,6 +89,8 @@ export default function Enemy(props: EnemyPrimitive) {
     if (!isCanSelected) return;
     if (isEulaEndTurnMode) {
       dispatch(addEulaEndTurnTarget({ enemyId: props.id }));
+    } else if (isRaidenMode) {
+      dispatch(toggleRaidenEnemy({ enemyId: props.id }));
     } else if (isBurstEnemyMode) {
       dispatch(toggleBurstEnemy({ enemyId: props.id }));
     } else {
@@ -97,6 +102,7 @@ export default function Enemy(props: EnemyPrimitive) {
   const swapClass = isEnemySwapShown ? styles.swapEffect : "";
   const canSelectClass = isCanSelected ? styles.canSelected : "";
   const selectedClass = isSelected ? styles.selected : "";
+  const raidenSelectedClass = isRaidenSelected ? styles.raidenSelected : "";
 
   return (
     <div
@@ -104,7 +110,7 @@ export default function Enemy(props: EnemyPrimitive) {
       onClick={handleClick}
     >
       <div
-        className={`${canSelectClass} ${selectedClass} ${attackClass} ${swapClass} ${isDying ? styles.death : ""} ${isFlippingFaceDown ? styles.flippingFaceDown : ""} ${isPiercingHit ? styles.piercingHit : ""} ${isBlockingHit ? styles.blockHit : ""} ${isStunning ? styles.stunHit : ""} ${elementGlowClass}`}
+        className={`${canSelectClass} ${selectedClass} ${raidenSelectedClass} ${attackClass} ${swapClass} ${isDying ? styles.death : ""} ${isFlippingFaceDown ? styles.flippingFaceDown : ""} ${isPiercingHit ? styles.piercingHit : ""} ${isBlockingHit ? styles.blockHit : ""} ${isStunning ? styles.stunHit : ""} ${elementGlowClass}`}
       >
         <EnemyCard {...props} />
       </div>

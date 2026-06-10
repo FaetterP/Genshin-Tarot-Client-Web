@@ -1,4 +1,4 @@
-import type { ECharacter, ECard, EEnemy } from "./enums";
+import type { ECharacter, ECard } from "./enums";
 
 export type GameStartRequest = { action: "game.startGame" };
 
@@ -15,6 +15,7 @@ export type GameUseCardRequest = {
   isUseAlternative?: boolean;
   selectedPlayer?: string;
   selectedCard?: string;
+  raidenEnemies?: string[];
 };
 
 export type GameUpgradeCardRequest = {
