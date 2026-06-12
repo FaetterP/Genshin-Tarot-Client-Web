@@ -652,7 +652,7 @@ export const cards: Record<
     canPlay: true,
     isUpgraded: false,
     canUpgrade: true,
-    require: { enemiesCount: 1, isRange: true },
+    require: { enemiesCount: 1, enemiesCountMax: 2, isRange: true },
   },
   [ECard.AnemoHypostatisPlus]: { cost: 1, cardType: ECardType.Skill, isUpgraded: true, canUpgrade: false, canPlay: true },
   [ECard.CuttingTorrent]: {

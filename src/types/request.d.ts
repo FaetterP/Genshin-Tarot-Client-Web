@@ -58,6 +58,10 @@ export type GameBossPassiveResponseRequest =
   | { action: "game.bossPassiveResponse"; taskId: string; type: "loseAP" }
   | { action: "game.bossPassiveResponse"; taskId: string; type: "discard"; cardIds: [string, string] };
 
+export type GameAnemoReactionResponseRequest =
+  | { action: "game.anemoReactionResponse"; taskId: string; isHeal: false }
+  | { action: "game.anemoReactionResponse"; taskId: string; isHeal: true; targetPlayerId: string };
+
 export type AnyRequest =
   | GameStartRequest
   | GameEndTurnRequest
@@ -68,4 +72,5 @@ export type AnyRequest =
   | CharactersRemoveCharacterRequest
   | TaskCompleteTaskRequest
   | GameDragonBreathResponseRequest
-  | GameBossPassiveResponseRequest;
+  | GameBossPassiveResponseRequest
+  | GameAnemoReactionResponseRequest;

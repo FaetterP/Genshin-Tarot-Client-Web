@@ -12,6 +12,7 @@ import {
 import { startStepAnimation } from "../../redux/stepAnimation";
 import { setPage } from "../../redux/service";
 import { setBoss, setDragonBreathTask, setBossPassiveTask } from "../../redux/boss";
+import { setAnemoReactionTask } from "../../redux/anemoReaction";
 import { DetailedStep } from "../../types/detailedStep";
 import { TaskCompleteTaskRequest } from "../../types/request";
 import type { ELeyline } from "../../types/enums";
@@ -187,6 +188,10 @@ async function bossPassiveHandler(payload: { taskId: string; hand: CardPrimitive
   store.dispatch(setBossPassiveTask({ taskId: payload.taskId, hand: payload.hand }));
 }
 
+async function anemoReactionHandler(payload: { taskId: string; enemyId: string }) {
+  store.dispatch(setAnemoReactionTask({ taskId: payload.taskId, enemyId: payload.enemyId }));
+}
+
 export default {
   handlers: {
     startGame,
@@ -198,5 +203,6 @@ export default {
     endCycle: endCycleHandler,
     dragonBreath: dragonBreathHandler,
     bossPassive: bossPassiveHandler,
+    anemoReaction: anemoReactionHandler,
   },
 };

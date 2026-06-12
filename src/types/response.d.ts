@@ -111,6 +111,12 @@ export interface AdminStateSyncResponse {
   cycle: number;
 }
 
+export interface GameAnemoReactionEvent {
+  action: "game.anemoReaction";
+  enemyId: string;
+  taskId: string;
+}
+
 export type AnyResponse =
   | WsConnectResponse
   | GameStartGameResponse
@@ -125,4 +131,5 @@ export type AnyResponse =
   | CharactersRemoveCharacterResponse
   | AdminChangeStatsResponse
   | GameDragonBreathResponse
-  | GameBossPassiveResponse;
+  | GameBossPassiveResponse
+  | GameAnemoReactionEvent;

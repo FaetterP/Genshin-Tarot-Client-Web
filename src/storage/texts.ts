@@ -51,6 +51,16 @@ export const engText: Record<string, string> = {
   bossPassiveNotEnough: "Not enough Attack/Skill cards in hand",
   bossPassiveLoseTitle: "Lose 1 Action Point instead",
   bossPassiveLoseBtn: "−1 Action Point",
+
+  // Anemo Reaction modal (Sucrose AnemoHypostatis+)
+  anemoReactionTitle: "Anemo Reaction",
+  anemoReactionDesc: "An enemy reacted with Anemo. Choose an effect:",
+  anemoReactionDash: "Add Dash to discard",
+  anemoReactionDashSub: "Gain a Dash card in your discard pile",
+  anemoReactionHeal: "Restore 3 HP",
+  anemoReactionHealSub: "Restore 3 HP to any player",
+  anemoReactionSelectPlayer: "Select a player to heal:",
+  anemoReactionConfirm: "Confirm",
 };
 
 export const rusText: Record<string, string> = {
@@ -107,4 +117,14 @@ export const rusText: Record<string, string> = {
   bossPassiveNotEnough: "Недостаточно карт Атаки/Навыка в руке",
   bossPassiveLoseTitle: "Потерять 1 Очко действия",
   bossPassiveLoseBtn: "−1 Очко действия",
+
+  // Модал реакции Анемо (Сахароза AnemoHypostatis+)
+  anemoReactionTitle: "Реакция Анемо",
+  anemoReactionDesc: "Враг среагировал с Анемо. Выберите эффект:",
+  anemoReactionDash: "Добавить Рывок в сброс",
+  anemoReactionDashSub: "Получить карту Рывок в сброс",
+  anemoReactionHeal: "Восстановить 3 ОЗ",
+  anemoReactionHealSub: "Восстановить 3 ОЗ любому игроку",
+  anemoReactionSelectPlayer: "Выберите игрока для лечения:",
+  anemoReactionConfirm: "Подтвердить",
 };
