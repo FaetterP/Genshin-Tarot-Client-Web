@@ -13,6 +13,7 @@ import { startStepAnimation } from "../../redux/stepAnimation";
 import { setPage } from "../../redux/service";
 import { setBoss, setDragonBreathTask, setBossPassiveTask } from "../../redux/boss";
 import { setAnemoReactionTask } from "../../redux/anemoReaction";
+import { setRagingTideTask } from "../../redux/ragingTide";
 import { DetailedStep } from "../../types/detailedStep";
 import { TaskCompleteTaskRequest } from "../../types/request";
 import type { ELeyline } from "../../types/enums";
@@ -192,6 +193,10 @@ async function anemoReactionHandler(payload: { taskId: string; enemyId: string }
   store.dispatch(setAnemoReactionTask({ taskId: payload.taskId, enemyId: payload.enemyId }));
 }
 
+async function ragingTideSelectHandler(payload: { taskId: string }) {
+  store.dispatch(setRagingTideTask({ taskId: payload.taskId }));
+}
+
 export default {
   handlers: {
     startGame,
@@ -204,5 +209,6 @@ export default {
     dragonBreath: dragonBreathHandler,
     bossPassive: bossPassiveHandler,
     anemoReaction: anemoReactionHandler,
+    ragingTideSelect: ragingTideSelectHandler,
   },
 };

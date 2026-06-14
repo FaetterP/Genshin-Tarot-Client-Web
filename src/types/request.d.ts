@@ -62,6 +62,13 @@ export type GameAnemoReactionResponseRequest =
   | { action: "game.anemoReactionResponse"; taskId: string; isHeal: false }
   | { action: "game.anemoReactionResponse"; taskId: string; isHeal: true; targetPlayerId: string };
 
+export type GameRagingTideSelectResponseRequest = {
+  action: "game.ragingTideSelectResponse";
+  taskId: string;
+  selectedCards: string[];
+  enemies: string[];
+};
+
 export type AnyRequest =
   | GameStartRequest
   | GameEndTurnRequest
@@ -73,4 +80,5 @@ export type AnyRequest =
   | TaskCompleteTaskRequest
   | GameDragonBreathResponseRequest
   | GameBossPassiveResponseRequest
-  | GameAnemoReactionResponseRequest;
+  | GameAnemoReactionResponseRequest
+  | GameRagingTideSelectResponseRequest;

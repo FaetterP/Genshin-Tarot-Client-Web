@@ -20,6 +20,7 @@ import Boss from "./Boss/Boss";
 import DragonBreathModal from "./DragonBreathModal/DragonBreathModal";
 import BossPassiveModal from "./BossPassiveModal/BossPassiveModal";
 import AnemoReactionModal from "./AnemoReactionModal/AnemoReactionModal";
+import RagingTideModal from "./RagingTideModal/RagingTideModal";
 import BossAttackEffect from "./BossAttackEffect/BossAttackEffect";
 
 export default function Game() {
@@ -40,6 +41,7 @@ export default function Game() {
       <DragonBreathModal />
       <BossPassiveModal />
       <AnemoReactionModal />
+      <RagingTideModal />
       <Enemies />
       <div className={styles.stats}>
         <PlayerStats {...me} />

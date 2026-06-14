@@ -61,6 +61,16 @@ export const engText: Record<string, string> = {
   anemoReactionHealSub: "Restore 3 HP to any player",
   anemoReactionSelectPlayer: "Select a player to heal:",
   anemoReactionConfirm: "Confirm",
+
+  // Raging Tide modal (Tartaglia)
+  ragingTideTitle: "Raging Tide",
+  ragingTideDesc: "Select up to 3 cards to discard. Each discarded card applies Hydro to 1 enemy in your zone.",
+  ragingTideHandLabel: "Your hand — click to select (max 3):",
+  ragingTideDiscardLabel: "Discards → enemy pairs:",
+  ragingTideSelectEnemy: "Select enemy...",
+  ragingTideNoEnemies: "No enemies in zone",
+  ragingTideConfirm: "Confirm",
+  ragingTideSkip: "Discard nothing",
 };
 
 export const rusText: Record<string, string> = {
@@ -127,4 +137,14 @@ export const rusText: Record<string, string> = {
   anemoReactionHealSub: "Восстановить 3 ОЗ любому игроку",
   anemoReactionSelectPlayer: "Выберите игрока для лечения:",
   anemoReactionConfirm: "Подтвердить",
+
+  // Модал Бушующих волн (Тарталья)
+  ragingTideTitle: "Бушующие волны",
+  ragingTideDesc: "Выберите до 3 карт для сброса. Каждая сброшенная карта накладывает Гидро на 1 врага в вашей зоне.",
+  ragingTideHandLabel: "Ваша рука — нажмите для выбора (макс. 3):",
+  ragingTideDiscardLabel: "Пары сброс → враг:",
+  ragingTideSelectEnemy: "Выбрать врага...",
+  ragingTideNoEnemies: "Нет врагов в зоне",
+  ragingTideConfirm: "Подтвердить",
+  ragingTideSkip: "Не сбрасывать",
 };
